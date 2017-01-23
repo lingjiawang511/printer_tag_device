@@ -25,9 +25,9 @@ int main(void)
     TIM3_Config();
 		delay_ms(1000);
     while(1){
-			Respond_Host_Comm();
-			CH_Send_Medicine();
-			CH_Light_Control();
+//			Respond_Host_Comm();
+//			CH_Send_Medicine();
+//			CH_Light_Control();
 		}
         
 }
