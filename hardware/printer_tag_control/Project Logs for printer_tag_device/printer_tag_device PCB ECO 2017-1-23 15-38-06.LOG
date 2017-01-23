@@ -1,0 +1,39 @@
+Removed Pin From Net: NetName=RED_LIGHT_IN Pin=R23-1
+Removed Pin From Net: NetName=GREEN_LIGHT_IN Pin=R24-1
+Removed Pin From Net: NetName=PRINTER_START_IN Pin=R76-1
+Removed Pin From Net: NetName=PRINTER_RESTART_IN Pin=R77-1
+Removed Pin From Net: NetName=ERR11_OUT Pin=U3-11
+Removed Pin From Net: NetName=NET_RST Pin=U3-16
+Removed Pin From Net: NetName=STOP_KEY_OUT Pin=U3-21
+Removed Pin From Net: NetName=START_KEY_OUT Pin=U3-22
+Removed Pin From Net: NetName=CPU_CONTROL_ROLL Pin=U3-23
+Removed Pin From Net: NetName=SCANNER_OUT Pin=U3-26
+Removed Pin From Net: NetName=FLUID_BAG_OUT Pin=U3-27
+Removed Pin From Net: NetName=PRINTER_COLOR_LESS_OUT Pin=U3-29
+Removed Pin From Net: NetName=PRINTER_INLINE_OUT Pin=U3-30
+Removed Pin From Net: NetName=PRINTER_COLOR_END_OUT Pin=U3-33
+Removed Pin From Net: NetName=PRINTER_ERR_OUT Pin=U3-34
+Removed Pin From Net: NetName=PRINTER_END_OUT Pin=U3-35
+Removed Pin From Net: NetName=PRINTER_TAG_END_OUT Pin=U3-36
+Removed Pin From Net: NetName=UPPER_REACH_OUT Pin=U3-37
+Removed Pin From Net: NetName=BAFFLE_INTER_OUT Pin=U3-38
+Removed Pin From Net: NetName=BAFFLE_OUTER_OUT Pin=U3-39
+Removed Pin From Net: NetName=FIT_REACH_OUT Pin=U3-40
+Removed Pin From Net: NetName=USART1_TXD Pin=U3-42
+Removed Pin From Net: NetName=USART1_RXD Pin=U3-43
+Removed Pin From Net: NetName=BAFFLE_IN Pin=U3-51
+Removed Pin From Net: NetName=AIR_BLOW_IN Pin=U3-52
+Removed Pin From Net: NetName=AIR_CYLINDER_IN Pin=U3-53
+Removed Pin From Net: NetName=VACUUM_IN Pin=U3-54
+Removed Pin From Net: NetName=SPEED12_IN Pin=U3-58
+Removed Pin From Net: NetName=SPEED11_IN Pin=U3-59
+Removed Pin From Net: NetName=DIR11_IN Pin=U3-61
+Removed Pin From Net: NetName=SPEED13_IN Pin=U3-62
+Added Member To Class: ClassName=light_key_control Member=Component C24 Cap
+Added Member To Class: ClassName=light_key_control Member=Component C25 Cap
+Added Member To Class: ClassName=light_key_control Member=Component R21 Res2
+Added Member To Class: ClassName=light_key_control Member=Component R22 Res2
+Added Member To Class: ClassName=light_key_control Member=Component R23 Res2
+Added Member To Class: ClassName=light_key_control Member=Component R24 Res2
+Added Member To Class: ClassName=light_key_control Member=Component U12 CEM4435A
+Added Member To Class: ClassName=light_key_control Member=Component U13 CEM4435A
