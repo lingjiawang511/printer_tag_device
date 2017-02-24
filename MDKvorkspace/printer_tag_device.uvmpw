@@ -9,11 +9,12 @@
 
   <project>
     <PathAndName>..\printer_mcu\MDK_ARM\printer_mcu.uvproj</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
+    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
   <project>
     <PathAndName>..\scanner_mcu\MDK_ARM\scanner_mcu.uvproj</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
     <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 

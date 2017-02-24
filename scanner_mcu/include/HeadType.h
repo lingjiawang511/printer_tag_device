@@ -10,9 +10,7 @@
 #include "usart.h"
 #include "TIM.h"
 #include "communication.h"
-#include "lock.h"
-#include "beep.h"
-#include "sensor.h"
+#include "baffle.h"
 
 /*************Typedef datatype start*******************/
 typedef char int8;

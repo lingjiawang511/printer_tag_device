@@ -442,6 +442,31 @@
               <FileType>1</FileType>
               <FilePath>..\USER\belt.c</FilePath>
             </File>
+            <File>
+              <FileName>key_and_light.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\key_and_light.c</FilePath>
+            </File>
+            <File>
+              <FileName>roll_paper.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\roll_paper.c</FilePath>
+            </File>
+            <File>
+              <FileName>printer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\printer.c</FilePath>
+            </File>
+            <File>
+              <FileName>air_cylinder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\air_cylinder.c</FilePath>
+            </File>
+            <File>
+              <FileName>communication.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\communication.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

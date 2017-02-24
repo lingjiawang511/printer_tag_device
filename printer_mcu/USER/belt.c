@@ -22,12 +22,12 @@ u8 Send_Medicine_Finish_State;		//所有通道发药完成状态，避免发药没完成，皮带就停
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
 	GPIO_Init(BELT_SPEED1_PORT, &GPIO_InitStructure);
-	//皮带速度控制IO口2
-	GPIO_InitStructure.GPIO_Pin = BELT_SPEED2_IO;			 
-	GPIO_Init(BELT_SPEED2_PORT, &GPIO_InitStructure);
-	//皮带速度控制IO口3
-	GPIO_InitStructure.GPIO_Pin = BELT_SPEED3_IO;			 
-	GPIO_Init(BELT_SPEED3_PORT, &GPIO_InitStructure);
+//	//皮带速度控制IO口2
+//	GPIO_InitStructure.GPIO_Pin = BELT_SPEED2_IO;			 
+//	GPIO_Init(BELT_SPEED2_PORT, &GPIO_InitStructure);
+//	//皮带速度控制IO口3
+//	GPIO_InitStructure.GPIO_Pin = BELT_SPEED3_IO;			 
+//	GPIO_Init(BELT_SPEED3_PORT, &GPIO_InitStructure);
 	//皮带方向控制IO口
 	GPIO_InitStructure.GPIO_Pin = BELT_DIR_IO;			 
 	GPIO_Init(BELT_DIR_PORT, &GPIO_InitStructure);
@@ -40,8 +40,6 @@ u8 Send_Medicine_Finish_State;		//所有通道发药完成状态，避免发药没完成，皮带就停
 	Speed_Step = 0;
 	Start_Ok = 0;
 	BELT_SPEED1 = 0;
-	BELT_SPEED2 = 0;
-	BELT_SPEED3 = 0;
 	BELT_DIR = 0;
 	Send_Medicine_Finish_State = 0;
 }

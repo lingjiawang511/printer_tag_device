@@ -11,6 +11,9 @@
 #include "usart.h"
 #include "TIM.h"
 #include "belt.h"
+#include "printer.h"
+#include "air_cylinder.h"
+#include "communication.h"
 
 
 /*************Typedef datatype start*******************/
@@ -199,13 +202,19 @@ extern  Answer_Type 	 PC_Answer;
 
 extern  CH_Work Channel;
 extern	Belt_Work_Type belt;
+
+
+extern u8 Key_ScanNum;
+extern u8 Device_State;
+
 /*************extern variable end*******************/
 
 /*************function start*******************/
 u16 CRC_GetModbus16(u8 *pdata, int len);
 u16 CRC_GetCCITT(u8 *pdata, int len);
-
-
+void Key_Light_Init(void);
+void Key_Light_Dispose(void);
+void ROLL_PAPER_GPIO_Config(void);
 
 
 /*************function end*******************/

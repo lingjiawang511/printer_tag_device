@@ -16,8 +16,14 @@ void delay_ms1(u16 ms)
 int main(void)
 {
 		delay_init();
+		Key_Light_Init();
 		Belt_Config();
 		LED_GPIO_Config();
+	  ROLL_PAPER_GPIO_Config();
+	  Printer_GPIO_Config();
+		Air_Cylinder_GPIO_Config();
+	  Communication_GPIO_Config();
+	
 		Send_Medicine_Config();
 		EXTIX_Init();
     USART1_Config();
@@ -25,9 +31,9 @@ int main(void)
     TIM3_Config();
 		delay_ms(1000);
     while(1){
-//			Respond_Host_Comm();
-//			CH_Send_Medicine();
-//			CH_Light_Control();
+			Respond_Host_Comm();
+			CH_Send_Medicine();
+			CH_Light_Control();
 		}
         
 }

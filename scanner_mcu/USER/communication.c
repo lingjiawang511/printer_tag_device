@@ -60,6 +60,39 @@ USART_WORK_Type Usart_Work_State;					//MCU作为主机还是从机状态
 Answer_Type 	 PC_Answer;
 COMM_Rec_Union_Type   MCU_Host_Rec;//MCU作为主机时的结构体接收应答变量
 COMM_Send_Union_Type  MCU_Host_Send;//MCU作为主机时的结构体发送数据
+
+//=============================================================================
+//函数名称: Comm_GPIO_Config
+//功能概要:硬件通信引脚配置
+//参数名称:无
+//函数返回:无
+//注意    :无
+//=============================================================================
+ void Communication_GPIO_Config(void)
+{	
+	//定义一个GPIO_InitTypeDef 类型的结构体，名字叫GPIO_InitStructure 
+	GPIO_InitTypeDef  GPIO_InitStructure;
+	//COMMUNICATION_IO1  IO配置
+	RCC_APB2PeriphClockCmd(COMMUNICATION_IO1_RCC,ENABLE);		
+	GPIO_InitStructure.GPIO_Pin = COMMUNICATION_IO1_IO;	 
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; 		 
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
+	GPIO_Init(COMMUNICATION_IO1_PORT, &GPIO_InitStructure);
+	//COMMUNICATION_IO2  IO配置
+	RCC_APB2PeriphClockCmd(COMMUNICATION_IO2_RCC,ENABLE);		
+	GPIO_InitStructure.GPIO_Pin = COMMUNICATION_IO2_IO;	 
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; 		 
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
+	GPIO_Init(COMMUNICATION_IO2_PORT, &GPIO_InitStructure);
+	//COMMUNICATION_IO3  IO配置
+	RCC_APB2PeriphClockCmd(COMMUNICATION_IO3_RCC,ENABLE);		
+	GPIO_InitStructure.GPIO_Pin = COMMUNICATION_IO3_IO;	 
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; 		 
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
+	GPIO_Init(COMMUNICATION_IO3_PORT, &GPIO_InitStructure);
+
+}
+
 //=============================================================================
 //函数名称: check_xor_sum
 //功能概要:异或和校验函数
@@ -232,10 +265,10 @@ static u8 Usrat2_Rec_RFIDdata(void )
 		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = Usart2_RFIDRec.data[1];
 		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = Usart2_RFIDRec.data[2];
 		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = Usart2_RFIDRec.data[3];	
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = Lock.lock1.lock_check_value;
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = Lock.lock2.lock_check_value;
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = Lock.lock3.lock_check_value;
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = Lock.lock4.lock_check_value;
+		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0;
+		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0;
+		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0;
+		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0;
 		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0x00;
 		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0x00;
 		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0x00;
@@ -348,53 +381,7 @@ u8 Respond_Host_Comm(void)
 				for(i = 0;i < 14;i++){
 								MCU_Host_Rec.rec_buf[i] = Usart1_Control_Data.rxbuf[i];
 						}//把数据复制给主机通讯结构体
-					switch(MCU_Host_Rec.control.lock1){
-						case 0x00: break;    //不处理
-						case 0x01: 					
-					        	LOCK1_ON;										//执行开锁点灯动作,锁开好后再点灯
-										Lock.lock1.lock_state = 1;
-										Lock.lock1.lock_time = LOCK_TIME;
-					        	break;   //开锁1
-						default :break;
-					}
-					switch(MCU_Host_Rec.control.lock2){
-						case 0x00: break;    //不处理
-						case 0x01:
-					        	LOCK2_ON;										//执行开锁点灯动作,锁开好后再点灯
-										Lock.lock2.lock_state = 1;
-										Lock.lock2.lock_time = LOCK_TIME;
-					        	break;   //开锁2
-						default :break;
-					}
-					switch(MCU_Host_Rec.control.lock3){
-						case 0x00: break;    //不处理
-						case 0x01: 
-					        	LOCK3_ON;										//执行开锁点灯动作,锁开好后再点灯
-										Lock.lock3.lock_state = 1;
-										Lock.lock3.lock_time = LOCK_TIME;
-					        	break;   //开锁3
-						default :break;
-					}
-					switch(MCU_Host_Rec.control.lock4){
-						case 0x00: break;    //不处理
-						case 0x01:
-					        	LOCK4_ON;										//执行开锁点灯动作,锁开好后再点灯
-										Lock.lock4.lock_state = 1;
-										Lock.lock4.lock_time = LOCK_TIME;
-					        	break;   //开锁4
-						default :break;
-					}
-					switch(MCU_Host_Rec.control.RFID){
-						case 0x00: break;    //不处理
-						case 0x01:  Beep_Num = BEEP_RIGHT_COUNT;  break;     //RFID正确，蜂鸣器响提示一下
-						case 0x02:	Beep_Num = BEEP_ERROR_COUNT;break;  //RFID正确，蜂鸣器响提示一下
-						default :break;
-					}
-					switch(MCU_Host_Rec.control.check){
-						case 0x00: break;    //不处理
-						case 0x01: Check_State = 1; break;   //检查状态，主动上传
-						default :break;
-					}
+
 					for(i = 0;i < 14;i++){
 								MCU_Host_Rec.rec_buf[i] = 0x00;
 						}//处理完之后将控制数据清零
@@ -467,51 +454,7 @@ void PC_Communication_Time_ISR(void )
 //=============================================================================
 void Comm_Upload_state(void)
 {
-	u16 crc;   
 	
-	if((Lock_Check_state ==1)||(Check_State ==1)||(Sensor_State ==1)){	
-		while(Usart1_Control_Data.tx_count != 0);		//上一次数据必须传输完成才可以下一次传输
-		Usart1_Control_Data.tx_count = 0;	
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0x01;
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0x58;
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0x00;
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0x10;
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0x00;//有无RFID读卡
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = Usart2_RFIDRec.data[0];	//需要清零
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = Usart2_RFIDRec.data[1];
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = Usart2_RFIDRec.data[2];
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = Usart2_RFIDRec.data[3];	
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = Lock.lock1.lock_check_value;  //不允许请零
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = Lock.lock2.lock_check_value;
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = Lock.lock3.lock_check_value;
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = Lock.lock4.lock_check_value;
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = Sensor_State;
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = Sonser.sensor1.sensor_check_value;
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = Sonser.sensor2.sensor_check_value;
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = Sonser.sensor3.sensor_check_value;
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = Sonser.sensor4.sensor_check_value;
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = Sonser.sensor5.sensor_check_value;
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = Sonser.sensor6.sensor_check_value;
-		crc=CRC_GetCCITT(Usart1_Control_Data.txbuf,Usart1_Control_Data.tx_count);
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = (crc>>8)&0xFF; 
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = crc&0xFF;
-		
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0X0D;
-		Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0X0A;
-		
-		PC_Answer.Nanswer_timeout = NANSWER_TIME;
-		PC_Answer.answer_numout = NANSWER_NUMOUT;
-		PC_Answer.answer_state = 1;
-		Usart1_Control_Data.tx_index = 0;	
-		USART_SendData(USART1,Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_index++]);	
-		
-		RESET_LOCK_CHECK_STATE;
-		RESET_SENSOR_CHECK_VALUE;
-		Check_State = 0;
-		Sensor_State = 0;
-		Lock_Check_state = 0;
-		
-	}
 
 }
 

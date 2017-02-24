@@ -16,12 +16,11 @@ void delay_ms1(u16 ms)
 int main(void)
 {
 		delay_init();
-		LOCK_GPIO_Config();
-	  BEEP_GPIO_Config();
-	  SENSOR_GPIO_Config();
+		Baffle_GPIO_Config();
 		USART1_Config();
 		USART2_Config();
 		LED_GPIO_Config();
+		Communication_GPIO_Config();
 //		USART2_Puts("123456");
 //		USART2_Puts("123456");
     TIM2_Config();

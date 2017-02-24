@@ -148,9 +148,6 @@ void TIM2_IRQHandler(void)
 	if ( TIM_GetITStatus(TIM2 , TIM_IT_Update) != RESET ) 
 	{	
 		Led_Flash();
-		Beep_Response();
-		Lock_control();
-		Sensor_check();
 		PC_Communication_Time_ISR();
 		TIM_ClearITPendingBit(TIM2 , TIM_FLAG_Update);  		 
 	}		 	

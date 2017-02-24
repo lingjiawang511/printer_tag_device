@@ -433,19 +433,9 @@
               <FilePath>..\USER\communication.c</FilePath>
             </File>
             <File>
-              <FileName>LOCK.C</FileName>
+              <FileName>baffle.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\USER\LOCK.C</FilePath>
-            </File>
-            <File>
-              <FileName>beep.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\beep.c</FilePath>
-            </File>
-            <File>
-              <FileName>sensor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\sensor.c</FilePath>
+              <FilePath>..\USER\baffle.c</FilePath>
             </File>
           </Files>
         </Group>
