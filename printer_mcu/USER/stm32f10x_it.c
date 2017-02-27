@@ -148,10 +148,8 @@ void TIM2_IRQHandler(void)
 	if ( TIM_GetITStatus(TIM2 , TIM_IT_Update) != RESET ) 
 	{	
 		Led_Flash();
-		Send_Medicine_Time_ISR();
 		Belt_Control();
 		Key_Light_Dispose();
-//		Device_Send_Actual_IRQTimer();	//所以通道实际发药计数
 		TIM_ClearITPendingBit(TIM2 , TIM_FLAG_Update);  		 
 	}		 	
 }
@@ -176,8 +174,7 @@ void TIM3_IRQHandler(void)
                 Usart1_Control_Data.rx_index = 0;
             }
         }
-			Motor_pulse_IRQTimer();    //所有通道电机脉冲计数
-			Device_Send_Actual_IRQTimer();
+			Input_pulse_IRQTimer();    //所有通道电机脉冲计数
       TIM_ClearITPendingBit(TIM3 , TIM_FLAG_Update);     
 	}		 	
 }

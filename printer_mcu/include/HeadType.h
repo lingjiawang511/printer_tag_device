@@ -87,14 +87,27 @@ typedef enum{
 	SLAVE,
 	HOST
 }MCU_State_Type;
-
+typedef enum{
+	PULSE_READY,
+	PULSE_START,
+	PULSE_DELAY,
+	PULSE_END
+}Pulse_Type;
+//typedef enum{
+//	RESERVE,
+//	READY,
+//	WORKING,
+//	WORKEND,
+//	END
+//}CH_Work_Enum_Type;
 typedef enum{
 	RESERVE,
 	READY,
 	WORKING,
 	WORKEND,
 	END
-}CH_Work_Enum_Type;
+}Printer_Work_Enum_Type;
+typedef Printer_Work_Enum_Type CH_Work_Enum_Type;
 /*************enum type end*******************/
 
 /*************struct type start*******************/
@@ -184,6 +197,30 @@ typedef struct{
 	CH_Work_Type ch3;
 	CH_Work_Type ch4;
 }CH_Work;
+typedef struct {
+	u8 state;
+	u8 irqstate;
+	u8 irqtime;
+}Printer_Input_Type;
+typedef struct{
+	Printer_Work_Enum_Type  state;  
+	Printer_Input_Type 	err;					//打印机故障输入
+	Printer_Input_Type  end;					//打印机打印结束输入
+	Printer_Input_Type  pinline;			//打印机在线输入
+	Printer_Input_Type  color_end;	  //打印机色带完输入
+	Printer_Input_Type 	color_less;   //打印机色带少输入
+	Printer_Input_Type tag_end;			  //打印机标签用完输入
+	u8 input_state;   //打印机输入状态
+	Pulse_Type start;         //打印机启动
+	u8 start_delay_time;
+	u8 restart;       //打印机重复启动
+}Printer_Type;
+typedef struct{
+	Printer_Input_Type fit_reach;
+	Printer_Input_Type upper_reach;
+	Printer_Input_Type fluid_bag;
+	Printer_Input_Type scanner;
+}Control_Input_Type;
 /*************struct type end*******************/
 
 /*************extern variable start*******************/
@@ -206,7 +243,8 @@ extern	Belt_Work_Type belt;
 
 extern u8 Key_ScanNum;
 extern u8 Device_State;
-
+extern Printer_Type Printer;
+extern Control_Input_Type Control;
 /*************extern variable end*******************/
 
 /*************function start*******************/

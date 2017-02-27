@@ -23,8 +23,6 @@ int main(void)
 	  Printer_GPIO_Config();
 		Air_Cylinder_GPIO_Config();
 	  Communication_GPIO_Config();
-	
-		Send_Medicine_Config();
 		EXTIX_Init();
     USART1_Config();
     TIM2_Config();
@@ -32,8 +30,6 @@ int main(void)
 		delay_ms(1000);
     while(1){
 			Respond_Host_Comm();
-			CH_Send_Medicine();
-			CH_Light_Control();
 		}
         
 }

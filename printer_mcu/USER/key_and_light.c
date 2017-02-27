@@ -162,6 +162,18 @@ void Key_Light_Dispose(void)
   if(Key_ScanNum ==0){
 		Key_ScanNum = Key_Scan();
 	}
+	if(Key_ScanNum !=0){  
+		if(Key_ScanNum == 0x01){
+			Device_State = 1; 
+			belt.state = READY;			//运输皮带启动
+		}else if((Key_ScanNum == 0x02)||(Key_ScanNum == 0x12)){
+			Device_State = 2;  
+			belt.state = END ;     //运输皮带停止
+		}else{
+			Device_State = 0;   //长按启动按键不放手，可以回到待机状态
+		}
+		Key_ScanNum = 0;
+	}
 	Light_Scan();
 }
 

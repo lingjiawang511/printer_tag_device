@@ -63,8 +63,41 @@
 	GPIO_Init(PRINTER_RESTART_PORT, &GPIO_InitStructure);
 	
 }
+static void Printer_Input_Scan(void)
+{
+   if((Printer.err.state == 0)&&(Printer.tag_end.state == 0)&&(Printer.color_end.state == 0)&&(Printer.pinline.state== 0)){
+			Printer.input_state = 1;
+		}else{ //有错误必须使设备恢复到待机状态或者启动状态才可以取消错误状态
+			Printer.input_state = 0;
+		}
 
+}
+void Printer_Control(void)
+{
+	Printer_Input_Scan();
+	 if(Device_State == 1){  //设备启动
+			if(Printer.input_state == 1){  //打印机输入状态OK
+				if(Printer.start == 1){      //打印机启动打印
+					PRINTER_START_ON;
+				}
 
+			}
+		 
+		}else if(Device_State == 2){ //设备停止
+			 PRINTER_START_OFF;
+			 Printer.err.state = 0;
+			 Printer.tag_end.state = 0;
+			 Printer.color_end.state = 0;
+			 Printer.pinline.state = 0;
+		}else{
+			 PRINTER_START_OFF;
+			 Printer.err.state = 0;
+			 Printer.tag_end.state = 0;
+			 Printer.color_end.state = 0;
+			 Printer.pinline.state = 0;
+		}
+
+}
 
 
 

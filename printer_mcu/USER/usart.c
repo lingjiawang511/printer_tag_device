@@ -21,7 +21,8 @@ MCU_State_Type MCU_State;					//MCU作为主机还是从机状态
 
 CH_Work Channel;									//四个发药通道控制变量
 Belt_Work_Type belt;							//皮带控制变量
-
+Printer_Type Printer;
+Control_Input_Type Control;
 //=============================================================================
 //函数名称:Init_USART1
 //功能概要:USART1 初始化串口相关参数

@@ -145,7 +145,7 @@ void Belt_Control(void)
 {
 	static u16 delay_time = 0;
 	switch(belt.state){
-	case RESERVE:								
+	case RESERVE:	belt.actual_time = 1000;							
 								break;
 	case READY:	if(Start_Ok == 0){
 								Speed_Step = Start_Belt(Speed_Step);	
@@ -157,22 +157,16 @@ void Belt_Control(void)
 	case WORKING:if(Start_Ok == 1){
 									delay_time++;
 									if(delay_time >= belt.actual_time){
-										belt.state = END ;
-										belt.actual_time = 0;
+//										belt.state = END ;
 										delay_time = 0;
 									}
 								}
 								break;
 
 	case END:	if(Start_Ok == 1){
-							if(Send_Medicine_Finish_State == 1){
 								Speed_Step = Stop_Belt(Speed_Step);
-							}else{
-
-							}
 						}else{
 								belt.state = RESERVE;
-								Send_Medicine_Finish_State = 0;
 						}
 								break ;	
 	default :
