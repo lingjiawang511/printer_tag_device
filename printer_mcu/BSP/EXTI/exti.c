@@ -199,7 +199,7 @@ static void 	Control_Input_IRQTimer(void)
 {
 		if(Control.scanner.irqstate == 1){//延时方法使用定时器延时，中断进来看状态，8MS后判断状态是否是真
 					Control.scanner.irqtime++;
-					if(IRQ_TIMEOUT <= Printer.color_less.irqtime){
+					if(IRQ_TIMEOUT <= Control.scanner.irqtime){
 						if(READ_SCANNER == RESET){
 							Control.scanner.state = 1;
 						}

@@ -1,5 +1,5 @@
-#ifndef __AIR_CYLINDER_H
-#define __AIR_CYLINDER_H
+#ifndef __BAFFLE_H
+#define __BAFFLE_H
 
 #include "stm32f10x.h"
 
@@ -15,7 +15,7 @@
 #define				SCANNER_RCC			  			 RCC_APB2Periph_GPIOB
 
 
-#define       READ_BAFFLE_OUTER  		   GPIO_ReadInputDataBit(UBAFFLE_OUTER_PORT,BAFFLE_OUTER_IO) //返回的是一个字节，读的是一个位
+#define       READ_BAFFLE_OUTER  		   GPIO_ReadInputDataBit(BAFFLE_OUTER_PORT,BAFFLE_OUTER_IO) //返回的是一个字节，读的是一个位
 #define       READ_BAFFLE_INTER    		 GPIO_ReadInputDataBit(BAFFLE_INTER_PORT,BAFFLE_INTER_IO) //返回的是一个字节，读的是一个位
 #define       READ_SCANNER    				 GPIO_ReadInputDataBit(SCANNER_PORT,SCANNER_IO) //返回的是一个字节，读的是一个位
 
@@ -24,8 +24,8 @@
 #define				BAFFLE_RCC			  			 RCC_APB2Periph_GPIOB
 
 
-#define       BAFFLE_OFF   					GPIO_SetBits(AIR_BLOW_PORT, AIR_BLOW_IO)
-#define       BAFFLE_ON 	 	 				GPIO_ResetBits(AIR_BLOW_PORT,AIR_BLOW_IO)
+#define       BAFFLE_OFF   					GPIO_SetBits(BAFFLE_PORT, BAFFLE_IO)
+#define       BAFFLE_ON 	 	 				GPIO_ResetBits(BAFFLE_PORT,BAFFLE_IO)
 
 	
 

@@ -171,6 +171,7 @@ void Key_Light_Dispose(void)
 			belt.state = END ;     //运输皮带停止
 		}else{
 			Device_State = 0;   //长按启动按键不放手，可以回到待机状态
+			belt.state = END ;     //运输皮带停止
 		}
 		Key_ScanNum = 0;
 	}

@@ -26,10 +26,10 @@
 
 #define READ_BELT_ERR    			GPIO_ReadInputDataBit(BELT_ERR_PORT,BELT_ERR_IO) 
 
-#define BELT_SPEED1				 		PBout(5)// PB5
-#define BELT_SPEED2 					PCout(12)// PB5
-#define BELT_SPEED3						PDout(2)// PB5
-#define BELT_DIR 							PCout(11)// PB5
+#define BELT_SPEED1				 		PBout(6)
+#define BELT_SPEED2 					PCout(12)
+#define BELT_SPEED3						PDout(2)
+#define BELT_DIR 							PBout(7)
 // #define BELT_ERR 							PCout(10)// PB5
 
 #define Belt_Speed(x3,x2,x1)	do{	BELT_SPEED1 = x1;BELT_SPEED1 = x2;BELT_SPEED1 = x3;}while(0)
