@@ -18,10 +18,10 @@
 #define	STOP_LIGHT_PORT				GPIOA
 #define	STOP_LIGHT_RCC				RCC_APB2Periph_GPIOA
  
-#define START_LIGHT_OFF  		 	GPIO_SetBits(START_LIGHT_PORT, START_LIGHT_IO)
-#define START_LIGHT_ON  			GPIO_ResetBits(START_LIGHT_PORT, START_LIGHT_IO)
-#define STOP_LIGHT_OFF   			GPIO_SetBits(STOP_LIGHT_PORT, STOP_LIGHT_IO)
-#define STOP_LIGHT_ON  				GPIO_ResetBits(STOP_LIGHT_PORT,STOP_LIGHT_IO)
+#define START_LIGHT_ON  		 	GPIO_SetBits(START_LIGHT_PORT, START_LIGHT_IO)
+#define START_LIGHT_OFF  			GPIO_ResetBits(START_LIGHT_PORT, START_LIGHT_IO)
+#define STOP_LIGHT_ON   			GPIO_SetBits(STOP_LIGHT_PORT, STOP_LIGHT_IO)
+#define STOP_LIGHT_OFF  			GPIO_ResetBits(STOP_LIGHT_PORT,STOP_LIGHT_IO)
 
 #define KEY_SHORT_TIME 		    15
 #define KEY_LONG_TIME			    200
@@ -89,17 +89,17 @@ static u8 Key_Scan(void)
 		if(READ_START_KEY == READLOW){
 				if(start_key_triggerstate == 0){
 					start_key_triggerstate = 1;
-				}else{
+				}else if(start_key_triggerstate == 1){
 					start_key_timercount++;
 					if(start_key_timercount > KEY_LONG_TIME){
 						key_num |=0x11;
-						start_key_triggerstate = 0;
+						start_key_triggerstate = 2;
 						start_key_timercount = 0;
 						return key_num;
 					}
 				}
 		}else{
-				if(start_key_triggerstate == 1){
+				if(start_key_triggerstate >= 1){
 					if(start_key_timercount <KEY_SHORT_TIME){
 							key_num &=0xfe;
 					}else if((start_key_timercount >=KEY_SHORT_TIME)&&(start_key_timercount <KEY_LONG_TIME)){
@@ -117,13 +117,13 @@ static u8 Key_Scan(void)
 					stop_key_timercount++;
 					if(stop_key_timercount > KEY_LONG_TIME){
 						key_num |=0x12;
-						stop_key_triggerstate = 0;
+						stop_key_triggerstate = 2;
 						stop_key_timercount = 0;
 						return key_num;
 					}
 				}
 		}else{
-				if(stop_key_triggerstate == 1){
+				if(stop_key_triggerstate >= 1){
 					if(stop_key_timercount <KEY_SHORT_TIME){
 							key_num &=0xfd;
 					}else if((stop_key_timercount >=KEY_SHORT_TIME)&&(stop_key_timercount <KEY_LONG_TIME)){

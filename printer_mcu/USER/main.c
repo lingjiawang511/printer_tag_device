@@ -30,6 +30,7 @@ int main(void)
 		delay_ms(1000);
     while(1){
 			Respond_Host_Comm();
+			Roll_Paper_Control();
 		}
         
 }

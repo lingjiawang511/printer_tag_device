@@ -253,7 +253,7 @@ u16 CRC_GetCCITT(u8 *pdata, int len);
 void Key_Light_Init(void);
 void Key_Light_Dispose(void);
 void ROLL_PAPER_GPIO_Config(void);
-
+void Roll_Paper_Control(void);
 
 /*************function end*******************/
 #endif
