@@ -212,6 +212,9 @@ static void 	Control_Input_IRQTimer(void)
 					if(IRQ_TIMEOUT <= Control.fluid_bag.irqtime){
 						if(READ_FLUID_BAG == RESET){
 							Control.fluid_bag.state = 1;
+							if(Air_Control.delay_time == 0){
+								Air_Control.delay_time = 200;   //以后要改成可变的时间  
+							}
 						}
 						Control.fluid_bag.irqstate = 0;
 						Control.fluid_bag.irqtime = 0;

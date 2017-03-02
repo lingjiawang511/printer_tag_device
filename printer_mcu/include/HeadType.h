@@ -88,10 +88,16 @@ typedef enum{
 	HOST
 }MCU_State_Type;
 typedef enum{
-	PULSE_READY,
-	PULSE_START,
-	PULSE_DELAY,
-	PULSE_END
+	IN_DOWN,
+	IN_UP
+}Air_Position_Type;
+
+typedef enum{
+	PRINTER_RESERVE,
+	PRINTER_READY,
+//	PRINTER_START,
+	PRINTER_WORKING,
+	PRINTER_END
 }Pulse_Type;
 //typedef enum{
 //	RESERVE,
@@ -108,6 +114,7 @@ typedef enum{
 	END
 }Printer_Work_Enum_Type;
 typedef Printer_Work_Enum_Type CH_Work_Enum_Type;
+typedef Printer_Work_Enum_Type Air_Cylinder_Enum_Type;
 /*************enum type end*******************/
 
 /*************struct type start*******************/
@@ -211,10 +218,20 @@ typedef struct{
 	Printer_Input_Type 	color_less;   //打印机色带少输入
 	Printer_Input_Type tag_end;			  //打印机标签用完输入
 	u8 input_state;   //打印机输入状态
-	Pulse_Type start;         //打印机启动
+	Pulse_Type process;         //打印机过程
 	u8 start_delay_time;
 	u8 restart;       //打印机重复启动
+	u8 complete;
 }Printer_Type;
+typedef struct{
+	Air_Position_Type 	air_cylinder_position;		//下压气缸位置
+	u8	air_cylinder_satte;		//下压气缸状态
+	u8 	air_blow_satte;				//吹气气缸状态
+	u8 	vacuum_satte;					//真空吸纸状态
+	Air_Cylinder_Enum_Type process; //下压气缸过程
+	u16 delay_time;    //下压气缸下压延时时间
+	u8  complete;       
+}Air_Controlr_Type;
 typedef struct{
 	Printer_Input_Type fit_reach;
 	Printer_Input_Type upper_reach;
@@ -245,6 +262,7 @@ extern u8 Key_ScanNum;
 extern u8 Device_State;
 extern Printer_Type Printer;
 extern Control_Input_Type Control;
+extern Air_Controlr_Type Air_Control;
 /*************extern variable end*******************/
 
 /*************function start*******************/

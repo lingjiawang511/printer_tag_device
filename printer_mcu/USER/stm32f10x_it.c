@@ -150,6 +150,15 @@ void TIM2_IRQHandler(void)
 		Led_Flash();
 		Belt_Control();
 		Key_Light_Dispose();
+		if(Printer.start_delay_time > 0)
+		{
+			Printer.start_delay_time--;
+		}else{
+			PRINTER_START_OFF;	
+		}
+		if(Air_Control.delay_time > 0){
+			Air_Control.delay_time--;
+		}
 		TIM_ClearITPendingBit(TIM2 , TIM_FLAG_Update);  		 
 	}		 	
 }

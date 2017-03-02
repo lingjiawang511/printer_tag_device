@@ -44,7 +44,7 @@
 
 
 void Air_Cylinder_GPIO_Config(void);
-
+void Air_Cylinder_Control(void);
 
 #endif 
 

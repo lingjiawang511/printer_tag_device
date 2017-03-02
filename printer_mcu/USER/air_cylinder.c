@@ -1,5 +1,6 @@
 #include"HeadType.h"	
 
+Air_Controlr_Type Air_Control;
 //=============================================================================
 //函数名称: Printer_GPIO_Config
 //功能概要:打印机引脚配置
@@ -42,21 +43,57 @@
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
 	GPIO_Init(AIR_CYLINDER_PORT, &GPIO_InitStructure);
-	//气缸吹起输出IO配置
+	//气缸吹气输出IO配置
 	RCC_APB2PeriphClockCmd(AIR_BLOW_RCC,ENABLE);		
 	GPIO_InitStructure.GPIO_Pin = AIR_BLOW_IO;	 
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
 	GPIO_Init(AIR_BLOW_PORT, &GPIO_InitStructure);
-	//气缸吹起输出IO配置
+	//真空吸纸输出IO配置
 	RCC_APB2PeriphClockCmd(VACUUM_RCC,ENABLE);		
 	GPIO_InitStructure.GPIO_Pin = VACUUM_IO;	 
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
 	GPIO_Init(VACUUM_PORT, &GPIO_InitStructure);
+	
 }
 
+void Air_Cylinder_Control(void)
+{
 
+	switch(Air_Control.process){
+		case RESERVE:		if(Device_State == 1){  //设备启动
+												Air_Control.process = READY;		
+										}
+										break ;
+		case READY:     if((Printer.complete == 1)&&(Air_Control.air_cylinder_position ==IN_UP)&&\
+											(Air_Control.delay_time == 0)){  //开始打印的时候就把液袋输入信号置位，可以接收下一次信号输入
+																Air_Control.process = WORKING;
+																AIR_CYLINDER_DOWM;
+																Printer.complete = 0;
+														}		                  
+					break ;
+		case WORKING:   if(Control.fit_reach.state == 1){  //贴合到位
+												Control.upper_reach.state = 0; //软件限位，防止两个互斥事件由于状态保存功能同时满足
+												AIR_CYLINDER_UP;
+												Air_Control.process = WORKEND;
+												Control.fit_reach.state = 0;
+												Air_Control.air_cylinder_position =IN_DOWN;
+										}
+					break ;
+		case WORKEND:   if(Control.upper_reach.state == 1){  //上步到位
+												Control.fit_reach.state = 0; //软件限位，防止两个互斥事件由于状态保存功能同时满足
+												Air_Control.process = END;
+												Air_Control.complete = 1;
+												Control.upper_reach.state = 0;
+												Air_Control.air_cylinder_position =IN_UP;
+										}
+					break;
+		case END:       Air_Control.process = READY; 
+					break ;
+		default :break ;
+	}
+}
 
 
 

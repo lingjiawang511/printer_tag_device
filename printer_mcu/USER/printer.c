@@ -1,6 +1,6 @@
 #include"HeadType.h"	
 
-
+#define PRINTER_START_DELAY_TIME  200;
 //=============================================================================
 //函数名称: Printer_GPIO_Config
 //功能概要:打印机引脚配置
@@ -62,6 +62,7 @@
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
 	GPIO_Init(PRINTER_RESTART_PORT, &GPIO_InitStructure);
 	
+
 }
 static void Printer_Input_Scan(void)
 {
@@ -72,15 +73,17 @@ static void Printer_Input_Scan(void)
 		}
 
 }
-void Printer_Control(void)
+static u8 Printer_Process_Input(void)
 {
-	Printer_Input_Scan();
+	 u8 res;
+	 Printer_Input_Scan();
 	 if(Device_State == 1){  //设备启动
 			if(Printer.input_state == 1){  //打印机输入状态OK
-				if(Printer.start == 1){      //打印机启动打印
-					PRINTER_START_ON;
-				}
-
+//				if(Printer.process == 1){      //打印机启动打印
+//					PRINTER_START_ON;
+//				}
+				res = 0;
+				return res;
 			}
 		 
 		}else if(Device_State == 2){ //设备停止
@@ -96,7 +99,40 @@ void Printer_Control(void)
 			 Printer.color_end.state = 0;
 			 Printer.pinline.state = 0;
 		}
+		res = 1;
+		return res;
 
+}
+void Printer_Control(void)
+{
+	if(1 == Printer_Process_Input()){		//每个过程都需要查询一下打印机状态和设备状态是否OK
+			Printer.process = PRINTER_RESERVE;		
+	}else{
+			Printer.process = Printer.process;	
+	}
+	switch(Printer.process){
+		case PRINTER_RESERVE:		if(0 == Printer_Process_Input()){		//打印机OK
+																Printer.process = PRINTER_READY;		
+														}
+													break ;
+		case PRINTER_READY:     if((Air_Control.complete == 1)&&(Control.fluid_bag.state == 1)){  //开始打印的时候就把液袋输入信号置位，可以接收下一次信号输入
+																Printer.process = PRINTER_WORKING;
+																PRINTER_START_ON;
+																Printer.start_delay_time = PRINTER_START_DELAY_TIME;
+																Air_Control.complete = 0;
+																Control.fluid_bag.state = 0;
+														}		                  
+					break ;
+		case PRINTER_WORKING:   if(Printer.end.state == 1){
+															Printer.process = PRINTER_END;
+															Printer.complete = 1;
+															Printer.end.state = 0;
+													  }
+					break ;
+		case PRINTER_END:       Printer.process = PRINTER_READY; 
+					break ;
+		default :break ;
+	}
 }
 
 
