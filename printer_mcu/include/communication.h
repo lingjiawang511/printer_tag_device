@@ -28,7 +28,8 @@
 
 
 void Communication_GPIO_Config(void);
-
+void Respond_Host_Comm(void);
+void Dispose_Data_For_Host(void);
 
 #endif 
 

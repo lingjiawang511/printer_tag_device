@@ -2,6 +2,9 @@
 #include "usart.h"
 #include "TIM.h"
 
+Belt_Work_Type belt;
+ Printer_Type Printer;
+ Control_Input_Type Control;
 void param_init(void);
 void delay_ms1(u16 ms)
 {
