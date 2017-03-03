@@ -19,16 +19,14 @@ int main(void)
 		Baffle_GPIO_Config();
 		USART1_Config();
 		USART2_Config();
+		EXTIX_Init();
 		LED_GPIO_Config();
-		Communication_GPIO_Config();
-//		USART2_Puts("123456");
-//		USART2_Puts("123456");
     TIM2_Config();
     TIM3_Config();
 		delay_ms(100);
     while(1){
-			Execute_Host_Comm();
-			Comm_Upload_state();
+        Dispose_Data_For_Host();
+        Respond_Host_Comm();
 		}       
 }
 

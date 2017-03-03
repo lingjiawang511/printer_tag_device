@@ -79,7 +79,8 @@ void Do_Usrat3_RFIDCmd(u8 cmd );
 void PC_Communication_Time_ISR(void );
 u8 Execute_Host_Comm(void);
 void Comm_Upload_state(void);
-
+void Respond_Host_Comm(void);
+void Dispose_Data_For_Host(void);
 #endif
 
 

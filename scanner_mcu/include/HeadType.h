@@ -6,7 +6,7 @@
 #include <string.h>	
 #include "led.h"
 #include "delay.h"
-//#include "exti.h"
+#include "exti.h"
 #include "usart.h"
 #include "TIM.h"
 #include "communication.h"
@@ -51,8 +51,17 @@ typedef uint32	ulong;		/**< 32-bit value */
 #define NANSWER_TIME	 1000	  //1000*5ms
 #define NANSWER_NUMOUT	 	 3	  //1000*5ms
 
+#define	SCAN_CR8000 0
 #define BEEP_RIGHT_COUNT  3									//RFID正确。蜂鸣器响的次数
 #define BEEP_ERROR_COUNT  5									//RFID错误。蜂鸣器响的次数
+//响应超时时间，即上位机确认二维码正确后扫描枪一直扫描直到得到下一次数据的最长时间
+#define ANSWER_SCANTIME	 	 4000	  //4000*5ms，扫到正确的二维码，扫描头一直持续扫描的时间
+//无响应超时时间，即当下位机发送数据给上位机，而上位机没有响应的最长时间
+#define NANSWER_SCANTIME	 400	  //1000*5ms
+//默认扫描周期中的扫描时间，扫描Ns,暂停N/2s，总的周期是3N/2s
+#define DEFAULT_SCANTIME	 600
+
+#define IRQ_TIMEOUT							4			//中断软件延时时间
 /*************define type end*******************/
 
 /*************union type start*******************/
@@ -213,7 +222,43 @@ typedef struct{
 	u8 xorsum;
 }RFID_REC_Type; 
 
+typedef struct{
+	u8  frame_soh;
+	u8  frame_x;
+	u8  frame_r;
+	u8  frame_1;
+	u16 data_size;
+	u8  beep_state;
+	u8  beep_num;
+	u8  gled_state;
+	u8  gled_num;
+	u8  rled_state;
+	u8  rled_num;
+	u8  scanner_state;
+	u8  scanner_time;
+	u16 crc16_ccitt; 
+}Host_Communation_Type;
+typedef struct{
+	u8  answer_state;
+	u8 start_timeout;
+	u16 answer_timeout;
+	u16 Nanswer_timeout;
+}Host_Answer_Type;
 
+typedef union{
+	Host_Communation_Type control;
+	u8	host_buf[16];	
+}Host_COMM_Union_Type;
+typedef struct {
+	u8 state;
+	u8 irqstate;
+	u8 irqtime;
+}Printer_Input_Type;
+typedef struct{
+	Printer_Input_Type baffle_inter;
+	Printer_Input_Type baffle_outer;
+	Printer_Input_Type scanner;
+}Control_Input_Type;
 /*************struct type end*******************/
 
 /*************extern variable start*******************/

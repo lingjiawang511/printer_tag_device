@@ -148,7 +148,7 @@ void TIM2_IRQHandler(void)
 	if ( TIM_GetITStatus(TIM2 , TIM_IT_Update) != RESET ) 
 	{	
 		Led_Flash();
-		PC_Communication_Time_ISR();
+//		PC_Communication_Time_ISR();
 		TIM_ClearITPendingBit(TIM2 , TIM_FLAG_Update);  		 
 	}		 	
 }
@@ -195,6 +195,7 @@ void TIM3_IRQHandler(void)
 							Usart3_Control_Data.rx_index = 0;
 					}
 			}
+			Control_Input_IRQTimer();
       TIM_ClearITPendingBit(TIM3 , TIM_FLAG_Update);     
 	}		 	
 }
