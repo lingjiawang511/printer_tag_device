@@ -282,17 +282,17 @@ void EXTI15_10_IRQHandler(void)
 					Control.baffle_outer.irqtime = 0;					
 			}
 		EXTI_ClearITPendingBit(EXTI_Line10);
-	}else if(EXTI_GetITStatus(EXTI_Line12) != RESET){
+	}else if(EXTI_GetITStatus(EXTI_Line11) != RESET){
 	if(Control.scanner.irqstate == 0){//延时方法使用定时器延时，中断进来看状态，8MS后判断状态是否是真					
 					Control.baffle_inter.irqstate = 1;
 					Control.baffle_inter.irqtime = 0;					
 			}
-			  EXTI_ClearITPendingBit(EXTI_Line12);
+			  EXTI_ClearITPendingBit(EXTI_Line11);
 	}else if(EXTI_GetITStatus(EXTI_Line14) != RESET){
 
 		EXTI_ClearITPendingBit(EXTI_Line14);
 	}else{
-		EXTI_ClearITPendingBit(EXTI_Line11);
+		EXTI_ClearITPendingBit(EXTI_Line12);
 		EXTI_ClearITPendingBit(EXTI_Line13);
 		EXTI_ClearITPendingBit(EXTI_Line15);
 	}
@@ -320,7 +320,8 @@ void 	Control_Input_IRQTimer(void)
 		if(Control.baffle_inter.irqstate == 1){//延时方法使用定时器延时，中断进来看状态，8MS后判断状态是否是真
 					Control.baffle_inter.irqtime++;
 					if(IRQ_TIMEOUT <= Control.baffle_inter.irqtime){
-						if(READ_BAFFLE_OUTER == RESET){
+						if(READ_BAFFLE_INTER == RESET){
+
 							Control.baffle_inter.state = 1;
 //							if(Air_Control.delay_time == 0){
 //								Air_Control.delay_time = 200;   //以后要改成可变的时间  
@@ -333,7 +334,7 @@ void 	Control_Input_IRQTimer(void)
 		if(Control.baffle_outer.irqstate == 1){//延时方法使用定时器延时，中断进来看状态，8MS后判断状态是否是真
 					Control.baffle_outer.irqtime++;
 					if(IRQ_TIMEOUT <= Control.baffle_outer.irqtime){
-						if(READ_BAFFLE_INTER  == RESET){
+						if(READ_BAFFLE_OUTER  == RESET){
 							Control.baffle_outer.state = 1;
 						}
 						Control.baffle_outer.irqstate = 0;

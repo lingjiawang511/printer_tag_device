@@ -77,10 +77,11 @@ void Communication_GPIO_Config(void);
 void Do_Usrat2_RFIDCmd(u8 cmd );
 void Do_Usrat3_RFIDCmd(u8 cmd );
 void PC_Communication_Time_ISR(void );
-u8 Execute_Host_Comm(void);
+//u8 Execute_Host_Comm(void);
 void Comm_Upload_state(void);
 void Respond_Host_Comm(void);
 void Dispose_Data_For_Host(void);
+void  Update_Err_Scanner_Data(void);
 #endif
 
 

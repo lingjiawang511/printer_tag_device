@@ -259,6 +259,15 @@ typedef struct{
 	Printer_Input_Type baffle_outer;
 	Printer_Input_Type scanner;
 }Control_Input_Type;
+typedef struct{
+	u16 Scanner_Err_Time;
+	u16 bag_Err_Time;
+	u16 process_time;
+	u8  bag_input_flag;
+	u8  bag_err_flag;
+	u8  bag_ok_flag;
+	u8  process_flag;
+}Control_Baffle_Type;
 /*************struct type end*******************/
 
 /*************extern variable start*******************/
@@ -284,7 +293,8 @@ extern	Belt_Work_Type belt12;
 extern u8 Key_ScanNum;
 extern RFID_REC_Type Usart2_RFIDRec;
 extern RFID_REC_Type Usart3_RFIDRec;
-
+extern Control_Input_Type Control;
+extern Control_Baffle_Type Baffle_Control;
 /*************extern variable end*******************/
 
 /*************function start*******************/

@@ -3,6 +3,8 @@
 
 #include "stm32f10x.h"
 
+//baffle_inter 先定义为错误位置，baffle_outer定义为确认位置,BAFFLE_OFF失电是错误位置
+
 #define				BAFFLE_OUTER_IO					 GPIO_Pin_10
 #define				BAFFLE_OUTER_PORT			   GPIOB
 #define				BAFFLE_OUTER_RCC				 RCC_APB2Periph_GPIOB
@@ -32,6 +34,6 @@
 
 
 void Baffle_GPIO_Config(void);
-
-
+void Baffle_Control_Process(void);
+void Baffle_Time_Irq(void);
 #endif 

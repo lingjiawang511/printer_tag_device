@@ -224,7 +224,8 @@ void Dispose_Data_For_Host(void)
 {
 
 	if (1 == Usart2_Control_Data.rx_aframe){    
-   		if(response_reader()){ 		
+   		if(response_reader()){ 
+				Baffle_Control.bag_input_flag = 0;	 //扫描枪收到二维码，液带信号标志清零			
    			Copy_Scanner_Data();
 		}else{
 		//no use 	
@@ -256,6 +257,7 @@ void Respond_Host_Comm(void)
 			Auto_Frame_Time1 = AUTO_FRAME_TIMEOUT1;
 			Host_Answer.start_timeout = 1;
 			Host_Answer.answer_timeout = ANSWER_SCANTIME;
+			Baffle_Control.bag_ok_flag = 1;
 		}
 	    Usart1_Control_Data.rx_aframe = 0;
     }else{
@@ -315,6 +317,40 @@ void scanner_scan(void)
 }
 
 
+void  Update_Err_Scanner_Data(void)
+{
+  u8 i,j;
+	u16 crc;
+	j=0;
+	Usart1_Control_Data.txbuf[j++] = 0x01;	
+	Usart1_Control_Data.txbuf[j++] = 0x58;
+	Usart1_Control_Data.txbuf[j++] = 0x52;	
+	Usart1_Control_Data.txbuf[j++] = 0x31;
+	Usart1_Control_Data.txbuf[j++] = 0x35;	
+	Usart1_Control_Data.txbuf[j++] = 0x36;
+	Usart1_Control_Data.txbuf[j++] = 0x37;	
+	Usart1_Control_Data.txbuf[j++] = 0x38;
+	Usart1_Control_Data.txbuf[j++] = 0x01;	
+	Usart1_Control_Data.txbuf[j++] = 0xFF;
+	Usart1_Control_Data.txbuf[j++] = 0xFF;	
+	Usart1_Control_Data.txbuf[j++] = 0xFF;
+	Usart1_Control_Data.txbuf[j++] = 0xFF;
+	Usart1_Control_Data.txbuf[j++] = 0;	
+	Usart1_Control_Data.txbuf[j++] = 8;
+    for(i = 0;i < 8;i++){
+        Usart1_Control_Data.txbuf[i+j] = 0xFF;
+    }
+  Usart1_Control_Data.tx_count = Usart2_Control_Data.rx_count + j;
+	crc=CRC_GetCCITT(Usart1_Control_Data.txbuf,Usart1_Control_Data.tx_count);
+	Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = crc >> 8;
+  Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = crc;
 
+  Auto_Frame_Time2 = AUTO_FRAME_TIMEOUT2;
+    
+  Usart1_Control_Data.rx_index = 0;
+  Usart1_Control_Data.tx_index = 0;
+  USART_SendData(USART1,Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_index++]);
+//        return Usart2_Control_Data.rx_count;
+}
 
 

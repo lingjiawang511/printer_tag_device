@@ -27,6 +27,7 @@ int main(void)
     while(1){
         Dispose_Data_For_Host();
         Respond_Host_Comm();
+				Baffle_Control_Process();
 		}       
 }
 
