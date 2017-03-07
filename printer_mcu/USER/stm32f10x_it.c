@@ -155,6 +155,7 @@ void TIM2_IRQHandler(void)
 			Printer.start_delay_time--;
 		}else{
 			PRINTER_START_OFF;	
+			Printer.start_delay_time = 0;
 		}
 		if(Air_Control.delay_time > 0){
 			Air_Control.delay_time--;

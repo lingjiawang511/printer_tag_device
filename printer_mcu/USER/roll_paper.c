@@ -36,8 +36,11 @@ void Roll_Paper_Control(void)
 			ROLL_PAPER_ON;
 	}else if(Device_State == 2){
 			ROLL_PAPER_OFF;
+		  AIR_BLOW_OFF;
+		  VACUUM_OFF;
 	}else{
       ROLL_PAPER_ON;
+
 	}
 
 }

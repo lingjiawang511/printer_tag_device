@@ -87,6 +87,7 @@ void Air_Cylinder_Control(void)
 												Air_Control.complete = 1;
 												Control.upper_reach.state = 0;
 												Air_Control.air_cylinder_position =IN_UP;
+												VACUUM_OFF;
 										}
 					break;
 		case END:       Air_Control.process = READY; 

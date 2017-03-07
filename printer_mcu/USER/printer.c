@@ -1,6 +1,6 @@
 #include"HeadType.h"	
 
-#define PRINTER_START_DELAY_TIME  200;
+#define PRINTER_START_DELAY_TIME  10;
 //=============================================================================
 //º¯ÊıÃû³Æ: Printer_GPIO_Config
 //¹¦ÄÜ¸ÅÒª:´òÓ¡»úÒı½ÅÅäÖÃ
@@ -66,7 +66,7 @@
 }
 static void Printer_Input_Scan(void)
 {
-   if((Printer.err.state == 0)&&(Printer.tag_end.state == 0)&&(Printer.color_end.state == 0)&&(Printer.pinline.state== 0)){
+   if((Printer.err.state == 0)&&(Printer.tag_end.state == 0)&&(Printer.color_end.state == 0)){
 			Printer.input_state = 1;
 		}else{ //ÓĞ´íÎó±ØĞëÊ¹Éè±¸»Ö¸´µ½´ı»ú×´Ì¬»òÕßÆô¶¯×´Ì¬²Å¿ÉÒÔÈ¡Ïû´íÎó×´Ì¬
 			Printer.input_state = 0;
@@ -111,14 +111,16 @@ void Printer_Control(void)
 			Printer.process = Printer.process;	
 	}
 	switch(Printer.process){
-		case PRINTER_RESERVE:		if(0 == Printer_Process_Input()){		//´òÓ¡»úOK
+		case PRINTER_RESERVE:		if(0 == Printer_Process_Input()){		//´òÓ¡»úOKÄ
 																Printer.process = PRINTER_READY;		
 														}
 													break ;
 		case PRINTER_READY:     if((Air_Control.complete == 1)&&(Control.fluid_bag.state == 1)){  //¿ªÊ¼´òÓ¡µÄÊ±ºò¾Í°ÑÒº´üÊäÈëĞÅºÅÖÃÎ»£¬¿ÉÒÔ½ÓÊÕÏÂÒ»´ÎĞÅºÅÊäÈë
 																Printer.process = PRINTER_WORKING;
+																Printer.start_delay_time = PRINTER_START_DELAY_TIME;																
 																PRINTER_START_ON;
-																Printer.start_delay_time = PRINTER_START_DELAY_TIME;
+																AIR_BLOW_ON;
+																VACUUM_ON;
 																Air_Control.complete = 0;
 																Control.fluid_bag.state = 0;
 														}		                  
@@ -126,6 +128,7 @@ void Printer_Control(void)
 		case PRINTER_WORKING:   if(Printer.end.state == 1){
 															Printer.process = PRINTER_END;
 															Printer.complete = 1;
+															AIR_BLOW_OFF;
 															Printer.end.state = 0;
 													  }
 					break ;

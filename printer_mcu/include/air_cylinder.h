@@ -35,10 +35,10 @@
 
 #define       AIR_CYLINDER_DOWM   		GPIO_SetBits(AIR_CYLINDER_PORT, AIR_CYLINDER_IO)
 #define       AIR_CYLINDER_UP  				GPIO_ResetBits(AIR_CYLINDER_PORT, AIR_CYLINDER_IO)
-#define       AIR_BLOW_OFF   					GPIO_SetBits(AIR_BLOW_PORT, AIR_BLOW_IO)
-#define       AIR_BLOW_ON 	 	 				GPIO_ResetBits(AIR_BLOW_PORT,AIR_BLOW_IO)
-#define       VACUUM_OFF   						GPIO_SetBits(VACUUM_PORT, VACUUM_IO)
-#define       VACUUM_ON 	 	 					GPIO_ResetBits(VACUUM_PORT,VACUUM_IO)
+#define       AIR_BLOW_ON   					GPIO_SetBits(AIR_BLOW_PORT, AIR_BLOW_IO)
+#define       AIR_BLOW_OFF 	 	 				GPIO_ResetBits(AIR_BLOW_PORT,AIR_BLOW_IO)
+#define       VACUUM_ON   						GPIO_SetBits(VACUUM_PORT, VACUUM_IO)
+#define       VACUUM_OFF 	 	 					GPIO_ResetBits(VACUUM_PORT,VACUUM_IO)
 	
 
 
