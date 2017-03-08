@@ -211,6 +211,18 @@ ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
 
+[GeneratedDocument1]
+DocumentPath=
+DItemRevisionGUID=
+
+[GeneratedDocument2]
+DocumentPath=Project Outputs for printer_tag_device\Board Information - printer_tag_device.html
+DItemRevisionGUID=
+
+[GeneratedDocument3]
+DocumentPath=Project Outputs for printer_tag_device\Design Rule Check - printer_tag_device.html
+DItemRevisionGUID=
+
 [Configuration1]
 Name=Default Configuration
 ParameterCount=0
