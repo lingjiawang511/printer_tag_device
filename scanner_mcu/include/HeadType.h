@@ -59,7 +59,7 @@ typedef uint32	ulong;		/**< 32-bit value */
 //无响应超时时间，即当下位机发送数据给上位机，而上位机没有响应的最长时间
 #define NANSWER_SCANTIME	 400	  //1000*5ms
 //默认扫描周期中的扫描时间，扫描Ns,暂停N/2s，总的周期是3N/2s
-#define DEFAULT_SCANTIME	 600
+#define DEFAULT_SCANTIME	 200
 
 #define IRQ_TIMEOUT							4			//中断软件延时时间
 /*************define type end*******************/

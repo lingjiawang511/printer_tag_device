@@ -26,8 +26,8 @@
 #define				BAFFLE_RCC			  			 RCC_APB2Periph_GPIOB
 
 
-#define       BAFFLE_OFF   					GPIO_SetBits(BAFFLE_PORT, BAFFLE_IO)
-#define       BAFFLE_ON 	 	 				GPIO_ResetBits(BAFFLE_PORT,BAFFLE_IO)
+#define       BAFFLE_INTER   					GPIO_SetBits(BAFFLE_PORT, BAFFLE_IO)
+#define       BAFFLE_OUTER 	 	 				GPIO_ResetBits(BAFFLE_PORT,BAFFLE_IO)
 
 	
 

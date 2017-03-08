@@ -60,7 +60,7 @@ void Baffle_Control_Process(void)
 				Baffle_Control.bag_err_flag = 1;
 //				Baffle_Control.bag_Err_Time = BAG_ERR_TIME;
 				Update_Err_Scanner_Data();
-				BAFFLE_OFF;																	//挡板先拨打错误的地方等待
+				BAFFLE_INTER ;																	//挡板先拨打错误的地方等待
 				Baffle_Control.bag_input_flag = 0;
 			}
 	}
@@ -75,13 +75,14 @@ void Baffle_Control_Process(void)
 //	}
 	if(Baffle_Control.process_time >= PROCESS_TIME){  //每个过程的时间是固定的
 		 if(Baffle_Control.bag_ok_flag == 1){  //扫描枪扫到二维码，上位机发来的确认标志
-				BAFFLE_ON;
+				BAFFLE_OUTER;
 				Control.baffle_inter.state = 0;
 			  Control.baffle_outer.state = 0;
 			  Baffle_Control.bag_ok_flag = 0;
 		}else{
-				BAFFLE_OFF;	
+				BAFFLE_INTER ;	
 			  Control.baffle_outer.state = 0;
+			  Baffle_Control.bag_ok_flag = 1;
 		}
 	  Baffle_Control.bag_err_flag = 0;
 		Baffle_Control.process_time = 0;
@@ -92,8 +93,8 @@ void Baffle_Control_Process(void)
 
 void Baffle_Time_Irq(void)
 {
-	 static u8 inter_delay_time=0;
-	 static u8 outer_delay_time=0;
+	 static u16 inter_delay_time=0;
+	 static u16 outer_delay_time=0;
 		if(Baffle_Control.Scanner_Err_Time > 0){
 			Baffle_Control.Scanner_Err_Time--;
 		}
@@ -113,9 +114,9 @@ void Baffle_Time_Irq(void)
 		}
 		if(Control.baffle_outer.state == 1){ //此传感器如果没有，可以用延时状态为代替
 				outer_delay_time++;
-			 if(outer_delay_time >= 20){
+			 if(outer_delay_time >= 300){
 					outer_delay_time = 0;
-				  BAFFLE_OFF;
+				  BAFFLE_INTER ;
 				  Control.baffle_outer.state = 0;
 				}
 		}
