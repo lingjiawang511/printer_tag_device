@@ -1,6 +1,6 @@
 #include"HeadType.h"	
 
-#define PRINTER_START_DELAY_TIME  10;
+#define PRINTER_START_DELAY_TIME  6;
 //=============================================================================
 //∫Ø ˝√˚≥∆: Printer_GPIO_Config
 //π¶ƒ‹∏≈“™:¥Ú”°ª˙“˝Ω≈≈‰÷√
@@ -111,28 +111,40 @@ void Printer_Control(void)
 			Printer.process = Printer.process;	
 	}
 	switch(Printer.process){
-		case PRINTER_RESERVE:		if(0 == Printer_Process_Input()){		//¥Ú”°ª˙OKƒ
+		case PRINTER_RESERVE:		
+													if(Device_State == 1){  //…Ë±∏∆Ù∂Ø
+															if(0 == Printer_Process_Input()){		//¥Ú”°ª˙OKƒ
 																Printer.process = PRINTER_READY;		
-														}
+															}
+													}
 													break ;
-		case PRINTER_READY:     if((Air_Control.complete == 1)&&(Control.fluid_bag.state == 1)){  //ø™ º¥Ú”°µƒ ±∫ÚæÕ∞—“∫¥¸ ‰»Î–≈∫≈÷√Œª£¨ø…“‘Ω” ’œ¬“ª¥Œ–≈∫≈ ‰»Î
+		case PRINTER_READY:   
+														if(Printer.fluid_bag_timeout==0){
+																Control.fluid_bag.state = 0;
+															}
+														if((Air_Control.complete == 1)&&(Control.fluid_bag.state == 1)&&(READ_UPPER_REACH==0)){  //ø™ º¥Ú”°µƒ ±∫ÚæÕ∞—“∫¥¸ ‰»Î–≈∫≈÷√Œª£¨ø…“‘Ω” ’œ¬“ª¥Œ–≈∫≈ ‰»Î
 																Printer.process = PRINTER_WORKING;
-																Printer.start_delay_time = PRINTER_START_DELAY_TIME;																
-																PRINTER_START_ON;
+																Printer.start_delay_time = PRINTER_START_DELAY_TIME;																																
 																AIR_BLOW_ON;
 																VACUUM_ON;
+																PRINTER_START_ON;
 																Air_Control.complete = 0;
-																Control.fluid_bag.state = 0;
+//																Control.fluid_bag.state = 0;
 														}		                  
 					break ;
 		case PRINTER_WORKING:   if(Printer.end.state == 1){
 															Printer.process = PRINTER_END;
 															Printer.complete = 1;
 															AIR_BLOW_OFF;
+															Control.fluid_bag.state = 0;
 															Printer.end.state = 0;
 													  }
 					break ;
-		case PRINTER_END:       Printer.process = PRINTER_READY; 
+		case PRINTER_END: if(Device_State == 1){  //…Ë±∏∆Ù∂Ø     
+													Printer.process = PRINTER_READY; 
+											}else{
+													Printer.process = PRINTER_RESERVE;	
+											}
 					break ;
 		default :break ;
 	}

@@ -160,6 +160,14 @@ void TIM2_IRQHandler(void)
 		if(Air_Control.delay_time > 0){
 			Air_Control.delay_time--;
 		}
+		if(Printer.fluid_bag_timeout>0){
+			Printer.fluid_bag_timeout--;
+		}else{
+			Control.fluid_bag.state = 0;
+		}
+		if(Air_Control.air_cylinder_dowm_timeout > 0){
+			Air_Control.air_cylinder_dowm_timeout --;
+		}
 		TIM_ClearITPendingBit(TIM2 , TIM_FLAG_Update);  		 
 	}		 	
 }

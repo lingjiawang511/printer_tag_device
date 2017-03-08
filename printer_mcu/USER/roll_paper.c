@@ -34,13 +34,29 @@ void Roll_Paper_Control(void)
 {
 	 if(Device_State == 1){//Device_State=0：待机状态，Device_State=1：启动状态，Device_State=2：停止状态
 			ROLL_PAPER_ON;
+		 	belt.state = READY;			//运输皮带启动
 	}else if(Device_State == 2){
 			ROLL_PAPER_OFF;
+		  AIR_CYLINDER_UP;
 		  AIR_BLOW_OFF;
 		  VACUUM_OFF;
-	}else{
+			belt.state = END ;     //运输皮带停止
+			param_init();
+	}else if(Device_State == 3){
+			Printer.complete = 0;
+			Printer.process = PRINTER_RESERVE;
+			PRINTER_START_OFF;
+		  Air_Control.process = RESERVE;
+			belt.state = END ;     //运输皮带停止
+		  AIR_BLOW_OFF;
+		  VACUUM_OFF;
+		}else{
       ROLL_PAPER_ON;
-
+			belt.state = END ;     //运输皮带停止
+			param_init();
+			if(READ_UPPER_REACH==1){
+				AIR_CYLINDER_UP;
+		  }
 	}
 
 }

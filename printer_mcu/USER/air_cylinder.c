@@ -71,6 +71,7 @@ void Air_Cylinder_Control(void)
 																Air_Control.process = WORKING;
 																AIR_CYLINDER_DOWM;
 																Printer.complete = 0;
+																Air_Control.air_cylinder_dowm_timeout = 200;
 														}		                  
 					break ;
 		case WORKING:   if(Control.fit_reach.state == 1){  //贴合到位
@@ -79,6 +80,10 @@ void Air_Cylinder_Control(void)
 												Air_Control.process = WORKEND;
 												Control.fit_reach.state = 0;
 												Air_Control.air_cylinder_position =IN_DOWN;
+										}else{
+											if(Air_Control.air_cylinder_dowm_timeout == 0){
+													Device_State = 3;
+											}
 										}
 					break ;
 		case WORKEND:   if(Control.upper_reach.state == 1){  //上步到位
@@ -88,9 +93,14 @@ void Air_Cylinder_Control(void)
 												Control.upper_reach.state = 0;
 												Air_Control.air_cylinder_position =IN_UP;
 												VACUUM_OFF;
+												Control.fluid_bag.state = 0;												
 										}
 					break;
-		case END:       Air_Control.process = READY; 
+		case END: if(Device_State == 1){  //设备启动 
+									Air_Control.process = READY; 
+							}else{
+									Air_Control.process = RESERVE; 
+							}
 					break ;
 		default :break ;
 	}

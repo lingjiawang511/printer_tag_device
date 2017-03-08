@@ -36,7 +36,7 @@
 
 /**现场人员只允许修改这三个参数,时间只是个大概**/
 #define START_TIMEOUT		80			//软启动时间，80*5ms*2 =0.8S
-#define STOP_TIMEOUT		80			//软停止时间, 80*5ms*2 =0.8S
+#define STOP_TIMEOUT		20			//软停止时间, 80*5ms*2 =0.8S
 #define STOP_DELAY			200*2		//200*2*5ms=2s,延时多久只需要改这个参数
 /**现场人员只允许修改这三个参数,时间只是个大概**/
 

@@ -209,11 +209,13 @@ static void 	Control_Input_IRQTimer(void)
 		}
 		if(Control.fluid_bag.irqstate == 1){//延时方法使用定时器延时，中断进来看状态，8MS后判断状态是否是真
 					Control.fluid_bag.irqtime++;
-					if(IRQ_TIMEOUT <= Control.fluid_bag.irqtime){
+					if(IRQ_TIMEOUT*5 <= Control.fluid_bag.irqtime){
 						if(READ_FLUID_BAG == RESET){
 							Control.fluid_bag.state = 1;
+							Printer.fluid_bag_timeout = 600;
 							if(Air_Control.delay_time == 0){
-								Air_Control.delay_time = 200;   //以后要改成可变的时间  
+								Air_Control.delay_time = 300;   //以后要改成可变的时间  
+//								Air_Control.delay_time = 0;   //以后要改成可变的时间  
 							}
 						}
 						Control.fluid_bag.irqstate = 0;

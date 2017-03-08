@@ -138,12 +138,29 @@ static u8 Key_Scan(void)
 
 static void Light_Scan(void)
 {
+	static u8 flash_time =100;
+	static u8 flash_flag = 0;
   if(Device_State == 1){//Device_State=0：待机状态，Device_State=1：启动状态，Device_State=2：停止状态
 		START_LIGHT_ON;
 		STOP_LIGHT_OFF;
 	}else if(Device_State == 2){
     STOP_LIGHT_ON;
 		START_LIGHT_OFF;
+	}else if(Device_State == 3){
+		START_LIGHT_OFF;
+		if(flash_time >0){
+			flash_time --;
+		}else{
+			flash_time = 100;
+			if(flash_flag == 0){
+        STOP_LIGHT_ON;
+				flash_flag = 1;
+			}else{
+				STOP_LIGHT_OFF;
+				flash_flag = 0;
+			}
+		}
+	
 	}else{
 		STOP_LIGHT_OFF;
 		START_LIGHT_OFF;
@@ -164,14 +181,15 @@ void Key_Light_Dispose(void)
 	}
 	if(Key_ScanNum !=0){  
 		if(Key_ScanNum == 0x01){
-			Device_State = 1; 
-			belt.state = READY;			//运输皮带启动
+			if(Device_State == 3){
+				Device_State = 3;
+			}else{
+				Device_State = 1; 
+			}
 		}else if((Key_ScanNum == 0x02)||(Key_ScanNum == 0x12)){
 			Device_State = 2;  
-			belt.state = END ;     //运输皮带停止
 		}else{
 			Device_State = 0;   //长按启动按键不放手，可以回到待机状态
-			belt.state = END ;     //运输皮带停止
 		}
 		Key_ScanNum = 0;
 	}

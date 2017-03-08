@@ -226,6 +226,7 @@ typedef struct{
 	u8 start_delay_time;
 	u8 restart;       //打印机重复启动
 	u8 complete;
+	u16 fluid_bag_timeout;  
 }Printer_Type;
 typedef struct{
 	Air_Position_Type 	air_cylinder_position;		//下压气缸位置
@@ -234,7 +235,8 @@ typedef struct{
 	u8 	vacuum_satte;					//真空吸纸状态
 	Air_Cylinder_Enum_Type process; //下压气缸过程
 	u16 delay_time;    //下压气缸下压延时时间
-	u8  complete;       
+	u8  complete; 
+  u16 air_cylinder_dowm_timeout;
 }Air_Controlr_Type;
 typedef struct{
 	Printer_Input_Type fit_reach;
@@ -276,7 +278,7 @@ void Key_Light_Init(void);
 void Key_Light_Dispose(void);
 void ROLL_PAPER_GPIO_Config(void);
 void Roll_Paper_Control(void);
-
+void param_init(void);
 /*************function end*******************/
 #endif
 
