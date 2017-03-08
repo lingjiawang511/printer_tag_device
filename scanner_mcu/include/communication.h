@@ -43,15 +43,15 @@
 #define COMM_SELF_SEARCH_CARD	0x0C //主动读ID号
 #define EER_SELF_SEARCH_CARD	0xEB 
 
-#define				COMMUNICATION_IO1_IO					 GPIO_Pin_8
-#define				COMMUNICATION_IO1_PORT			   GPIOC
-#define				COMMUNICATION_IO1_RCC				   RCC_APB2Periph_GPIOC
-#define				COMMUNICATION_IO2_IO					 GPIO_Pin_8
-#define				COMMUNICATION_IO2_PORT			   GPIOC
-#define				COMMUNICATION_IO2_RCC				   RCC_APB2Periph_GPIOC
+#define				COMMUNICATION_IO1_IO					 GPIO_Pin_11   //设备状态输出
+#define				COMMUNICATION_IO1_PORT			   GPIOA
+#define				COMMUNICATION_IO1_RCC				   RCC_APB2Periph_GPIOA
+#define				COMMUNICATION_IO2_IO					 GPIO_Pin_12
+#define				COMMUNICATION_IO2_PORT			   GPIOA
+#define				COMMUNICATION_IO2_RCC				   RCC_APB2Periph_GPIOA
 #define				COMMUNICATION_IO3_IO					 GPIO_Pin_8
-#define				COMMUNICATION_IO3_PORT			   GPIOC
-#define				COMMUNICATION_IO3_RCC				   RCC_APB2Periph_GPIOC
+#define				COMMUNICATION_IO3_PORT			   GPIOB
+#define				COMMUNICATION_IO3_RCC				   RCC_APB2Periph_GPIOB
 
 #define       READ_COMMUNICATION_IO1   		  GPIO_ReadInputDataBit(COMMUNICATION_IO1_PORT,COMMUNICATION_IO1_IO) //返回的是一个字节，读的是一个位
 #define       COMMUNICATION_IO1_OFF   		  GPIO_SetBits(COMMUNICATION_IO1_PORT, COMMUNICATION_IO1_IO)
@@ -82,6 +82,7 @@ void Comm_Upload_state(void);
 void Respond_Host_Comm(void);
 void Dispose_Data_For_Host(void);
 void  Update_Err_Scanner_Data(void);
+void Comm_With_Device_State(void);
 #endif
 
 

@@ -295,6 +295,7 @@ extern RFID_REC_Type Usart2_RFIDRec;
 extern RFID_REC_Type Usart3_RFIDRec;
 extern Control_Input_Type Control;
 extern Control_Baffle_Type Baffle_Control;
+extern u8 Device_State;
 /*************extern variable end*******************/
 
 /*************function start*******************/

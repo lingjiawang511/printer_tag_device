@@ -35,6 +35,7 @@ void Roll_Paper_Control(void)
 	 if(Device_State == 1){//Device_State=0：待机状态，Device_State=1：启动状态，Device_State=2：停止状态
 			ROLL_PAPER_ON;
 		 	belt.state = READY;			//运输皮带启动
+		  COMMUNICATION_IO1_ON;
 	}else if(Device_State == 2){
 			ROLL_PAPER_OFF;
 		  AIR_CYLINDER_UP;
@@ -50,6 +51,7 @@ void Roll_Paper_Control(void)
 			belt.state = END ;     //运输皮带停止
 		  AIR_BLOW_OFF;
 		  VACUUM_OFF;
+		  COMMUNICATION_IO1_OFF;
 		}else{
       ROLL_PAPER_ON;
 			belt.state = END ;     //运输皮带停止

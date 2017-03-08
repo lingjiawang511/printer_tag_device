@@ -98,6 +98,7 @@ void Air_Cylinder_Control(void)
 					break;
 		case END: if(Device_State == 1){  //…Ë±∏∆Ù∂Ø 
 									Air_Control.process = READY; 
+									COMMUNICATION_IO2_OFF;
 							}else{
 									Air_Control.process = RESERVE; 
 							}

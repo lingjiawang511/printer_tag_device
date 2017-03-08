@@ -212,6 +212,7 @@ static void 	Control_Input_IRQTimer(void)
 					if(IRQ_TIMEOUT*5 <= Control.fluid_bag.irqtime){
 						if(READ_FLUID_BAG == RESET){
 							Control.fluid_bag.state = 1;
+							COMMUNICATION_IO2_ON;			//和CPU2通讯，告诉COU2有液袋输入
 							Printer.fluid_bag_timeout = 600;
 							if(Air_Control.delay_time == 0){
 								Air_Control.delay_time = 300;   //以后要改成可变的时间  
