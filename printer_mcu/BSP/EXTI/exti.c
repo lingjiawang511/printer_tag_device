@@ -212,8 +212,8 @@ static void 	Control_Input_IRQTimer(void)
 					if(IRQ_TIMEOUT*5 <= Control.fluid_bag.irqtime){
 						if(READ_FLUID_BAG == RESET){
 							Control.fluid_bag.state = 1;
-							COMMUNICATION_IO2_ON;			//和CPU2通讯，告诉COU2有液袋输入
-							Printer.fluid_bag_timeout = 600;
+//							COMMUNICATION_IO2_ON;			//和CPU2通讯，告诉COU2有液袋输入
+							Printer.fluid_bag_timeout = 600;  //打印机打印超时时间，故障时间，主要是由于气缸压下时不到位导致的故障
 							if(Air_Control.delay_time == 0){
 								Air_Control.delay_time = 300;   //以后要改成可变的时间  
 //								Air_Control.delay_time = 0;   //以后要改成可变的时间  

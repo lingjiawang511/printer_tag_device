@@ -120,7 +120,7 @@ void Printer_Control(void)
 													break ;
 		case PRINTER_READY:   
 														if(Printer.fluid_bag_timeout==0){
-																Control.fluid_bag.state = 0;
+																Control.fluid_bag.state = 0;  //一段时间内打印机没反应，下压气缸有问题，需要清零这个状态，否则下次启动打印机会打印
 															}
 														if((Air_Control.complete == 1)&&(Control.fluid_bag.state == 1)&&(READ_UPPER_REACH==0)){  //开始打印的时候就把液袋输入信号置位，可以接收下一次信号输入
 																Printer.process = PRINTER_WORKING;

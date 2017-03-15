@@ -14,7 +14,7 @@
 #include "printer.h"
 #include "air_cylinder.h"
 #include "communication.h"
-
+#include "baffle.h"
 
 /*************Typedef datatype start*******************/
 typedef char int8;
@@ -244,6 +244,15 @@ typedef struct{
 	Printer_Input_Type fluid_bag;
 	Printer_Input_Type scanner;
 }Control_Input_Type;
+typedef struct{
+	u16 Scanner_Err_Time;
+	u16 bag_Err_Time;
+	u16 process_time;
+	u8  bag_input_flag;
+	u8  bag_err_flag;
+	u8  bag_ok_flag;
+	u8  process_flag;
+}Control_Baffle_Type;
 /*************struct type end*******************/
 
 /*************extern variable start*******************/

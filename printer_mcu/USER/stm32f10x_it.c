@@ -150,6 +150,7 @@ void TIM2_IRQHandler(void)
 		Led_Flash();
 		Belt_Control();
 		Key_Light_Dispose();
+		Baffle_Time_Irq();
 		if(Printer.start_delay_time > 0)
 		{
 			Printer.start_delay_time--;

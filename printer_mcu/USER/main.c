@@ -26,7 +26,7 @@ int main(void)
 	  ROLL_PAPER_GPIO_Config();
 	  Printer_GPIO_Config();
 		Air_Cylinder_GPIO_Config();
-	  Communication_GPIO_Config();
+		Baffle_GPIO_Config();
 		EXTIX_Init();
     USART1_Config();
     TIM2_Config();
@@ -38,6 +38,7 @@ int main(void)
 			Roll_Paper_Control();
 			Printer_Control();
 			Air_Cylinder_Control();
+			Baffle_Control_Process();
 		}
         
 }
@@ -64,7 +65,7 @@ void param_init(void)
 	Printer.tag_end.state = 0;
 	Printer.input_state = 0;
 	
-	COMMUNICATION_IO1_OFF;
+//	COMMUNICATION_IO1_OFF;
 }
 
 
