@@ -22,18 +22,18 @@ int main(void)
 	  Communication_GPIO_Config();
 		USART1_Config();
 		USART2_Config();
-		EXTIX_Init();
+//		EXTIX_Init();
 		LED_GPIO_Config();
     TIM2_Config();
     TIM3_Config();
 	  param_init();
 		delay_ms(100);
     while(1){
-        Dispose_Data_For_Host();
-        Respond_Host_Comm();
-				if(Device_State == 1){
-					Baffle_Control_Process();
-				}
+//        Dispose_Data_For_Host();
+//        Respond_Host_Comm();
+//				if(Device_State == 1){
+//					Baffle_Control_Process();
+//				}
 		}       
 }
 

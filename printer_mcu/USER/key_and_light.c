@@ -189,7 +189,7 @@ void Key_Light_Dispose(void)
 		}else if((Key_ScanNum == 0x02)||(Key_ScanNum == 0x12)){
 			Device_State = 2;  
 		}else{
-			Device_State = 0;   //长按启动按键不放手，可以回到待机状态
+//			Device_State = 0;   //长按启动按键不放手，可以回到待机状态
 		}
 		Key_ScanNum = 0;
 	}

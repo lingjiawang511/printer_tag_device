@@ -80,6 +80,7 @@ void Air_Cylinder_Control(void)
 												Air_Control.process = WORKEND;
 												Control.fit_reach.state = 0;
 												Air_Control.air_cylinder_position =IN_DOWN;
+												Control.fluid_bag.state = 0;
 										}else{
 											if(Air_Control.air_cylinder_dowm_timeout == 0){ //压下去不到位，设备故障需要停机
 													Device_State = 3;
@@ -93,7 +94,8 @@ void Air_Cylinder_Control(void)
 												Control.upper_reach.state = 0;
 												Air_Control.air_cylinder_position =IN_UP;
 												VACUUM_OFF;
-												Control.fluid_bag.state = 0;												
+												AIR_BLOW_OFF;
+//												Control.fluid_bag.state = 0;												
 										}
 					break;
 		case END: if(Device_State == 1){  //设备启动 

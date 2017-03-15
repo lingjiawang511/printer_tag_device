@@ -227,6 +227,7 @@ typedef struct{
 	u8 restart;       //打印机重复启动
 	u8 complete;
 	u16 fluid_bag_timeout;  //液袋信号状态超时清零
+	u8 printer_work_timeout;
 }Printer_Type;
 typedef struct{
 	Air_Position_Type 	air_cylinder_position;		//下压气缸位置

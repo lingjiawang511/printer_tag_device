@@ -8,7 +8,7 @@
 #define				BAFFLE_OUTER_IO					 GPIO_Pin_8
 #define				BAFFLE_OUTER_PORT			   GPIOB
 #define				BAFFLE_OUTER_RCC				 RCC_APB2Periph_GPIOB
-#define				BAFFLE_INTER_IO					 GPIO_Pin_12
+#define				BAFFLE_INTER_IO					 GPIO_Pin_11
 #define				BAFFLE_INTER_PORT				 GPIOA
 #define				BAFFLE_INTER_RCC			   RCC_APB2Periph_GPIOA
 
@@ -21,7 +21,7 @@
 #define       READ_BAFFLE_INTER    		 GPIO_ReadInputDataBit(BAFFLE_INTER_PORT,BAFFLE_INTER_IO) //返回的是一个字节，读的是一个位
 //#define       READ_SCANNER    				 GPIO_ReadInputDataBit(SCANNER_PORT,SCANNER_IO) //返回的是一个字节，读的是一个位
 
-#define				BAFFLE_IO				 				 GPIO_Pin_11
+#define				BAFFLE_IO				 				 GPIO_Pin_12
 #define				BAFFLE_PORT			 				 GPIOA
 #define				BAFFLE_RCC			  			 RCC_APB2Periph_GPIOA
 

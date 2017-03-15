@@ -129,16 +129,28 @@ void Printer_Control(void)
 																VACUUM_ON;
 																PRINTER_START_ON;
 																Air_Control.complete = 0;
+															  Printer.printer_work_timeout = 100;
 //																Control.fluid_bag.state = 0;
 														}		                  
 					break ;
 		case PRINTER_WORKING:   if(Printer.end.state == 1){
 															Printer.process = PRINTER_END;
-															Printer.complete = 1;
-															AIR_BLOW_OFF;
+															Printer.complete = 1;														
 															Control.fluid_bag.state = 0;
 															Printer.end.state = 0;
-													  }
+													  }else{
+															if(Printer.printer_work_timeout == 0){
+																	if(READ_PRINTER_END == SET){
+																		Printer.process = PRINTER_END;
+																		Printer.complete = 1;
+																		AIR_BLOW_OFF;
+																		VACUUM_OFF;
+																		AIR_BLOW_OFF;
+																		Control.fluid_bag.state = 0;
+																		Printer.end.state = 0;
+																	}
+															}
+														}
 					break ;
 		case PRINTER_END: if(Device_State == 1){  //…Ë±∏∆Ù∂Ø     
 													Printer.process = PRINTER_READY; 
