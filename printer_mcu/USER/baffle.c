@@ -46,45 +46,53 @@ Control_Baffle_Type Baffle_Control;
 void Baffle_Control_Process(void)
 {
 	static u8 scannerstate=0;//二维码结果，由上位机给，现在模拟
-	if(Baffle_Control.bag_input_flag == 0){
-		if(Control.scanner.state == 1){
-				Baffle_Control.Scanner_Err_Time = SCANNER_ERR_TIME;		//扫描枪传感器检测到有液带信号，一段时间内扫描枪没有扫到二维码，当作为是错误的液带
-				Baffle_Control.bag_input_flag= 1;
-				Baffle_Control.process_flag = 1;
-				Baffle_Control.process_time = 0;
-		}
-	}
-	if(Baffle_Control.bag_input_flag ==1){   //此状态清零需要在扫描抢接收到二维码的时候,在此扫不到二维码就上传一个错误信息给上位机
-			if(Baffle_Control.Scanner_Err_Time ==0){//然后上位机已经给我一个错误信号标志，如果不给，我也知道错误
-				if(scannerstate == 0){
-					Baffle_Control.bag_err_flag = 1;
-//					BAFFLE_INTER ;																	//挡板先拨到错误的地方等待
-//				Update_Err_Scanner_Data();
-				}else{
-//					BAFFLE_OUTER;
-				}
-				Baffle_Control.bag_input_flag = 0;
-				Control.scanner.state = 0;
+	if(Device_State == 1){
+		if(Baffle_Control.bag_input_flag == 0){
+			if(Control.scanner.state == 1){
+					Baffle_Control.Scanner_Err_Time = SCANNER_ERR_TIME;		//扫描枪传感器检测到有液带信号，一段时间内扫描枪没有扫到二维码，当作为是错误的液带
+					Baffle_Control.bag_input_flag= 1;
+					Baffle_Control.process_flag = 1;
+					Baffle_Control.process_time = 0;
 			}
-		
-	}
-
-	if(Baffle_Control.process_time >= PROCESS_TIME){  //每个过程的时间是固定的
-		 if(Baffle_Control.bag_ok_flag == 1){  //扫描枪扫到二维码，上位机发来的确认标志
-				BAFFLE_OUTER;
-//				Control.baffle_inter.state = 0;
-//			  Control.baffle_outer.state = 0;
-			  Baffle_Control.bag_ok_flag = 0;
-		}else{
-				BAFFLE_INTER ;	
-//			  Control.baffle_outer.state = 0;
-			  Baffle_Control.bag_ok_flag = 1;
 		}
-	  Baffle_Control.bag_err_flag = 0;
-		Baffle_Control.process_time = 0;
-		Baffle_Control.process_flag= 0;
-	}
+		if(Baffle_Control.bag_input_flag ==1){   //此状态清零需要在扫描抢接收到二维码的时候,在此扫不到二维码就上传一个错误信息给上位机
+				if(Baffle_Control.Scanner_Err_Time ==0){//然后上位机已经给我一个错误信号标志，如果不给，我也知道错误
+					if(scannerstate == 0){
+						Baffle_Control.bag_err_flag = 1;
+	//					BAFFLE_INTER ;																	//挡板先拨到错误的地方等待
+	//				Update_Err_Scanner_Data();
+					}else{
+	//					BAFFLE_OUTER;
+					}
+					Baffle_Control.bag_input_flag = 0;
+					Control.scanner.state = 0;
+				}
+			
+		}
 
+		if(Baffle_Control.process_time >= PROCESS_TIME){  //每个过程的时间是固定的
+			 if(Baffle_Control.bag_ok_flag == 1){  //扫描枪扫到二维码，上位机发来的确认标志
+					BAFFLE_OUTER;
+	//				Control.baffle_inter.state = 0;
+	//			  Control.baffle_outer.state = 0;
+					Baffle_Control.bag_ok_flag = 0;
+			}else{
+					BAFFLE_INTER ;	
+	//			  Control.baffle_outer.state = 0;
+					Baffle_Control.bag_ok_flag = 1;
+			}
+			Baffle_Control.bag_err_flag = 0;
+			Baffle_Control.process_time = 0;
+			Baffle_Control.process_flag= 0;
+		}
+	}else{
+			Baffle_Control.bag_input_flag = 0;
+			Control.scanner.state = 0;
+		  Baffle_Control.process_time = 0;
+			Baffle_Control.bag_err_flag = 0;
+			Baffle_Control.process_time = 0;
+			Baffle_Control.process_flag= 0;
+	}
 }
 
 void Baffle_Time_Irq(void)
