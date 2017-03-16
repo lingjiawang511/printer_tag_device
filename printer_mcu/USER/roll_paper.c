@@ -56,7 +56,7 @@ void Roll_Paper_Control(void)
       ROLL_PAPER_ON;
 			belt.state = END ;     //‘À ‰∆§¥¯Õ£÷π
 			param_init();
-			if(READ_UPPER_REACH==1){
+			if(READ_UPPER_REACH==0){
 				AIR_CYLINDER_UP;
 		  }
 	}

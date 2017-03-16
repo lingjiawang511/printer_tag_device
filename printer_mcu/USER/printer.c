@@ -83,9 +83,11 @@ static u8 Printer_Process_Input(void)
 //					PRINTER_START_ON;
 //				}
 				res = 0;
-				return res;
+			}else{
+				Device_State = 3;
+				res = 1;
 			}
-		 
+		  return res;
 		}else if(Device_State == 2){ //设备停止
 			 PRINTER_START_OFF;
 			 Printer.err.state = 0;
@@ -150,7 +152,7 @@ void Printer_Control(void)
 																		Control.fluid_bag.state = 0;
 																		Printer.end.state = 0;
 																		working_err++;
-																		if(working_err >= 3){//连续3次发送打印操作，但是没有打印任务，也就是没有打印结束信号，设置为故障报警
+																		if(working_err > 3){//连续3次发送打印操作，但是没有打印任务，也就是没有打印结束信号，设置为故障报警
 																			Device_State = 3;
 																			working_err = 0;	
 																		}

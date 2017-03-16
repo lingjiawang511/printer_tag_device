@@ -23,11 +23,11 @@
 #define STOP_LIGHT_ON   			GPIO_SetBits(STOP_LIGHT_PORT, STOP_LIGHT_IO)
 #define STOP_LIGHT_OFF  			GPIO_ResetBits(STOP_LIGHT_PORT,STOP_LIGHT_IO)
 
-#define KEY_SHORT_TIME 		    15
-#define KEY_LONG_TIME			    200
+#define KEY_SHORT_TIME 		    10
+#define KEY_LONG_TIME			    300
 #define KEY_LONGLONG_TIME			400
 u8 Key_ScanNum;
-u8 Device_State;
+u8 Device_State = 2;
 
 //=============================================================================
 //函数名称: KEY_GPIO_Config
@@ -105,7 +105,8 @@ static u8 Key_Scan(void)
 					}else if((start_key_timercount >=KEY_SHORT_TIME)&&(start_key_timercount <KEY_LONG_TIME)){
 							key_num |=0x01;
 					}
-					start_key_triggerstate =0;				
+					start_key_triggerstate =0;	
+				  return key_num;					
 				}
 				start_key_timercount = 0;
 			}
@@ -180,7 +181,7 @@ void Key_Light_Dispose(void)
 		Key_ScanNum = Key_Scan();
 	}
 	if(Key_ScanNum !=0){  
-		if(Key_ScanNum == 0x01){
+		if(((Key_ScanNum&0x01) == 0x01)||((Key_ScanNum&0x11) == 0x11)){
 			if(Device_State == 3){
 				Device_State = 3;
 			}else{
@@ -190,7 +191,7 @@ void Key_Light_Dispose(void)
 					Device_State = 3;
 				}
 			}
-		}else if((Key_ScanNum == 0x02)||(Key_ScanNum == 0x12)){
+		}else if(((Key_ScanNum&0x02) == 0x02)||((Key_ScanNum&0x12) == 0x12)){
 			Device_State = 2;  
 		}else{
 //			Device_State = 0;   //长按启动按键不放手，可以回到待机状态

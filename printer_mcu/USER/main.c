@@ -45,7 +45,7 @@ int main(void)
 
 void param_init(void)
 {
-	Device_State = 2;
+
 	Air_Control.process = RESERVE;
 	Air_Control.complete = 1;
 	Air_Control.air_cylinder_position =IN_UP;
