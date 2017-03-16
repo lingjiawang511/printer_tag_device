@@ -184,7 +184,11 @@ void Key_Light_Dispose(void)
 			if(Device_State == 3){
 				Device_State = 3;
 			}else{
-				Device_State = 1; 
+				if(READ_UPPER_REACH==0){
+					Device_State = 1; 
+				}else{
+					Device_State = 3;
+				}
 			}
 		}else if((Key_ScanNum == 0x02)||(Key_ScanNum == 0x12)){
 			Device_State = 2;  

@@ -92,7 +92,8 @@ void Baffle_Control_Process(void)
 			Baffle_Control.bag_err_flag = 0;
 			Baffle_Control.process_time = 0;
 			Baffle_Control.process_flag= 0;
-	}
+	}
+	
 }
 
 void Baffle_Time_Irq(void)

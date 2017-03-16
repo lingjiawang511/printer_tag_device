@@ -105,6 +105,7 @@ static u8 Printer_Process_Input(void)
 }
 void Printer_Control(void)
 {
+	static u8 working_err = 0;
 	if(1 == Printer_Process_Input()){		//每个过程都需要查询一下打印机状态和设备状态是否OK
 			Printer.process = PRINTER_RESERVE;		
 	}else{
@@ -140,7 +141,7 @@ void Printer_Control(void)
 															Printer.end.state = 0;
 													  }else{
 															if(Printer.printer_work_timeout == 0){
-																	if(READ_PRINTER_END == SET){
+																	if(READ_PRINTER_END == SET){//打印中，但是没有任务，所以为高电平
 																		Printer.process = PRINTER_END;
 																		Printer.complete = 1;
 																		AIR_BLOW_OFF;
@@ -148,6 +149,11 @@ void Printer_Control(void)
 																		AIR_BLOW_OFF;
 																		Control.fluid_bag.state = 0;
 																		Printer.end.state = 0;
+																		working_err++;
+																		if(working_err >= 3){//连续3次发送打印操作，但是没有打印任务，也就是没有打印结束信号，设置为故障报警
+																			Device_State = 3;
+																			working_err = 0;	
+																		}
 																	}
 															}
 														}
