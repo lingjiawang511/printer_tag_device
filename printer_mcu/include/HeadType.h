@@ -138,16 +138,12 @@ typedef struct{
 	u8  frame_soh;
 	u8  frame_x;
 	u16 datasize;
-	u8  ch1_state;
-	u8  ch1_num;
-	u8  ch2_state;
-	u8  ch2_num;
-	u8  ch3_state;
-	u8  ch3_num;
-	u8  ch4_state;
-	u8  ch4_num;
-	u8  belt_state;
-	u8  belt_time;
+	u8  crc_result;       //接收数据CRC结果
+	u8  scanner_result;   //二维码扫描结果
+  u8  device_state;    //设备状态
+	u8  printer_state;   //打印状态
+	u8  recom_state;    //复合状态
+	u8  bare;
 	u16 crc16_ccitt; 
 	u8  frame_end1;
 	u8  frame_end2;
@@ -157,8 +153,14 @@ typedef struct{
 	u8  frame_soh;
 	u8  frame_x;
 	u16 datasize;
-	u8  comm_state;
-	u8  bear;
+	u8  scanner_result;
+	u8  check_state;
+	u8  device_control;  //设备控制，控制设备启动停止
+	u8  baffle_control;  //挡板控制，只在设备停止状态下有效
+	u8  printer_fix;
+	u16 printer_delay;
+	u8  baffle_fix;
+	u16 baffle_delay;
 	u16 crc16_ccitt; 
 	u8  frame_end1;
 	u8  frame_end2;
@@ -166,12 +168,12 @@ typedef struct{
 
 typedef union{
 	Communation_Send_Type control;
-	u8	send_buf[18];	
+	u8	send_buf[14];	
 }COMM_Send_Union_Type;
 
 typedef union{
 	Communation_Rec_Type control;
-	u8	rec_buf[10];	
+	u8	rec_buf[18];	
 }COMM_Rec_Union_Type;
 
 typedef struct{
@@ -236,6 +238,7 @@ typedef struct{
 	u8 	vacuum_satte;					//真空吸纸状态
 	Air_Cylinder_Enum_Type process; //下压气缸过程
 	u16 delay_time;    //下压气缸下压延时时间
+	u16 PC_send_delay_time;
 	u8  complete; 
   u16 air_cylinder_dowm_timeout;   //下压气缸下压后无提升超时
 }Air_Controlr_Type;
@@ -249,10 +252,12 @@ typedef struct{
 	u16 Scanner_Err_Time;
 	u16 bag_Err_Time;
 	u16 process_time;
+	u16 PC_send_process_time;
 	u8  bag_input_flag;
 	u8  bag_err_flag;
 	u8  bag_ok_flag;
 	u8  process_flag;
+	u8  PC_send_scanner_result;
 }Control_Baffle_Type;
 /*************struct type end*******************/
 
@@ -279,6 +284,7 @@ extern u8 Device_State;
 extern Printer_Type Printer;
 extern Control_Input_Type Control;
 extern Air_Controlr_Type Air_Control;
+extern Control_Baffle_Type Baffle_Control;
 /*************extern variable end*******************/
 
 /*************function start*******************/

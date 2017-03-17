@@ -34,11 +34,11 @@ int main(void)
 		param_init();
 		delay_ms(1000);
     while(1){
-			Respond_Host_Comm();
 			Roll_Paper_Control();
 			Printer_Control();
 			Air_Cylinder_Control();
 			Baffle_Control_Process();
+			Respond_Host_Comm();
 		}
         
 }
@@ -66,7 +66,7 @@ void param_init(void)
 	Printer.tag_end.state = 0;
 	Printer.input_state = 0;
 	
-//	COMMUNICATION_IO1_OFF;
+
 }
 
 
