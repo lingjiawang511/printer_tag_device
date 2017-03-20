@@ -31,6 +31,8 @@ int main(void)
     USART1_Config();
     TIM2_Config();
     TIM3_Config();
+	  Baffle_Control.PC_send_process_time = 300;
+	  Air_Control.PC_send_delay_time = 300;
 		param_init();
 		delay_ms(1000);
     while(1){
@@ -66,6 +68,7 @@ void param_init(void)
 	Printer.tag_end.state = 0;
 	Printer.input_state = 0;
 	MCU_Host_Send.control.err_message = 0;
+	Baffle_Control.process_time = Baffle_Control.PC_send_process_time;
 
 }
 

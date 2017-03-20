@@ -53,7 +53,6 @@ void Baffle_Control_Process(void)
 					Baffle_Control.process_time = Baffle_Control.PC_send_process_time;
 				  Baffle_Control.bag_input_flag= 1;
 					Baffle_Control.process_flag = 1;
-					Baffle_Control.process_time = 0;
 			}
 		}
 		if(Baffle_Control.bag_input_flag ==1){   //此状态清零需要在扫描抢接收到二维码的时候,在此扫不到二维码就上传一个错误信息给上位机
@@ -117,17 +116,16 @@ void Baffle_Time_Irq(void)
 				Baffle_Control.process_time--;
 		 }
 		}
-
 		if( Baffle_Control.baffle_state == 1){  //外翻不到位故障
 				outer_delay_time++;
-			  if(outer_delay_time >= 40){
+			  if(outer_delay_time >= 50){
 					 if(READ_BAFFLE_OUTER == 0){
 							Baffle_Control.baffle_state = 0;
 						  outer_delay_time = 0;
 					 }else{
 							outer_delay_time = outer_delay_time;
 					 }
-					 if(outer_delay_time >= 50){
+					 if(outer_delay_time >= 100){
 							if(READ_BAFFLE_OUTER == 0){
 								Baffle_Control.baffle_state = 0;
 								outer_delay_time = 0;
@@ -140,17 +138,17 @@ void Baffle_Time_Irq(void)
 					 }
         }
 		}
-		if( Baffle_Control.baffle_state == 1){  //内翻不到位故障
+		if( Baffle_Control.baffle_state == 2){  //内翻不到位故障
 				inter_delay_time++;
-			  if(inter_delay_time >= 40){
-					 if(READ_BAFFLE_OUTER == 0){
+			  if(inter_delay_time >= 80){
+					 if(READ_BAFFLE_INTER == 0){
 							Baffle_Control.baffle_state = 0;
 						  inter_delay_time = 0;
 					 }else{
 							inter_delay_time = inter_delay_time;
 					 }
-					 if(inter_delay_time >= 50){
-							if(READ_BAFFLE_OUTER == 0){
+					 if(inter_delay_time >= 140){
+							if(READ_BAFFLE_INTER == 0){
 								Baffle_Control.baffle_state = 0;
 								inter_delay_time = 0;
 							}else{
