@@ -15,7 +15,6 @@
 
   <project>
     <PathAndName>..\scanner_mcu\MDK_ARM\scanner_mcu.uvproj</PathAndName>
-    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
 </ProjectWorkspace>

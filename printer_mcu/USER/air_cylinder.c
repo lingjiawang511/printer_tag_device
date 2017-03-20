@@ -72,6 +72,7 @@ void Air_Cylinder_Control(void)
 																AIR_CYLINDER_DOWM;
 																Printer.complete = 0;
 																Air_Control.air_cylinder_dowm_timeout = 200;
+																 MCU_Host_Send.control.err_message &=0xFB;
 														}		                  
 					break ;
 		case WORKING:   if(Control.fit_reach.state == 1){  //贴合到位
@@ -84,6 +85,7 @@ void Air_Cylinder_Control(void)
 										}else{
 											if(Air_Control.air_cylinder_dowm_timeout == 0){ //压下去不到位，设备故障需要停机
 													Device_State = 3;
+												 MCU_Host_Send.control.err_message |=0x04;
 											}
 										}
 					break ;

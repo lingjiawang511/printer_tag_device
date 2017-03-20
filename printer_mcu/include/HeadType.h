@@ -143,7 +143,7 @@ typedef struct{
   u8  device_state;    //Éè±¸×´Ì¬
 	u8  printer_state;   //´òÓ¡×´Ì¬
 	u8  recom_state;    //¸´ºÏ×´Ì¬
-	u8  bare;
+	u8  err_message;
 	u16 crc16_ccitt; 
 	u8  frame_end1;
 	u8  frame_end2;
@@ -258,6 +258,7 @@ typedef struct{
 	u8  bag_ok_flag;
 	u8  process_flag;
 	u8  PC_send_scanner_result;
+	u8  baffle_state;
 }Control_Baffle_Type;
 /*************struct type end*******************/
 

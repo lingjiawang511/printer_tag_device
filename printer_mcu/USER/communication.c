@@ -117,18 +117,27 @@ static u8  SLAVE_Rec_Comm(void)
 		switch(MCU_Host_Rec.control.check_state){
 		case 0x00:	
 							break;
-		case 0x01: MCU_Host_Send.control.device_state = Device_State;
+		case 0x01: 
 		           MCU_Host_Send.control.crc_result = 1;
 							 MCU_Host_Send.control.scanner_result = MCU_Host_Rec.control.scanner_result;
+							 MCU_Host_Send.control.device_state = Device_State;
 							 if(Printer.input_state == 1){
 									MCU_Host_Send.control.printer_state = 1;
 							 }else{
                   MCU_Host_Send.control.printer_state = 2;
-								}
+							}
 							if((Baffle_Control.bag_input_flag == 1)||(Control.scanner.state == 1)){
-								MCU_Host_Send.control.recom_state = 0;
+								if(Baffle_Control.PC_send_scanner_result==1){
+									MCU_Host_Send.control.recom_state = 1;
+								}else{
+									MCU_Host_Send.control.recom_state = 2;
+								}
 							}else{
-								MCU_Host_Send.control.recom_state = 1;
+								if(Baffle_Control.PC_send_scanner_result >=1){
+									MCU_Host_Send.control.recom_state = 3;
+								}else{
+									MCU_Host_Send.control.recom_state = 0;
+								}
 							}
 							break;
 		case 0x02:
@@ -147,12 +156,21 @@ static u8  SLAVE_Rec_Comm(void)
 	Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0x06;
 	if(res == 0)//接收的数据正确
 	{
-			Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0x01;
-			Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = MCU_Host_Send.control.scanner_result;
-			Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = MCU_Host_Send.control.device_state;
-			Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = MCU_Host_Send.control.printer_state;
-			Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = MCU_Host_Send.control.recom_state;
-			Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0x00;
+		 if(MCU_Host_Rec.control.check_state == 1){
+				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0x01;
+				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = MCU_Host_Send.control.scanner_result;
+				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = MCU_Host_Send.control.device_state;
+				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = MCU_Host_Send.control.printer_state;
+				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = MCU_Host_Send.control.recom_state;
+				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = MCU_Host_Send.control.err_message;
+		 }else{
+				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0x01;
+				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = MCU_Host_Send.control.scanner_result;
+				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0x00;
+				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0x00;
+				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0x00;
+				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0x00;
+		}
 			crc=CRC_GetCCITT(Usart1_Control_Data.txbuf,Usart1_Control_Data.tx_count);
 			Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = (crc>>8)&0xFF; ;
 			Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = crc&0xFF;	

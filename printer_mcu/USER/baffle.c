@@ -60,12 +60,12 @@ void Baffle_Control_Process(void)
 				if(Baffle_Control.Scanner_Err_Time ==0){//然后上位机已经给我一个错误信号标志，如果不给，我也知道错误
 					scannerstate = Baffle_Control.PC_send_scanner_result;
 					Baffle_Control.PC_send_scanner_result = 0;
-					if(scannerstate == 1){
-						Baffle_Control.bag_ok_flag = 1;
-	//				Update_Err_Scanner_Data();
-					}else{
-						Baffle_Control.bag_ok_flag = 0;
-					}
+//					if(scannerstate == 1){
+//						Baffle_Control.bag_ok_flag = 1;
+//	//				Update_Err_Scanner_Data();
+//					}else{
+//						Baffle_Control.bag_ok_flag = 0;
+//					}
 					scannerstate = 0;
 					Baffle_Control.bag_input_flag = 0;
 					Control.scanner.state = 0;
@@ -75,16 +75,20 @@ void Baffle_Control_Process(void)
 		if(Baffle_Control.process_time == 0){  //每个过程的时间是固定的
 			 if(Baffle_Control.bag_ok_flag == 1){  //扫描枪扫到二维码，上位机发来的确认标志
 					BAFFLE_OUTER;
+				  Baffle_Control.baffle_state = 1;
+				  MCU_Host_Send.control.err_message &=0xFD;
 	//				Control.baffle_inter.state = 0;
 	//			  Control.baffle_outer.state = 0;
-//					Baffle_Control.bag_ok_flag = 0;
+					Baffle_Control.bag_ok_flag = 0;
 			}else{
 					BAFFLE_INTER;	
+				  Baffle_Control.baffle_state = 2;
+				  MCU_Host_Send.control.err_message &=0xFE;
 	//			  Control.baffle_outer.state = 0;
-//					Baffle_Control.bag_ok_flag = 1;
+					Baffle_Control.bag_ok_flag = 1;
 			}
 			Baffle_Control.bag_err_flag = 0;
-			Baffle_Control.process_time = 0;
+			Baffle_Control.process_time = Baffle_Control.PC_send_process_time;
 			Baffle_Control.process_flag= 0;
 		}
 	}else{
@@ -100,8 +104,8 @@ void Baffle_Control_Process(void)
 
 void Baffle_Time_Irq(void)
 {
-//	 static u16 inter_delay_time=0;
-//	 static u16 outer_delay_time=0;
+	  static u16 inter_delay_time=0;
+	  static u16 outer_delay_time=0;
 		if(Baffle_Control.Scanner_Err_Time > 0){
 			Baffle_Control.Scanner_Err_Time--;
 		}
@@ -113,7 +117,51 @@ void Baffle_Time_Irq(void)
 				Baffle_Control.process_time--;
 		 }
 		}
-		
+
+		if( Baffle_Control.baffle_state == 1){  //外翻不到位故障
+				outer_delay_time++;
+			  if(outer_delay_time >= 40){
+					 if(READ_BAFFLE_OUTER == 0){
+							Baffle_Control.baffle_state = 0;
+						  outer_delay_time = 0;
+					 }else{
+							outer_delay_time = outer_delay_time;
+					 }
+					 if(outer_delay_time >= 50){
+							if(READ_BAFFLE_OUTER == 0){
+								Baffle_Control.baffle_state = 0;
+								outer_delay_time = 0;
+							}else{
+							  Device_State = 3;
+								Baffle_Control.baffle_state = 0;
+								outer_delay_time = 0;
+						    MCU_Host_Send.control.err_message |=0x02;
+					 }
+					 }
+        }
+		}
+		if( Baffle_Control.baffle_state == 1){  //内翻不到位故障
+				inter_delay_time++;
+			  if(inter_delay_time >= 40){
+					 if(READ_BAFFLE_OUTER == 0){
+							Baffle_Control.baffle_state = 0;
+						  inter_delay_time = 0;
+					 }else{
+							inter_delay_time = inter_delay_time;
+					 }
+					 if(inter_delay_time >= 50){
+							if(READ_BAFFLE_OUTER == 0){
+								Baffle_Control.baffle_state = 0;
+								inter_delay_time = 0;
+							}else{
+							  Device_State = 3;
+								Baffle_Control.baffle_state = 0;
+								inter_delay_time = 0;
+								MCU_Host_Send.control.err_message |=0x01;
+					  }
+					 }
+        }
+		}
 //		if(Control.baffle_inter.state == 1){   //挡板位置中断状态，现在相当于无用
 //				inter_delay_time++;
 //			 if(inter_delay_time >= 20){

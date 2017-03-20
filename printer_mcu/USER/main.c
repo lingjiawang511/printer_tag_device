@@ -65,7 +65,7 @@ void param_init(void)
 	Printer.pinline.state = 0;
 	Printer.tag_end.state = 0;
 	Printer.input_state = 0;
-	
+	MCU_Host_Send.control.err_message = 0;
 
 }
 
