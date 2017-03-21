@@ -53,18 +53,20 @@ void Baffle_Control_Process(void)
 					Baffle_Control.process_time = Baffle_Control.PC_send_process_time;
 				  Baffle_Control.bag_input_flag= 1;
 					Baffle_Control.process_flag = 1;
+				  Baffle_Control.scanner_result_old = 0;
 			}
 		}
 		if(Baffle_Control.bag_input_flag ==1){   //此状态清零需要在扫描抢接收到二维码的时候,在此扫不到二维码就上传一个错误信息给上位机
 				if(Baffle_Control.Scanner_Err_Time ==0){//然后上位机已经给我一个错误信号标志，如果不给，我也知道错误
 					scannerstate = Baffle_Control.PC_send_scanner_result;
 					Baffle_Control.PC_send_scanner_result = 0;
-//					if(scannerstate == 1){
-//						Baffle_Control.bag_ok_flag = 1;
-//	//				Update_Err_Scanner_Data();
-//					}else{
-//						Baffle_Control.bag_ok_flag = 0;
-//					}
+					Baffle_Control.scanner_result_old = scannerstate;
+					if(scannerstate == 1){
+						Baffle_Control.bag_ok_flag = 1;
+	//				Update_Err_Scanner_Data();
+					}else{
+						Baffle_Control.bag_ok_flag = 0;
+					}
 					scannerstate = 0;
 					Baffle_Control.bag_input_flag = 0;
 					Control.scanner.state = 0;
@@ -78,13 +80,13 @@ void Baffle_Control_Process(void)
 				  MCU_Host_Send.control.err_message &=0xFD;
 	//				Control.baffle_inter.state = 0;
 	//			  Control.baffle_outer.state = 0;
-					Baffle_Control.bag_ok_flag = 0;
+//					Baffle_Control.bag_ok_flag = 0;
 			}else{
 					BAFFLE_INTER;	
 				  Baffle_Control.baffle_state = 2;
 				  MCU_Host_Send.control.err_message &=0xFE;
 	//			  Control.baffle_outer.state = 0;
-					Baffle_Control.bag_ok_flag = 1;
+//					Baffle_Control.bag_ok_flag = 1;
 			}
 			Baffle_Control.bag_err_flag = 0;
 			Baffle_Control.process_time = Baffle_Control.PC_send_process_time;

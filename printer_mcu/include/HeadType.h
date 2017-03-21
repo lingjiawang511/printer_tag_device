@@ -158,9 +158,11 @@ typedef struct{
 	u8  device_control;  //设备控制，控制设备启动停止
 	u8  baffle_control;  //挡板控制，只在设备停止状态下有效
 	u8  printer_fix;
-	u16 printer_delay;
+	u8 printer_delay_H;
+	u8 printer_delay_L;
 	u8  baffle_fix;
-	u16 baffle_delay;
+	u8 baffle_delay_H;
+	u8 baffle_delay_L;
 	u16 crc16_ccitt; 
 	u8  frame_end1;
 	u8  frame_end2;
@@ -259,6 +261,7 @@ typedef struct{
 	u8  process_flag;
 	u8  PC_send_scanner_result;
 	u8  baffle_state;
+	u8  scanner_result_old;
 }Control_Baffle_Type;
 /*************struct type end*******************/
 

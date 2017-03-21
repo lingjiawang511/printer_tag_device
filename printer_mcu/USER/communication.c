@@ -61,9 +61,9 @@ static u8  SLAVE_Rec_Comm(void)
 		switch(MCU_Host_Rec.control.scanner_result){
 		case 0x00: 
 							break;
-		case 0x01:Baffle_Control.PC_send_scanner_result = MCU_Host_Rec.control.scanner_result;
+		case 0x01:Baffle_Control.scanner_result_old=Baffle_Control.PC_send_scanner_result = MCU_Host_Rec.control.scanner_result;
 							break;
-		case 0x02:Baffle_Control.PC_send_scanner_result = MCU_Host_Rec.control.scanner_result;
+		case 0x02:Baffle_Control.scanner_result_old=Baffle_Control.PC_send_scanner_result = MCU_Host_Rec.control.scanner_result;
 							break;
 		default :
 							break;
@@ -102,7 +102,7 @@ static u8  SLAVE_Rec_Comm(void)
 		switch(MCU_Host_Rec.control.printer_fix){
 		case 0x00:	 
 							break;
-		case 0x01:Air_Control.PC_send_delay_time = (MCU_Host_Rec.control.printer_delay+2)/5;//上位机发的时间是1ms，单片机捕捉的时间是5MS，下一个周期生效
+		case 0x01:Air_Control.PC_send_delay_time = (MCU_Host_Rec.control.printer_delay_H*256+MCU_Host_Rec.control.printer_delay_L+2)/5;//上位机发的时间是1ms，单片机捕捉的时间是5MS，下一个周期生效
 							break;
 		case 0x02:break;
 		default : break;
@@ -110,7 +110,7 @@ static u8  SLAVE_Rec_Comm(void)
 		switch(MCU_Host_Rec.control.baffle_fix){
 		case 0x00:	 
 							break;
-		case 0x01:Baffle_Control.PC_send_process_time =  (MCU_Host_Rec.control.baffle_delay+2)/5;
+		case 0x01:Baffle_Control.PC_send_process_time = (MCU_Host_Rec.control.baffle_delay_H*256+MCU_Host_Rec.control.baffle_delay_L+2)/5;
 							break;
 		default : break;
 		}
@@ -119,7 +119,7 @@ static u8  SLAVE_Rec_Comm(void)
 							break;
 		case 0x01: 
 		           MCU_Host_Send.control.crc_result = 1;
-							 MCU_Host_Send.control.scanner_result = MCU_Host_Rec.control.scanner_result;
+							 MCU_Host_Send.control.scanner_result = Baffle_Control.scanner_result_old;
 							 MCU_Host_Send.control.device_state = Device_State;
 							 if(Printer.input_state == 1){
 									MCU_Host_Send.control.printer_state = 1;
@@ -158,14 +158,14 @@ static u8  SLAVE_Rec_Comm(void)
 	{
 		 if(MCU_Host_Rec.control.check_state == 1){
 				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0x01;
-				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = MCU_Host_Send.control.scanner_result;
+				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = Baffle_Control.scanner_result_old;
 				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = MCU_Host_Send.control.device_state;
 				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = MCU_Host_Send.control.printer_state;
 				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = MCU_Host_Send.control.recom_state;
 				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = MCU_Host_Send.control.err_message;
 		 }else{
 				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0x01;
-				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = MCU_Host_Send.control.scanner_result;
+				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = MCU_Host_Rec.control.scanner_result;
 				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0x00;
 				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0x00;
 				Usart1_Control_Data.txbuf[Usart1_Control_Data.tx_count++] = 0x00;
