@@ -1,6 +1,6 @@
 #include"HeadType.h"	
 
-#define SCANNER_ERR_TIME  160 //液带进入而扫描不到二维码的时间
+#define SCANNER_ERR_TIME  220 //液带进入而扫描不到二维码的时间
 #define BAG_ERR_TIME  140		//扫描不到二维码到此液带送走的时间
 #define PROCESS_TIME  300
 Control_Baffle_Type Baffle_Control;
