@@ -49,7 +49,7 @@ void Baffle_Control_Process(void)
 	if(Device_State == 1){
 		if(Baffle_Control.bag_input_flag == 0){
 			if(Control.scanner.state == 1){
-					Baffle_Control.Scanner_Err_Time = Baffle_Control.PC_send_process_time-50;		//扫描枪传感器检测到有液带信号，一段时间内扫描枪没有扫到二维码，当作为是错误的液带
+					Baffle_Control.Scanner_Err_Time = Baffle_Control.PC_send_process_time-80;		//扫描枪传感器检测到有液带信号，一段时间内扫描枪没有扫到二维码，当作为是错误的液带
 					Baffle_Control.process_time = Baffle_Control.PC_send_process_time;
 				  Baffle_Control.bag_input_flag= 1;
 					Baffle_Control.process_flag = 1;

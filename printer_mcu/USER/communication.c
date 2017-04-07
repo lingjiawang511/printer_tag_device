@@ -103,8 +103,8 @@ static u8  SLAVE_Rec_Comm(void)
 		case 0x00:	 
 							break;
 		case 0x01:Air_Control.PC_send_delay_time = (MCU_Host_Rec.control.printer_delay_H*256+MCU_Host_Rec.control.printer_delay_L+2)/5;//上位机发的时间是1ms，单片机捕捉的时间是5MS，下一个周期生效
-							if(Air_Control.PC_send_delay_time >= 800){
-									Air_Control.PC_send_delay_time = 800;
+							if(Air_Control.PC_send_delay_time >= 600){
+									Air_Control.PC_send_delay_time = 600;
 							}else if(Air_Control.PC_send_delay_time <= 200){
 									Air_Control.PC_send_delay_time = 200;
 							}
@@ -116,6 +116,11 @@ static u8  SLAVE_Rec_Comm(void)
 		case 0x00:	 
 							break;
 		case 0x01:Baffle_Control.PC_send_process_time = (MCU_Host_Rec.control.baffle_delay_H*256+MCU_Host_Rec.control.baffle_delay_L+2)/5;
+							if(Baffle_Control.PC_send_process_time >= 400){
+									Baffle_Control.PC_send_process_time = 300;
+							}else if(Baffle_Control.PC_send_process_time <= 200){
+									Baffle_Control.PC_send_process_time = 300;
+							}
 							break;
 		default : break;
 		}
