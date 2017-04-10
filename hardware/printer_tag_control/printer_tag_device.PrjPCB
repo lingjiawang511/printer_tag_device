@@ -256,150 +256,166 @@ DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\layers\comp_+_
 DItemRevisionGUID=
 
 [GeneratedDocument4]
-DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\eda\data
+DocumentPath=Project Outputs for printer_tag_device\cpu.BOM
 DItemRevisionGUID=
 
 [GeneratedDocument5]
-DocumentPath=Project Outputs for printer_tag_device\Design Rule Check - printer_tag_device.html
+DocumentPath=Project Outputs for printer_tag_device\cpu.CSV
 DItemRevisionGUID=
 
 [GeneratedDocument6]
-DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\layers\bottom\features
+DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\eda\data
 DItemRevisionGUID=
 
 [GeneratedDocument7]
-DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\layers\comp_+_bot\features
+DocumentPath=Project Outputs for printer_tag_device\Design Rule Check - printer_tag_device.html
 DItemRevisionGUID=
 
 [GeneratedDocument8]
-DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\layers\comp_+_top\features
+DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\layers\bottom\features
 DItemRevisionGUID=
 
 [GeneratedDocument9]
-DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\layers\drill\features
+DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\layers\comp_+_bot\features
 DItemRevisionGUID=
 
 [GeneratedDocument10]
-DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\layers\keepout\features
+DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\layers\comp_+_top\features
 DItemRevisionGUID=
 
 [GeneratedDocument11]
-DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\layers\rout\features
+DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\layers\drill\features
 DItemRevisionGUID=
 
 [GeneratedDocument12]
-DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\layers\top\features
+DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\layers\keepout\features
 DItemRevisionGUID=
 
 [GeneratedDocument13]
-DocumentPath=Project Outputs for printer_tag_device\odb\matrix\matrix
+DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\layers\rout\features
 DItemRevisionGUID=
 
 [GeneratedDocument14]
-DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\netlists\cadnet\netlist
+DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\layers\top\features
 DItemRevisionGUID=
 
 [GeneratedDocument15]
-DocumentPath=Project Outputs for printer_tag_device\power.BOM
+DocumentPath=Project Outputs for printer_tag_device\odb\matrix\matrix
 DItemRevisionGUID=
 
 [GeneratedDocument16]
-DocumentPath=Project Outputs for printer_tag_device\power.CSV
+DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\netlists\cadnet\netlist
 DItemRevisionGUID=
 
 [GeneratedDocument17]
-DocumentPath=Project Outputs for printer_tag_device\printer_tag_device-Plated.TXT
+DocumentPath=Project Outputs for printer_tag_device\power.BOM
 DItemRevisionGUID=
 
 [GeneratedDocument18]
-DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.DRR
+DocumentPath=Project Outputs for printer_tag_device\power.CSV
 DItemRevisionGUID=
 
 [GeneratedDocument19]
-DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.EXTREP
+DocumentPath=Project Outputs for printer_tag_device\printer_tag_device-Plated.TXT
 DItemRevisionGUID=
 
 [GeneratedDocument20]
-DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GBL
+DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.BOM
 DItemRevisionGUID=
 
 [GeneratedDocument21]
-DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GBO
+DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.CSV
 DItemRevisionGUID=
 
 [GeneratedDocument22]
-DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GBP
+DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.DRR
 DItemRevisionGUID=
 
 [GeneratedDocument23]
-DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GBS
+DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.EXTREP
 DItemRevisionGUID=
 
 [GeneratedDocument24]
-DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GD1
+DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GBL
 DItemRevisionGUID=
 
 [GeneratedDocument25]
-DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GKO
+DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GBO
 DItemRevisionGUID=
 
 [GeneratedDocument26]
-DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GM13
+DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GBP
 DItemRevisionGUID=
 
 [GeneratedDocument27]
-DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GM15
+DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GBS
 DItemRevisionGUID=
 
 [GeneratedDocument28]
-DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GPB
+DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GD1
 DItemRevisionGUID=
 
 [GeneratedDocument29]
-DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GPT
+DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GKO
 DItemRevisionGUID=
 
 [GeneratedDocument30]
-DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GTL
+DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GM13
 DItemRevisionGUID=
 
 [GeneratedDocument31]
-DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GTO
+DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GM15
 DItemRevisionGUID=
 
 [GeneratedDocument32]
-DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GTP
+DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GPB
 DItemRevisionGUID=
 
 [GeneratedDocument33]
-DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GTS
+DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GPT
 DItemRevisionGUID=
 
 [GeneratedDocument34]
-DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.LDP
+DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GTL
 DItemRevisionGUID=
 
 [GeneratedDocument35]
-DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.REP
+DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GTO
 DItemRevisionGUID=
 
 [GeneratedDocument36]
-DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.RUL
+DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GTP
 DItemRevisionGUID=
 
 [GeneratedDocument37]
-DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\profile
+DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.GTS
 DItemRevisionGUID=
 
 [GeneratedDocument38]
-DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\stephdr
+DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.LDP
 DItemRevisionGUID=
 
 [GeneratedDocument39]
-DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\layers\drill\tools
+DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.REP
 DItemRevisionGUID=
 
 [GeneratedDocument40]
+DocumentPath=Project Outputs for printer_tag_device\printer_tag_device.RUL
+DItemRevisionGUID=
+
+[GeneratedDocument41]
+DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\profile
+DItemRevisionGUID=
+
+[GeneratedDocument42]
+DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\stephdr
+DItemRevisionGUID=
+
+[GeneratedDocument43]
+DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\layers\drill\tools
+DItemRevisionGUID=
+
+[GeneratedDocument44]
 DocumentPath=Project Outputs for printer_tag_device\odb\steps\pcb\layers\rout\tools
 DItemRevisionGUID=
 
@@ -764,7 +780,7 @@ PageOptions4=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintS
 Configuration4_Name1=Filter
 Configuration4_Item1=545046300E5446696C74657257726170706572000D46696C7465722E416374697665090F46696C7465722E43726974657269610A04000000000000000000
 Configuration4_Name2=General
-Configuration4_Item2=OpenExported=False|AddToProject=False|ForceFit=False|NotFitted=False|Database=False|IncludePCBData=False|IncludeVaultData=False|ShowExportOptions=True|TemplateFilename=D:\Altium14\Altium\AD14\Templates\BOM Default Template.XLT|BatchMode=5|FormWidth=950|FormHeight=653|SupplierProdQty=1|SupplierAutoQty=False|SupplierUseCachedPricing=False|SupplierCurrency=<none>
+Configuration4_Item2=OpenExported=False|AddToProject=False|ForceFit=False|NotFitted=False|Database=False|IncludePCBData=False|IncludeVaultData=False|ShowExportOptions=True|TemplateFilename=D:\Altium14\BOM For Me.xlsx|BatchMode=5|FormWidth=950|FormHeight=653|SupplierProdQty=1|SupplierAutoQty=False|SupplierUseCachedPricing=False|SupplierCurrency=<none>
 Configuration4_Name3=GroupOrder
 Configuration4_Item3=Value=True|Comment=True|Footprint=True
 Configuration4_Name4=OutputConfigurationParameter1
