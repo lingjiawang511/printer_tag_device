@@ -120,14 +120,15 @@ void Baffle_Time_Irq(void)
 		}
 		if( Baffle_Control.baffle_state == 1){  //外翻不到位故障
 				outer_delay_time++;
-			  if(outer_delay_time >= 50){
+			  if(outer_delay_time >= 10){
 					 if(READ_BAFFLE_OUTER == 0){
 							Baffle_Control.baffle_state = 0;
 						  outer_delay_time = 0;
 					 }else{
 							outer_delay_time = outer_delay_time;
 					 }
-					 if(outer_delay_time >= 100){
+				 }
+					if(outer_delay_time >= 160){
 							if(READ_BAFFLE_OUTER == 0){
 								Baffle_Control.baffle_state = 0;
 								outer_delay_time = 0;
@@ -138,18 +139,18 @@ void Baffle_Time_Irq(void)
 						    MCU_Host_Send.control.err_message |=0x02;
 					 }
 					 }
-        }
 		}
 		if( Baffle_Control.baffle_state == 2){  //内翻不到位故障
 				inter_delay_time++;
-			  if(inter_delay_time >= 80){
+			  if(inter_delay_time >= 10){
 					 if(READ_BAFFLE_INTER == 0){
 							Baffle_Control.baffle_state = 0;
 						  inter_delay_time = 0;
 					 }else{
 							inter_delay_time = inter_delay_time;
 					 }
-					 if(inter_delay_time >= 140){
+				 }
+					 if(inter_delay_time >= 160){
 							if(READ_BAFFLE_INTER == 0){
 								Baffle_Control.baffle_state = 0;
 								inter_delay_time = 0;
@@ -160,7 +161,6 @@ void Baffle_Time_Irq(void)
 								MCU_Host_Send.control.err_message |=0x01;
 					  }
 					 }
-        }
 		}
 //		if(Control.baffle_inter.state == 1){   //挡板位置中断状态，现在相当于无用
 //				inter_delay_time++;

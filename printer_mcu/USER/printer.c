@@ -85,6 +85,7 @@ static u8 Printer_Process_Input(void)
 				res = 0;
 			}else{
 				Device_State = 3;
+				MCU_Host_Send.control.err_message |=0x10;
 				res = 1;
 			}
 		  return res;

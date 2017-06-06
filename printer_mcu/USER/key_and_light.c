@@ -147,6 +147,7 @@ static void Light_Scan(void)
 	}else if(Device_State == 2){
     STOP_LIGHT_ON;
 		START_LIGHT_OFF;
+		MCU_Host_Send.control.err_message &=0xEF;
 	}else if(Device_State == 3){
 		START_LIGHT_OFF;
 		if(flash_time >0){
