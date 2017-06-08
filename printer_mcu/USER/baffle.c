@@ -134,8 +134,8 @@ void Baffle_Time_Irq(void)
 								outer_delay_time = 0;
 							}else{
 // 							  Device_State = 3;
-// 								Baffle_Control.baffle_state = 0;
-// 								outer_delay_time = 0;
+								Baffle_Control.baffle_state = 0;
+								outer_delay_time = 0;
 // 						    MCU_Host_Send.control.err_message |=0x02;
 					 }
 					 }
@@ -156,8 +156,8 @@ void Baffle_Time_Irq(void)
 								inter_delay_time = 0;
 							}else{
 // 							  Device_State = 3;
-// 								Baffle_Control.baffle_state = 0;
-// 								inter_delay_time = 0;
+								Baffle_Control.baffle_state = 0;
+								inter_delay_time = 0;
 // 								MCU_Host_Send.control.err_message |=0x01;
 					  }
 					 }
