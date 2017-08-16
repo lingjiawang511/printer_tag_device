@@ -82,6 +82,8 @@ void Air_Cylinder_Control(void)
 												Control.fit_reach.state = 0;
 												Air_Control.air_cylinder_position =IN_DOWN;
 												Control.fluid_bag.state = 0;
+												Air_Control.air_cylinder_up_timeout = 400;
+												MCU_Host_Send.control.err_message &=0xEF;
 										}else{
 											if(Air_Control.air_cylinder_dowm_timeout == 0){ //压下去不到位，设备故障需要停机
 													Device_State = 3;
@@ -98,6 +100,11 @@ void Air_Cylinder_Control(void)
 												VACUUM_OFF;
 												AIR_BLOW_OFF;
 //												Control.fluid_bag.state = 0;												
+										}else{
+											if(Air_Control.air_cylinder_up_timeout == 0){ //压下去不到位，设备故障需要停机
+														Device_State = 3;
+													  MCU_Host_Send.control.err_message |=0x10;
+												}
 										}
 					break;
 		case END: if(Device_State == 1){  //设备启动 

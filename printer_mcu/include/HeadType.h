@@ -243,6 +243,7 @@ typedef struct{
 	u16 PC_send_delay_time;
 	u8  complete; 
   u16 air_cylinder_dowm_timeout;   //下压气缸下压后无提升超时
+	u16 air_cylinder_up_timeout;   //下压气缸下压后无提升超时
 }Air_Controlr_Type;
 typedef struct{
 	Printer_Input_Type fit_reach;
