@@ -47,6 +47,7 @@ void Roll_Paper_Control(void)
 			Printer.complete = 0;
 			Printer.process = PRINTER_RESERVE;
 			PRINTER_START_OFF;
+      PRINTER_RESTART_OFF;
 		  Air_Control.process = RESERVE;
 			belt.state = END ;     //‘À ‰∆§¥¯Õ£÷π
 		  AIR_BLOW_OFF;

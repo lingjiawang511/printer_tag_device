@@ -61,6 +61,8 @@
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
 	GPIO_Init(PRINTER_RESTART_PORT, &GPIO_InitStructure);
+  
+  PRINTER_RESTART_OFF;//打印机重启信号改为卷纸电机启动信号用，打印的时候就启动卷纸。
 	
 
 }
@@ -91,12 +93,14 @@ static u8 Printer_Process_Input(void)
 		  return res;
 		}else if(Device_State == 2){ //设备停止
 			 PRINTER_START_OFF;
+      PRINTER_RESTART_OFF;
 			 Printer.err.state = 0;
 			 Printer.tag_end.state = 0;
 			 Printer.color_end.state = 0;
 			 Printer.pinline.state = 0;
 		}else{
 			 PRINTER_START_OFF;
+      PRINTER_RESTART_OFF;
 			 Printer.err.state = 0;
 			 Printer.tag_end.state = 0;
 			 Printer.color_end.state = 0;
@@ -132,6 +136,7 @@ void Printer_Control(void)
 																AIR_BLOW_ON;
 																VACUUM_ON;
 																PRINTER_START_ON;
+                                PRINTER_RESTART_ON;
 																Air_Control.complete = 0;
 															  Printer.printer_work_timeout = 100;
 															  MCU_Host_Send.control.err_message &=0xF7;

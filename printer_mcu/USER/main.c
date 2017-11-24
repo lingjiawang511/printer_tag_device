@@ -55,6 +55,7 @@ void param_init(void)
 	Printer.complete = 0;
 	Printer.process = PRINTER_RESERVE;
 	PRINTER_START_OFF;
+  PRINTER_RESTART_OFF;
 	
 	Control.upper_reach.state = 0;
 	Control.scanner.state = 0;
