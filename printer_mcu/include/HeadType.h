@@ -290,6 +290,7 @@ extern Printer_Type Printer;
 extern Control_Input_Type Control;
 extern Air_Controlr_Type Air_Control;
 extern Control_Baffle_Type Baffle_Control;
+extern u32 uiRoll_Paper_ON_Delay;
 /*************extern variable end*******************/
 
 /*************function start*******************/

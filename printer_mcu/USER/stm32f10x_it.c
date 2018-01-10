@@ -151,14 +151,17 @@ void TIM2_IRQHandler(void)
 		Belt_Control();
 		Key_Light_Dispose();
 		Baffle_Time_Irq();
-		if(Printer.start_delay_time > 0)
-		{
+		if(Printer.start_delay_time > 0){
 			Printer.start_delay_time--;
 		}else{
-			PRINTER_START_OFF;
-      PRINTER_RESTART_OFF;   //有可能需要将时间调整   
+			PRINTER_START_OFF;   
 			Printer.start_delay_time = 0;
 		}
+    if(uiRoll_Paper_ON_Delay > 0){
+      uiRoll_Paper_ON_Delay--;
+    }else{
+      PRINTER_RESTART_OFF;
+    }
 		if(Air_Control.delay_time > 0){
 			Air_Control.delay_time--;
 		}

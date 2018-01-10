@@ -78,6 +78,7 @@ void Air_Cylinder_Control(void)
 		case WORKING:   if(Control.fit_reach.state == 1){  //贴合到位
 												Control.upper_reach.state = 0; //软件限位，防止两个互斥事件由于状态保存功能同时满足
 												AIR_CYLINDER_UP;
+                        PRINTER_RESTART_OFF;   //下压结束，卷纸电机停止
 												Air_Control.process = WORKEND;
 												Control.fit_reach.state = 0;
 												Air_Control.air_cylinder_position =IN_DOWN;

@@ -8,7 +8,7 @@
 #define ROLL_PAPER_ON  		 		GPIO_SetBits(ROLL_PAPER_PORT, ROLL_PAPER_IO)
 #define ROLL_PAPER_OFF  			GPIO_ResetBits(ROLL_PAPER_PORT, ROLL_PAPER_IO)
 
-
+u32 uiRoll_Paper_ON_Delay = 0;
 
 //=============================================================================
 //º¯ÊýÃû³Æ: ROLL_PAPER_GPIO_Config

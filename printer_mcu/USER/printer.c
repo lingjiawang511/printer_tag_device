@@ -93,14 +93,14 @@ static u8 Printer_Process_Input(void)
 		  return res;
 		}else if(Device_State == 2){ //设备停止
 			 PRINTER_START_OFF;
-      PRINTER_RESTART_OFF;
+       PRINTER_RESTART_OFF;
 			 Printer.err.state = 0;
 			 Printer.tag_end.state = 0;
 			 Printer.color_end.state = 0;
 			 Printer.pinline.state = 0;
 		}else{
 			 PRINTER_START_OFF;
-      PRINTER_RESTART_OFF;
+       PRINTER_RESTART_OFF;
 			 Printer.err.state = 0;
 			 Printer.tag_end.state = 0;
 			 Printer.color_end.state = 0;
@@ -139,6 +139,7 @@ void Printer_Control(void)
                                 PRINTER_RESTART_ON;
 																Air_Control.complete = 0;
 															  Printer.printer_work_timeout = 100;
+                                uiRoll_Paper_ON_Delay = 400;//卷纸电机开启最大延时2S，正常卷纸电机停止应该是气缸下压时
 															  MCU_Host_Send.control.err_message &=0xF7;
 //																Control.fluid_bag.state = 0;
 														}		                  
