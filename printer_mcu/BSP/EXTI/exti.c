@@ -126,20 +126,21 @@ static void  EXTIX9_5_Init(void )
 		RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC,ENABLE);
 	
 		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6|GPIO_Pin_7|GPIO_Pin_8|GPIO_Pin_9;			 
-		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; 		 
+		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD; 		 
 		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
 		GPIO_Init(GPIOC, &GPIO_InitStructure);
-	
+
 		GPIO_EXTILineConfig(GPIO_PortSourceGPIOC,GPIO_PinSource6); 
 		GPIO_EXTILineConfig(GPIO_PortSourceGPIOC,GPIO_PinSource7); 
  	  GPIO_EXTILineConfig(GPIO_PortSourceGPIOC,GPIO_PinSource8);
-		GPIO_EXTILineConfig(GPIO_PortSourceGPIOC,GPIO_PinSource9); 
-  	EXTI_InitStructure.EXTI_Line=EXTI_Line6|EXTI_Line7|EXTI_Line8|EXTI_Line9;
+		GPIO_EXTILineConfig(GPIO_PortSourceGPIOC,GPIO_PinSource9);	
+
+	  EXTI_InitStructure.EXTI_Line=EXTI_Line6|EXTI_Line7|EXTI_Line8|EXTI_Line9;
   	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;	
   	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
   	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
   	EXTI_Init(&EXTI_InitStructure);	 	//根据EXTI_InitStruct中指定的参数初始化外设EXTI寄存器
-	
+		
 	  NVIC_InitStructure.NVIC_IRQChannel = EXTI9_5_IRQn;			//使能按键KEY2所在的外部中断通道
   	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x02;	//抢占优先级2， 
   	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x02;					//子优先级2
@@ -190,7 +191,7 @@ static void  EXTIX15_10_Init(void )
 }
 //=============================================================================
 //函数名称:Control_Input_IRQTimer
-//功能概要:打印机输入状态计数脉冲软件延时检测
+//功能概要:
 //参数名称:无
 //函数返回:无
 //注意    :无
@@ -199,7 +200,7 @@ static void 	Control_Input_IRQTimer(void)
 {
 		if(Control.scanner.irqstate == 1){//延时方法使用定时器延时，中断进来看状态，8MS后判断状态是否是真
 					Control.scanner.irqtime++;
-					if(IRQ_TIMEOUT <= Control.scanner.irqtime){
+					if((IRQ_TIMEOUT/2) <= Control.scanner.irqtime){
 						if(READ_SCANNER == RESET){
 							Control.scanner.state = 1;
 						}
