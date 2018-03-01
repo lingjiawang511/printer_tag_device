@@ -102,7 +102,7 @@ void Air_Cylinder_Control(void)
 												AIR_BLOW_OFF;
 //												Control.fluid_bag.state = 0;												
 										}else{
-											if(Air_Control.air_cylinder_up_timeout == 0){ //压下去不到位，设备故障需要停机
+											if(Air_Control.air_cylinder_up_timeout == 0){ //抬起不到位，设备故障需要停机
 														Device_State = 3;
 													  MCU_Host_Send.control.err_message |=0x10;
 												}

@@ -149,6 +149,7 @@ void Printer_Control(void)
 															Printer.complete = 1;														
 															Control.fluid_bag.state = 0;
 															Printer.end.state = 0;
+															working_err = 0;
 													  }else{
 															if(Printer.printer_work_timeout == 0){
 																	if(READ_PRINTER_END == SET){//打印中，但是没有任务，所以为高电平

@@ -200,7 +200,7 @@ static void 	Control_Input_IRQTimer(void)
 {
 		if(Control.scanner.irqstate == 1){//延时方法使用定时器延时，中断进来看状态，8MS后判断状态是否是真
 					Control.scanner.irqtime++;
-					if((IRQ_TIMEOUT/2) <= Control.scanner.irqtime){
+					if((IRQ_TIMEOUT*3) <= Control.scanner.irqtime){
 						if(READ_SCANNER == RESET){
 							Control.scanner.state = 1;
 						}
@@ -210,7 +210,7 @@ static void 	Control_Input_IRQTimer(void)
 		}
 		if(Control.fluid_bag.irqstate == 1){//延时方法使用定时器延时，中断进来看状态，8MS后判断状态是否是真
 					Control.fluid_bag.irqtime++;
-					if(IRQ_TIMEOUT*5 <= Control.fluid_bag.irqtime){
+					if(IRQ_TIMEOUT*3 <= Control.fluid_bag.irqtime){
 						if(READ_FLUID_BAG == RESET){
 							Control.fluid_bag.state = 1;
 //							COMMUNICATION_IO2_ON;			//和CPU2通讯，告诉COU2有液袋输入
