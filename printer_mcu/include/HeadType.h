@@ -255,6 +255,7 @@ typedef struct{
 	u16 Scanner_Err_Time;
 	u16 bag_Err_Time;
 	u16 process_time;
+	u16 auto_turn_off_time;
 	u16 PC_send_process_time;
 	u8  bag_input_flag;
 	u8  bag_err_flag;

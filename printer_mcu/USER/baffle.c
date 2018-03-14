@@ -47,7 +47,7 @@ void Baffle_Control_Process(void)
 {
 	static u8 scannerstate=0;//二维码结果，由上位机给，现在模拟
 	if(Device_State == 1){
-	#if 1
+	#if 0
 		if(Baffle_Control.bag_input_flag == 0){
 			if(Control.scanner.state == 1){
 					Baffle_Control.Scanner_Err_Time = Baffle_Control.PC_send_process_time-80;		//扫描枪传感器检测到有液带信号，一段时间内扫描枪没有扫到二维码，当作为是错误的液带
@@ -60,8 +60,10 @@ void Baffle_Control_Process(void)
 	#else 
 		if(Baffle_Control.bag_input_flag == 0){
 				if(Baffle_Control.PC_send_scanner_result >= 1){
-						Baffle_Control.Scanner_Err_Time = Baffle_Control.PC_send_process_time-80;		//扫描枪传感器检测到有液带信号，一段时间内扫描枪没有扫到二维码，当作为是错误的液带
-						Baffle_Control.process_time = Baffle_Control.PC_send_process_time;
+// 						Baffle_Control.Scanner_Err_Time = Baffle_Control.PC_send_process_time-80;		//扫描枪传感器检测到有液带信号，一段时间内扫描枪没有扫到二维码，当作为是错误的液带
+// 						Baffle_Control.process_time = Baffle_Control.PC_send_process_time;
+					  Baffle_Control.Scanner_Err_Time = 10;
+						Baffle_Control.process_time = 20;	//100ms
 						Baffle_Control.bag_input_flag= 1;
 						Baffle_Control.process_flag = 1;
 						Baffle_Control.scanner_result_old = 0;
@@ -79,6 +81,7 @@ void Baffle_Control_Process(void)
 					}else{
 						Baffle_Control.bag_ok_flag = 0;
 					}
+					Baffle_Control.PC_send_scanner_result = 0;
 					scannerstate = 0;
 					Baffle_Control.bag_input_flag = 0;
 					Control.scanner.state = 0;
@@ -90,6 +93,8 @@ void Baffle_Control_Process(void)
 					BAFFLE_OUTER;
 				  Baffle_Control.baffle_state = 1;
 				  MCU_Host_Send.control.err_message &=0xFD;
+				 /***正确翻门后过一段时间自动翻向错误的地方***/
+				  Baffle_Control.auto_turn_off_time = Baffle_Control.PC_send_process_time;
 	//				Control.baffle_inter.state = 0;
 	//			  Control.baffle_outer.state = 0;
 //					Baffle_Control.bag_ok_flag = 0;
@@ -104,6 +109,9 @@ void Baffle_Control_Process(void)
 			Baffle_Control.process_time = Baffle_Control.PC_send_process_time;
 			Baffle_Control.process_flag= 0;
 		}
+		if(Baffle_Control.auto_turn_off_time == 0){
+				BAFFLE_INTER;
+		}
 	}else{
 			Baffle_Control.bag_input_flag = 0;
 			Control.scanner.state = 0;
@@ -111,6 +119,7 @@ void Baffle_Control_Process(void)
 			Baffle_Control.bag_err_flag = 0;
 			Baffle_Control.process_time = 0;
 			Baffle_Control.process_flag= 0;
+		  BAFFLE_INTER;	//自由状态都是翻板内翻
 	}
 	
 }
@@ -129,6 +138,9 @@ void Baffle_Time_Irq(void)
 		 if(Baffle_Control.process_time >0){
 				Baffle_Control.process_time--;
 		 }
+		}
+		if(Baffle_Control.auto_turn_off_time > 0){
+			Baffle_Control.auto_turn_off_time--;
 		}
 		if( Baffle_Control.baffle_state == 1){  //外翻不到位故障
 				outer_delay_time++;
