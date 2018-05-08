@@ -73,6 +73,7 @@ void param_init(void)
   MCU_Host_Send.control.recom_state = 0;
 	Baffle_Control.PC_send_scanner_result = 0;
 	Baffle_Control.scanner_result_old = 0;
+	Update_Baffle_State(1);
 }
 
 

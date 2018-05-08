@@ -95,7 +95,11 @@ typedef enum{
 	IN_DOWN,
 	IN_UP
 }Air_Position_Type;
-
+typedef enum{
+	READONLY,
+	WRITEONLY,
+	WRITERAD
+}ConrtrolRW;
 typedef enum{
 	PRINTER_RESERVE,
 	PRINTER_READY,
@@ -302,6 +306,9 @@ void Key_Light_Dispose(void);
 void ROLL_PAPER_GPIO_Config(void);
 void Roll_Paper_Control(void);
 void param_init(void);
+
+void Update_Baffle_State(u8 updatestate);
+u8 Read_Baffle_State(void);
 /*************function end*******************/
 #endif
 

@@ -107,6 +107,11 @@ void Air_Cylinder_Control(void)
 													  MCU_Host_Send.control.err_message |=0x10;
 												}
 										}
+									 if(1 == Read_Baffle_State()){ //气缸抬起后接收到扫描枪错误，马上停止
+												Device_State = 3;
+												Air_Control.process = RESERVE;
+												break ;
+										}
 					break;
 		case END: if(Device_State == 1){  //设备启动 
 									Air_Control.process = READY; 

@@ -40,6 +40,19 @@ Control_Baffle_Type Baffle_Control;
 	BAFFLE_INTER ;
 
 }
+static u8 baffle_state = 0;
+void Update_Baffle_State(u8 updatestate)
+{
+	if(updatestate == 0){
+		baffle_state = 1;
+	}else{
+		baffle_state = 0;
+	}
+}
+u8 Read_Baffle_State(void)
+{
+	  return baffle_state;
+}
 //挡板没事时都是处在错误的地方，扫描传感器有信号输入开始算两个时间，一个时间是有信号时扫描枪扫到二维码的时间，此时间内扫不到二维码
 //给上位机上传一个错误的二维码，让上位机给我一个错误标志；另一个时间是过程总时间，既是传感器有信号到液带运行到终点皮带运行的时间，
 //这个时间一到，如果上位机没有给我正确信号，我就当错误处理。
@@ -75,10 +88,10 @@ void Baffle_Control_Process(void)
 					Baffle_Control.scanner_result_old = scannerstate;
 					if(scannerstate == 1){
 						Baffle_Control.bag_ok_flag = 1;
-	//				Update_Err_Scanner_Data();
 					}else{
 						Baffle_Control.bag_ok_flag = 0;
 					}
+					Update_Baffle_State(Baffle_Control.bag_ok_flag);
 					Baffle_Control.PC_send_scanner_result = 0;
 					scannerstate = 0;
 					Baffle_Control.bag_input_flag = 0;
