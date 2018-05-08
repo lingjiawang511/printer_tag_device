@@ -5,6 +5,7 @@
 #define PROCESS_TIME  300
 Control_Baffle_Type Baffle_Control;
 #define BAFFLE_AUTO_OFF		0
+u16 baffle_err_timeout;
 //=============================================================================
 //函数名称: Printer_GPIO_Config
 //功能概要:打印机引脚配置
@@ -45,6 +46,7 @@ void Update_Baffle_State(u8 updatestate)
 {
 	if(updatestate == 0){
 		baffle_state = 1;
+		baffle_err_timeout = BAFFLE_ERR_TIMEOUT;
 	}else{
 		baffle_state = 0;
 	}
@@ -151,6 +153,9 @@ void Baffle_Time_Irq(void)
 		 if(Baffle_Control.process_time >0){
 				Baffle_Control.process_time--;
 		 }
+		}
+		if(baffle_err_timeout > 0){
+			baffle_err_timeout--;
 		}
 #if BAFFLE_AUTO_OFF == 1		
 		if(Baffle_Control.auto_turn_off_time > 0){

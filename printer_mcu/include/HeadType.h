@@ -53,7 +53,7 @@ typedef uint32	ulong;		/**< 32-bit value */
 //无响应超时时间，即当下位机发送数据给上位机，而上位机没有响应的最长时间
 #define NANSWER_TIME	 1000	  //1000*5ms
 #define NANSWER_NUMOUT	 	 3	  //1000*5ms
-
+#define BAFFLE_ERR_TIMEOUT	400
 #define IRQ_TIMEOUT							4			//中断软件延时时间
 
 
@@ -296,6 +296,7 @@ extern Control_Input_Type Control;
 extern Air_Controlr_Type Air_Control;
 extern Control_Baffle_Type Baffle_Control;
 extern u32 uiRoll_Paper_ON_Delay;
+extern u16 baffle_err_timeout;
 /*************extern variable end*******************/
 
 /*************function start*******************/

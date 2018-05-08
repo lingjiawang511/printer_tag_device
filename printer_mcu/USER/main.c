@@ -74,6 +74,7 @@ void param_init(void)
 	Baffle_Control.PC_send_scanner_result = 0;
 	Baffle_Control.scanner_result_old = 0;
 	Update_Baffle_State(1);
+	baffle_err_timeout = BAFFLE_ERR_TIMEOUT;
 }
 
 

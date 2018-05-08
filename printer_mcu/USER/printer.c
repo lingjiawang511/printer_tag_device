@@ -125,17 +125,25 @@ void Printer_Control(void)
 																Printer.process = PRINTER_READY;		
 															}
 													}
+													baffle_err_timeout = BAFFLE_ERR_TIMEOUT;
 													break ;
 		case PRINTER_READY:   
 														if(Printer.fluid_bag_timeout==0){
 																Control.fluid_bag.state = 0;  //一段时间内打印机没反应，下压气缸有问题，需要清零这个状态，否则下次启动打印机会打印
 															}
-														if(1 == Read_Baffle_State()){ //没打印前接收到扫描枪错误，马上停止
-															Device_State = 3;
-															Printer.process = PRINTER_RESERVE;
-															break ;
-														}
+															if(1 == Read_Baffle_State()){ //没打印前接收到扫描枪错误，马上停止
+																if(baffle_err_timeout == 0){
+																	Device_State = 3;
+																	Printer.process = PRINTER_RESERVE;
+																	break ;
+																}
+																}	
 														if((Air_Control.complete == 1)&&(Control.fluid_bag.state == 1)&&(READ_UPPER_REACH==0)){  //开始打印的时候就把液袋输入信号置位，可以接收下一次信号输入
+															if(1 == Read_Baffle_State()){ //没打印前接收到扫描枪错误，马上停止
+																	Device_State = 3;
+																	Printer.process = PRINTER_RESERVE;
+																	break ;
+																}
 																Printer.process = PRINTER_WORKING;
 																Printer.start_delay_time = PRINTER_START_DELAY_TIME;																																
 																AIR_BLOW_ON;
