@@ -4,7 +4,7 @@
 #define BAG_ERR_TIME  140		//扫描不到二维码到此液带送走的时间
 #define PROCESS_TIME  300
 Control_Baffle_Type Baffle_Control;
-
+#define BAFFLE_AUTO_OFF		0
 //=============================================================================
 //函数名称: Printer_GPIO_Config
 //功能概要:打印机引脚配置
@@ -47,7 +47,7 @@ void Baffle_Control_Process(void)
 {
 	static u8 scannerstate=0;//二维码结果，由上位机给，现在模拟
 	if(Device_State == 1){
-	#if 0
+	#if BAFFLE_AUTO_OFF == 0
 		if(Baffle_Control.bag_input_flag == 0){
 			if(Control.scanner.state == 1){
 					Baffle_Control.Scanner_Err_Time = Baffle_Control.PC_send_process_time-80;		//扫描枪传感器检测到有液带信号，一段时间内扫描枪没有扫到二维码，当作为是错误的液带
@@ -60,8 +60,6 @@ void Baffle_Control_Process(void)
 	#else 
 		if(Baffle_Control.bag_input_flag == 0){
 				if(Baffle_Control.PC_send_scanner_result >= 1){
-// 						Baffle_Control.Scanner_Err_Time = Baffle_Control.PC_send_process_time-80;		//扫描枪传感器检测到有液带信号，一段时间内扫描枪没有扫到二维码，当作为是错误的液带
-// 						Baffle_Control.process_time = Baffle_Control.PC_send_process_time;
 					  Baffle_Control.Scanner_Err_Time = 10;
 						Baffle_Control.process_time = 20;	//100ms
 						Baffle_Control.bag_input_flag= 1;
@@ -94,24 +92,26 @@ void Baffle_Control_Process(void)
 				  Baffle_Control.baffle_state = 1;
 				  MCU_Host_Send.control.err_message &=0xFD;
 				 /***正确翻门后过一段时间自动翻向错误的地方***/
+#if BAFFLE_AUTO_OFF == 1
 				  Baffle_Control.auto_turn_off_time = Baffle_Control.PC_send_process_time;
+#endif
 	//				Control.baffle_inter.state = 0;
 	//			  Control.baffle_outer.state = 0;
-//					Baffle_Control.bag_ok_flag = 0;
 			}else{
 					BAFFLE_INTER;	
 				  Baffle_Control.baffle_state = 2;
 				  MCU_Host_Send.control.err_message &=0xFE;
 	//			  Control.baffle_outer.state = 0;
-//					Baffle_Control.bag_ok_flag = 1;
 			}
 			Baffle_Control.bag_err_flag = 0;
 			Baffle_Control.process_time = Baffle_Control.PC_send_process_time;
 			Baffle_Control.process_flag= 0;
 		}
+#if BAFFLE_AUTO_OFF == 1
 		if(Baffle_Control.auto_turn_off_time == 0){
 				BAFFLE_INTER;
 		}
+#endif
 	}else{
 			Baffle_Control.bag_input_flag = 0;
 			Control.scanner.state = 0;
@@ -139,9 +139,11 @@ void Baffle_Time_Irq(void)
 				Baffle_Control.process_time--;
 		 }
 		}
+#if BAFFLE_AUTO_OFF == 1		
 		if(Baffle_Control.auto_turn_off_time > 0){
 			Baffle_Control.auto_turn_off_time--;
 		}
+#endif
 		if( Baffle_Control.baffle_state == 1){  //外翻不到位故障
 				outer_delay_time++;
 			  if(outer_delay_time >= 10){
