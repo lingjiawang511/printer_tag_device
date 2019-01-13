@@ -141,6 +141,7 @@ static void Light_Scan(void)
 {
 	static u8 flash_time =100;
 	static u8 flash_flag = 0;
+	static u8 flash_delay=0;
   if(Device_State == 1){//Device_State=0£∫¥˝ª˙◊¥Ã¨£¨Device_State=1£∫∆Ù∂Ø◊¥Ã¨£¨Device_State=2£∫Õ£÷π◊¥Ã¨
 		START_LIGHT_ON;
 		STOP_LIGHT_OFF;
@@ -177,8 +178,12 @@ static void Light_Scan(void)
 						START_LIGHT_ON;
 					  STOP_LIGHT_ON;
 				}else{
-						STOP_LIGHT_OFF;
-					  START_LIGHT_OFF;
+					  flash_delay++;
+					if(flash_delay >= 2){
+						flash_delay = 0;
+						START_LIGHT_ON;
+					  STOP_LIGHT_ON;
+					}
 				}
 				flash_flag = 1;
 			}else{
@@ -186,7 +191,7 @@ static void Light_Scan(void)
 						STOP_LIGHT_OFF;
 				}else if(MCU_Host_Send.control.err_message == 0x10){
 						START_LIGHT_OFF;
-				}else if(MCU_Host_Send.control.err_message == 0x20){
+				}else if(MCU_Host_Send.control.err_message == 0x20){//Ω” ’µΩ…®√Ë«π¥ÌŒÛ–≈∫≈π ’œ
 						STOP_LIGHT_OFF;
 					  START_LIGHT_OFF;
 				}else{
