@@ -55,7 +55,7 @@ typedef uint32	ulong;		/**< 32-bit value */
 #define NANSWER_NUMOUT	 	 3	  //1000*5ms
 #define BAFFLE_ERR_TIMEOUT	400
 #define IRQ_TIMEOUT							4			//中断软件延时时间
-
+#define PRINTER_ROLL_DELAY_TIME  60   //打印开启延时卷纸时间
 
 /*************define type end*******************/
 
@@ -297,6 +297,8 @@ extern Air_Controlr_Type Air_Control;
 extern Control_Baffle_Type Baffle_Control;
 extern u32 uiRoll_Paper_ON_Delay;
 extern u16 baffle_err_timeout;
+extern u16 printer_roll_delay;
+extern u8 fluid_bag_state_back;
 /*************extern variable end*******************/
 
 /*************function start*******************/

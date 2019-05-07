@@ -83,6 +83,7 @@ void Air_Cylinder_Control(void)
 												Control.fit_reach.state = 0;
 												Air_Control.air_cylinder_position =IN_DOWN;
 												Control.fluid_bag.state = 0;
+												fluid_bag_state_back = 0;
 												Air_Control.air_cylinder_up_timeout = 400;
 												MCU_Host_Send.control.err_message &=0xEF;
 										}else{

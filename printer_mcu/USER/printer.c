@@ -1,6 +1,8 @@
 #include"HeadType.h"	
 
 #define PRINTER_START_DELAY_TIME  6;
+u8 fluid_bag_state_back = 0;
+u16 printer_roll_delay = PRINTER_ROLL_DELAY_TIME;
 //=============================================================================
 //∫Ø ˝√˚≥∆: Printer_GPIO_Config
 //π¶ƒ‹∏≈“™:¥Ú”°ª˙“˝Ω≈≈‰÷√
@@ -113,6 +115,7 @@ static u8 Printer_Process_Input(void)
 void Printer_Control(void)
 {
 	static u8 working_err = 0;
+	static u8 pinter_roll_skip = 0;
 	if(1 == Printer_Process_Input()){		//√ø∏ˆπ˝≥Ã∂º–Ë“™≤È—Ø“ªœ¬¥Ú”°ª˙◊¥Ã¨∫Õ…Ë±∏◊¥Ã¨ «∑ÒOK
 			Printer.process = PRINTER_RESERVE;		
 	}else{
@@ -123,9 +126,14 @@ void Printer_Control(void)
 													if(Device_State == 1){  //…Ë±∏∆Ù∂Ø
 															if(0 == Printer_Process_Input()){		//¥Ú”°ª˙OKƒ
 																Printer.process = PRINTER_READY;		
+															}else{
+																printer_roll_delay = 0;
+																pinter_roll_skip = 0;							
 															}
 													}
 													baffle_err_timeout = BAFFLE_ERR_TIMEOUT;
+													printer_roll_delay = 0;
+													pinter_roll_skip = 0;
 													break ;
 		case PRINTER_READY:   
 														if(Printer.fluid_bag_timeout==0){
@@ -138,8 +146,11 @@ void Printer_Control(void)
 																	Printer.process = PRINTER_RESERVE;
 																	break ;
 																}
-																}	
-														if((Air_Control.complete == 1)&&(Control.fluid_bag.state == 1)&&(READ_UPPER_REACH==0)){  //ø™ º¥Ú”°µƒ ±∫ÚæÕ∞—“∫¥¸ ‰»Î–≈∫≈÷√Œª£¨ø…“‘Ω” ’œ¬“ª¥Œ–≈∫≈ ‰»Î
+															}	
+														if((Air_Control.complete == 1)&&(fluid_bag_state_back == 1)&&(Control.fluid_bag.state == 0)){
+															Control.fluid_bag.state =1;
+														}
+ 														if((Air_Control.complete == 1)&&(Control.fluid_bag.state == 1)&&(READ_UPPER_REACH==0)){  //ø™ º¥Ú”°µƒ ±∫ÚæÕ∞—“∫¥¸ ‰»Î–≈∫≈÷√Œª£¨ø…“‘Ω” ’œ¬“ª¥Œ–≈∫≈ ‰»Î
 															if(1 == Read_Baffle_State()){ //√ª¥Ú”°«∞Ω” ’µΩ…®√Ë«π¥ÌŒÛ£¨¬Ì…œÕ£÷π
 																	Device_State = 3;
 																  MCU_Host_Send.control.err_message |=0x20;
@@ -151,13 +162,16 @@ void Printer_Control(void)
 																AIR_BLOW_ON;
 																VACUUM_ON;
 																PRINTER_START_ON;
-                                PRINTER_RESTART_ON;
+																pinter_roll_skip = 0;
+																printer_roll_delay = PRINTER_ROLL_DELAY_TIME;
+																fluid_bag_state_back = 0;
+//                                 PRINTER_RESTART_ON;
 																Air_Control.complete = 0;
 															  Printer.printer_work_timeout = 100;
                                 uiRoll_Paper_ON_Delay = 400;//æÌ÷ΩµÁª˙ø™∆Ù◊Ó¥Û—” ±2S£¨’˝≥£æÌ÷ΩµÁª˙Õ£÷π”¶∏√ «∆¯∏◊œ¬—π ±
 															  MCU_Host_Send.control.err_message &=0xF7;
 //																Control.fluid_bag.state = 0;
-														}		                  
+														}													
 														break ;
 		case PRINTER_WORKING:   if(Printer.end.state == 1){
 															Printer.process = PRINTER_END;
@@ -184,8 +198,22 @@ void Printer_Control(void)
 																	}
 															}
 														}
+														if(printer_roll_delay == 0){
+															 PRINTER_RESTART_ON;
+														}
 					break ;
-		case PRINTER_END: if(Device_State == 1){  //…Ë±∏∆Ù∂Ø     
+		case PRINTER_END: 
+											if(printer_roll_delay != 0){
+												  pinter_roll_skip = 1;
+													break;
+											}
+											if(pinter_roll_skip == 1){
+													if(printer_roll_delay == 0){
+														PRINTER_RESTART_ON;
+														pinter_roll_skip = 0;
+													}
+											}
+											if(Device_State == 1){  //…Ë±∏∆Ù∂Ø     
 													Printer.process = PRINTER_READY; 
 											}else{
 													Printer.process = PRINTER_RESERVE;	

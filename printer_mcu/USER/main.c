@@ -31,8 +31,8 @@ int main(void)
     USART1_Config();
     TIM2_Config();
     TIM3_Config();
-	  Baffle_Control.PC_send_process_time = 300;
-	  Air_Control.PC_send_delay_time = 300;
+	  Baffle_Control.PC_send_process_time = 400;
+	  Air_Control.PC_send_delay_time = 240;
 		param_init();
 		delay_ms(1000);
     while(1){
@@ -75,6 +75,7 @@ void param_init(void)
 	Baffle_Control.scanner_result_old = 0;
 	Update_Baffle_State(1);
 	baffle_err_timeout = BAFFLE_ERR_TIMEOUT;
+	fluid_bag_state_back =0;
 }
 
 

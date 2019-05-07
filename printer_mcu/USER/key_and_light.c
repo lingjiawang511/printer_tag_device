@@ -136,7 +136,7 @@ static u8 Key_Scan(void)
 			}
 	 return key_num;
 }
-#define LIGHT_TEST_MODE 1
+#define LIGHT_TEST_MODE   0
 static void Light_Scan(void)
 {
 	static u8 flash_time =100;
@@ -172,8 +172,11 @@ static void Light_Scan(void)
 			if(flash_flag == 0){
 				if(MCU_Host_Send.control.err_message == 0x04){
 					  STOP_LIGHT_ON;
-				}else if(MCU_Host_Send.control.err_message == 0x10){
+				}else if(MCU_Host_Send.control.err_message == 0x08){
 						START_LIGHT_ON;
+				}else if(MCU_Host_Send.control.err_message == 0x10){
+						STOP_LIGHT_OFF;
+					  START_LIGHT_ON;
 				}else if(MCU_Host_Send.control.err_message == 0x20){
 						START_LIGHT_ON;
 					  STOP_LIGHT_ON;
@@ -189,8 +192,11 @@ static void Light_Scan(void)
 			}else{
 				if(MCU_Host_Send.control.err_message == 0x04){
 						STOP_LIGHT_OFF;
-				}else if(MCU_Host_Send.control.err_message == 0x10){
+				}else if(MCU_Host_Send.control.err_message == 0x08){
 						START_LIGHT_OFF;
+				}else if(MCU_Host_Send.control.err_message == 0x10){
+						STOP_LIGHT_ON;
+					  START_LIGHT_OFF;
 				}else if(MCU_Host_Send.control.err_message == 0x20){//Ω” ’µΩ…®√Ë«π¥ÌŒÛ–≈∫≈π ’œ
 						STOP_LIGHT_OFF;
 					  START_LIGHT_OFF;

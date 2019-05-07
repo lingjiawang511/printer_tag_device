@@ -116,10 +116,10 @@ static u8  SLAVE_Rec_Comm(void)
 		case 0x00:	 
 							break;
 		case 0x01:Baffle_Control.PC_send_process_time = (MCU_Host_Rec.control.baffle_delay_H*256+MCU_Host_Rec.control.baffle_delay_L+2)/5;
-							if(Baffle_Control.PC_send_process_time >= 400){
-									Baffle_Control.PC_send_process_time = 300;
+							if(Baffle_Control.PC_send_process_time >= 600){
+									Baffle_Control.PC_send_process_time = 400;
 							}else if(Baffle_Control.PC_send_process_time <= 200){
-									Baffle_Control.PC_send_process_time = 300;
+									Baffle_Control.PC_send_process_time = 400;
 							}
 							break;
 		default : break;

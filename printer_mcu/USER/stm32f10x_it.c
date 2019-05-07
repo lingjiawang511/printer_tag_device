@@ -179,6 +179,9 @@ void TIM2_IRQHandler(void)
 		if(Printer.printer_work_timeout > 0){
 			Printer.printer_work_timeout--;
 		}
+		if(printer_roll_delay > 0){
+			printer_roll_delay--;
+		}
 		TIM_ClearITPendingBit(TIM2 , TIM_FLAG_Update);  		 
 	}		 	
 }
