@@ -187,7 +187,7 @@ void TIM2_IRQHandler(void)
 			if(Control.upper_reach.backstate == 0){
 				if(READ_UPPER_REACH == RESET){
 					air_upper_reach_count++;
-					if(air_upper_reach_count > 3){
+					if(air_upper_reach_count > 60){
 						Control.upper_reach.backstate = 1;
 						air_upper_reach_count = 0;
 					}
@@ -195,6 +195,8 @@ void TIM2_IRQHandler(void)
 						air_upper_reach_count = 0;
 				}
 			}
+		}else{
+			air_upper_reach_count = 0;
 		}
 		TIM_ClearITPendingBit(TIM2 , TIM_FLAG_Update);  		 
 	}		 	
