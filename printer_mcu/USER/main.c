@@ -58,6 +58,7 @@ void param_init(void)
   PRINTER_RESTART_OFF;
 	
 	Control.upper_reach.state = 0;
+	Control.upper_reach.backstate = 0;
 	Control.scanner.state = 0;
 	Control.fit_reach.state = 0;
 	Control.fluid_bag.state = 0;

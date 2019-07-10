@@ -218,6 +218,7 @@ typedef struct{
 }CH_Work;
 typedef struct {
 	u8 state;
+	u8 backstate;
 	u8 irqstate;
 	u8 irqtime;
 }Printer_Input_Type;

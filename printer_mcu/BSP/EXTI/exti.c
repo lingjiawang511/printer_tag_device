@@ -198,6 +198,7 @@ static void  EXTIX15_10_Init(void )
 //=============================================================================
 static void 	Control_Input_IRQTimer(void)
 {
+	 static u16 testcount = 0;
 		if(Control.scanner.irqstate == 1){//延时方法使用定时器延时，中断进来看状态，8MS后判断状态是否是真
 					Control.scanner.irqtime++;
 					if((IRQ_TIMEOUT*1) <= Control.scanner.irqtime){
@@ -230,6 +231,7 @@ static void 	Control_Input_IRQTimer(void)
 					if(IRQ_TIMEOUT <= Control.upper_reach.irqtime){
 						if(READ_UPPER_REACH == RESET){
 							Control.upper_reach.state = 1;
+// 							Control.upper_reach.backstate = 1;
 						}
 						Control.upper_reach.irqstate = 0;
 						Control.upper_reach.irqtime = 0;

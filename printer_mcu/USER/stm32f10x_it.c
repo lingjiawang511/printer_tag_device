@@ -145,6 +145,7 @@ void SysTick_Handler(void)
 //=============================================================================
 void TIM2_IRQHandler(void)
 {
+	static u16 air_upper_reach_count = 0;
 	if ( TIM_GetITStatus(TIM2 , TIM_IT_Update) != RESET ) 
 	{	
 		Led_Flash();
@@ -181,6 +182,19 @@ void TIM2_IRQHandler(void)
 		}
 		if(printer_roll_delay > 0){
 			printer_roll_delay--;
+		}
+		if(Air_Control.process == WORKEND){
+			if(Control.upper_reach.backstate == 0){
+				if(READ_UPPER_REACH == RESET){
+					air_upper_reach_count++;
+					if(air_upper_reach_count > 3){
+						Control.upper_reach.backstate = 1;
+						air_upper_reach_count = 0;
+					}
+				}else{
+						air_upper_reach_count = 0;
+				}
+			}
 		}
 		TIM_ClearITPendingBit(TIM2 , TIM_FLAG_Update);  		 
 	}		 	

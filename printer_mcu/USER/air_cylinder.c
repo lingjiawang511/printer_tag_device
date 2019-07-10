@@ -77,6 +77,7 @@ void Air_Cylinder_Control(void)
 					break ;
 		case WORKING:   if(Control.fit_reach.state == 1){  //贴合到位
 												Control.upper_reach.state = 0; //软件限位，防止两个互斥事件由于状态保存功能同时满足
+												Control.upper_reach.backstate = 0;
 												AIR_CYLINDER_UP;
                         PRINTER_RESTART_OFF;   //下压结束，卷纸电机停止
 												Air_Control.process = WORKEND;
@@ -84,7 +85,7 @@ void Air_Cylinder_Control(void)
 												Air_Control.air_cylinder_position =IN_DOWN;
 												Control.fluid_bag.state = 0;
 												fluid_bag_state_back = 0;
-												Air_Control.air_cylinder_up_timeout = 400;
+												Air_Control.air_cylinder_up_timeout = 500;
 												MCU_Host_Send.control.err_message &=0xEF;
 										}else{
 											if(Air_Control.air_cylinder_dowm_timeout == 0){ //压下去不到位，设备故障需要停机
@@ -93,11 +94,12 @@ void Air_Cylinder_Control(void)
 											}
 										}
 					break ;
-		case WORKEND:   if(Control.upper_reach.state == 1){  //上步到位
+		case WORKEND:   if((Control.upper_reach.state == 1)||(Control.upper_reach.backstate == 1)){  //上步到位
 												Control.fit_reach.state = 0; //软件限位，防止两个互斥事件由于状态保存功能同时满足
 												Air_Control.process = END;
 												Air_Control.complete = 1;
 												Control.upper_reach.state = 0;
+												Control.upper_reach.backstate = 0;
 												Air_Control.air_cylinder_position =IN_UP;
 												VACUUM_OFF;
 												AIR_BLOW_OFF;
