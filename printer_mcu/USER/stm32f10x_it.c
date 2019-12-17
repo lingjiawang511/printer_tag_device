@@ -1,11 +1,11 @@
 /**
   ******************************************************************************
-  * @file    Project/STM32F10x_StdPeriph_Template/stm32f10x_it.c 
+  * @file    Project/STM32F10x_StdPeriph_Template/stm32f10x_it.c
   * @author  MCD Application Team
   * @version V3.5.0
   * @date    08-April-2011
   * @brief   Main Interrupt Service Routines.
-  *          This file provides template for all exceptions handler and 
+  *          This file provides template for all exceptions handler and
   *          peripherals interrupt service routine.
   ******************************************************************************
   * @attention
@@ -57,10 +57,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while (1) {
+    }
 }
 
 /**
@@ -70,10 +69,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while (1) {
+    }
 }
 
 /**
@@ -83,10 +81,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while (1) {
+    }
 }
 
 /**
@@ -96,10 +93,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while (1) {
+    }
 }
 
 /**
@@ -145,61 +141,60 @@ void SysTick_Handler(void)
 //=============================================================================
 void TIM2_IRQHandler(void)
 {
-	static u16 air_upper_reach_count = 0;
-	if ( TIM_GetITStatus(TIM2 , TIM_IT_Update) != RESET ) 
-	{	
-		Led_Flash();
-		Belt_Control();
-		Key_Light_Dispose();
-		Baffle_Time_Irq();
-		if(Printer.start_delay_time > 0){
-			Printer.start_delay_time--;
-		}else{
-			PRINTER_START_OFF;   
-			Printer.start_delay_time = 0;
-		}
-    if(uiRoll_Paper_ON_Delay > 0){
-      uiRoll_Paper_ON_Delay--;
-    }else{
-      PRINTER_RESTART_OFF;
+    static u16 air_upper_reach_count = 0;
+    if ( TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET ) {
+        Led_Flash();
+        Belt_Control();
+        Key_Light_Dispose();
+        Baffle_Time_Irq();
+        if (Printer.start_delay_time > 0) {
+            Printer.start_delay_time--;
+        } else {
+            PRINTER_START_OFF;
+            Printer.start_delay_time = 0;
+        }
+        if (uiRoll_Paper_ON_Delay > 0) {
+            uiRoll_Paper_ON_Delay--;
+        } else {
+            PRINTER_RESTART_OFF;
+        }
+        if (Air_Control.delay_time > 0) {
+            Air_Control.delay_time--;
+        }
+        if (Printer.fluid_bag_timeout > 0) {
+            Printer.fluid_bag_timeout--;
+        } else {
+            Control.fluid_bag.state = 0;
+        }
+        if (Air_Control.air_cylinder_dowm_timeout > 0) {
+            Air_Control.air_cylinder_dowm_timeout --;
+        }
+        if (Air_Control.air_cylinder_up_timeout > 0) {
+            Air_Control.air_cylinder_up_timeout --;
+        }
+        if (Printer.printer_work_timeout > 0) {
+            Printer.printer_work_timeout--;
+        }
+        if (printer_roll_delay > 0) {
+            printer_roll_delay--;
+        }
+        if (Air_Control.process == WORKEND) {
+            if (Control.upper_reach.backstate == 0) {
+                if (READ_UPPER_REACH == RESET) {
+                    air_upper_reach_count++;
+                    if (air_upper_reach_count > 60) {
+                        Control.upper_reach.backstate = 1;
+                        air_upper_reach_count = 0;
+                    }
+                } else {
+                    air_upper_reach_count = 0;
+                }
+            }
+        } else {
+            air_upper_reach_count = 0;
+        }
+        TIM_ClearITPendingBit(TIM2, TIM_FLAG_Update);
     }
-		if(Air_Control.delay_time > 0){
-			Air_Control.delay_time--;
-		}
-		if(Printer.fluid_bag_timeout>0){
-			Printer.fluid_bag_timeout--;
-		}else{
-			Control.fluid_bag.state = 0;
-		}
-		if(Air_Control.air_cylinder_dowm_timeout > 0){
-			Air_Control.air_cylinder_dowm_timeout --;
-		}
-		if(Air_Control.air_cylinder_up_timeout > 0){
-			Air_Control.air_cylinder_up_timeout --;
-		}
-		if(Printer.printer_work_timeout > 0){
-			Printer.printer_work_timeout--;
-		}
-		if(printer_roll_delay > 0){
-			printer_roll_delay--;
-		}
-		if(Air_Control.process == WORKEND){
-			if(Control.upper_reach.backstate == 0){
-				if(READ_UPPER_REACH == RESET){
-					air_upper_reach_count++;
-					if(air_upper_reach_count > 60){
-						Control.upper_reach.backstate = 1;
-						air_upper_reach_count = 0;
-					}
-				}else{
-						air_upper_reach_count = 0;
-				}
-			}
-		}else{
-			air_upper_reach_count = 0;
-		}
-		TIM_ClearITPendingBit(TIM2 , TIM_FLAG_Update);  		 
-	}		 	
 }
 //=============================================================================
 //函数名称:TIM3_IRQHandler
@@ -209,22 +204,21 @@ void TIM2_IRQHandler(void)
 //=============================================================================
 void TIM3_IRQHandler(void)
 {
-	if ( TIM_GetITStatus(TIM3 , TIM_IT_Update) != RESET ) 
-	{	
-        if (1 == Usart1_Control_Data.rx_start){
-            if(Auto_Frame_Time1 >0){
+    if ( TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET ) {
+        if (1 == Usart1_Control_Data.rx_start) {
+            if (Auto_Frame_Time1 > 0) {
                 Auto_Frame_Time1--;
-            }else{
+            } else {
                 Auto_Frame_Time1 = 0;
-                Usart1_Control_Data.rx_aframe = 1; 
+                Usart1_Control_Data.rx_aframe = 1;
                 Usart1_Control_Data.rx_count = Usart1_Control_Data.rx_index;
                 Usart1_Control_Data.rx_start = 0;
                 Usart1_Control_Data.rx_index = 0;
             }
         }
-			Input_pulse_IRQTimer();    //所有通道电机脉冲计数
-      TIM_ClearITPendingBit(TIM3 , TIM_FLAG_Update);     
-	}		 	
+        Input_pulse_IRQTimer();    //所有通道电机脉冲计数
+        TIM_ClearITPendingBit(TIM3, TIM_FLAG_Update);
+    }
 }
 
 //=============================================================================
@@ -235,15 +229,15 @@ void TIM3_IRQHandler(void)
 //=============================================================================
 void USART1_IRQHandler(void)
 {
-  
-	if(USART_GetFlagStatus(USART1, USART_FLAG_RXNE)||USART_GetFlagStatus(USART1, USART_FLAG_ORE) != RESET){ //解决数据没接收完一直进中断的问题
-       USART1_Do_Rx(USART_ReceiveData(USART1));
-       USART_ClearFlag(USART1,USART_FLAG_RXNE);
-	}
-	if(USART_GetFlagStatus(USART1, USART_FLAG_TC)){
-       USART1_Do_Tx();
-       USART_ClearFlag(USART1,USART_FLAG_TC);
-	}
+
+    if (USART_GetFlagStatus(USART1, USART_FLAG_RXNE) || USART_GetFlagStatus(USART1, USART_FLAG_ORE) != RESET) { //解决数据没接收完一直进中断的问题
+        USART1_Do_Rx(USART_ReceiveData(USART1));
+        USART_ClearFlag(USART1, USART_FLAG_RXNE);
+    }
+    if (USART_GetFlagStatus(USART1, USART_FLAG_TC)) {
+        USART1_Do_Tx();
+        USART_ClearFlag(USART1, USART_FLAG_TC);
+    }
 }
 
 
