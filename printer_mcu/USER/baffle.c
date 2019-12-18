@@ -6,6 +6,7 @@
 Control_Baffle_Type Baffle_Control;
 #define BAFFLE_AUTO_OFF     0
 u16 baffle_err_timeout;
+
 //=============================================================================
 //函数名称: Printer_GPIO_Config
 //功能概要:打印机引脚配置
@@ -38,8 +39,9 @@ void Baffle_GPIO_Config(void)
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
     GPIO_Init(BAFFLE_PORT, &GPIO_InitStructure);
 
-    BAFFLE_INTER ;
-
+//    BAFFLE_INTER ;
+    CYLINDER_OUTER;
+    cylinder_inter_state_init();
 }
 static u8 baffle_state = 0;
 void Update_Baffle_State(u8 updatestate)
@@ -139,7 +141,39 @@ void Baffle_Control_Process(void)
 
 
 }
-
+extern u8 cylinder_inter_action;
+void cylinder_inter_irq(void)
+{
+    static u16 cylinder_inter_filter = 0;
+    if (cylinder_inter_action == 1) {
+        if (READ_CYLINDER_INTER == READLOW) {
+            cylinder_inter_filter++;
+            if (cylinder_inter_filter > 5) {
+                cylinder_inter_state = 1;
+            }
+        } else {
+            cylinder_inter_filter = 0;
+        }
+    }
+}
+extern u8 cylinder_outer_action;
+void cylinder_outer_irq(void)
+{
+    static u16 cylinder_outer_filter = 0;
+    if (cylinder_outer_action == 1) {
+        cylinder_outer_filter++;
+        if (cylinder_outer_filter > 1) {
+            cylinder_outer_state = 1;
+        }
+    } else {
+        cylinder_outer_filter = 0;
+    }
+    if (Printer.complete == 1) {
+        if (cylinder_outer_delay > 0) {
+            cylinder_outer_delay--;
+        }
+    }
+}
 void Baffle_Time_Irq(void)
 {
     static u16 inter_delay_time = 0;
@@ -163,6 +197,8 @@ void Baffle_Time_Irq(void)
         Baffle_Control.auto_turn_off_time--;
     }
 #endif
+    cylinder_inter_irq();
+		cylinder_outer_irq();
     if ( Baffle_Control.baffle_state == 1) { //外翻不到位故障
         outer_delay_time++;
         if (outer_delay_time >= 10) {

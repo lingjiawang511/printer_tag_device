@@ -1,6 +1,9 @@
 #include"HeadType.h"
 
 Air_Controlr_Type Air_Control;
+u8  cylinder_outer_action = 0;
+u8  cylinder_outer_state = 0;
+u16 cylinder_outer_delay = 0;
 //=============================================================================
 //函数名称: Printer_GPIO_Config
 //功能概要:打印机引脚配置
@@ -57,7 +60,22 @@ void Air_Cylinder_GPIO_Config(void)
     GPIO_Init(VACUUM_PORT, &GPIO_InitStructure);
 
 }
-
+void cylinder_outer_state_init(void)
+{
+    cylinder_outer_action = 0;
+    cylinder_outer_state = 0;
+}
+u8 cylinder_outer_judge(void)
+{
+    if ((cylinder_outer_delay == 0) && (Printer.complete == 1)) {
+        CYLINDER_OUTER;
+        cylinder_outer_action = 1;
+    }
+    if (cylinder_outer_state == 1) {
+        return 1;
+    }
+    return 0;
+}
 void Air_Cylinder_Control(void)
 {
 
@@ -68,6 +86,9 @@ void Air_Cylinder_Control(void)
             }
             break ;
         case READY:
+            if (0 == cylinder_outer_judge()) {
+                break;
+            }
             if ((Printer.complete == 1) && (Air_Control.air_cylinder_position == IN_UP) && \
                 (Air_Control.delay_time == 0)) { //开始打印的时候就把液袋输入信号置位，可以接收下一次信号输入
                 Air_Control.process = WORKING;
@@ -75,6 +96,7 @@ void Air_Cylinder_Control(void)
                 Printer.complete = 0;
                 Air_Control.air_cylinder_dowm_timeout = 200;
                 MCU_Host_Send.control.err_message &= 0xFB;
+                cylinder_outer_state_init();
             }
             break ;
         case WORKING:
@@ -107,6 +129,7 @@ void Air_Cylinder_Control(void)
                 Air_Control.air_cylinder_position = IN_UP;
                 VACUUM_OFF;
                 AIR_BLOW_OFF;
+                cylinder_inter_state_init();
 //                                              Control.fluid_bag.state = 0;
             } else {
                 if (Air_Control.air_cylinder_up_timeout == 0) { //抬起不到位，设备故障需要停机

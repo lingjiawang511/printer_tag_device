@@ -3,6 +3,8 @@
 #define PRINTER_START_DELAY_TIME  6;
 u8 fluid_bag_state_back = 0;
 u16 printer_roll_delay = PRINTER_ROLL_DELAY_TIME;
+u8 cylinder_inter_action = 0;
+u8 cylinder_inter_state = 0;
 //=============================================================================
 //函数名称: Printer_GPIO_Config
 //功能概要:打印机引脚配置
@@ -112,6 +114,25 @@ static u8 Printer_Process_Input(void)
     return res;
 
 }
+void cylinder_inter_state_init(void)
+{
+    cylinder_inter_action = 0;
+    cylinder_inter_state = 0;
+}
+u8 cylinder_inter_judge(void)
+{
+    if ((cylinder_inter_action == 0) && (Air_Control.complete == 1)) {
+        CYLINDER_INTER;
+        cylinder_inter_action = 1;
+    }
+    if ((READ_CYLINDER_INTER == READLOW) && (cylinder_inter_state == 1)) {
+        delay_ms(3);
+        if ((READ_CYLINDER_INTER == READLOW) && (cylinder_inter_state == 1)) {
+            return 1;
+        }
+    }
+    return 0;
+}
 void Printer_Control(void)
 {
     static u8 working_err = 0;
@@ -134,6 +155,7 @@ void Printer_Control(void)
             baffle_err_timeout = BAFFLE_ERR_TIMEOUT;
             printer_roll_delay = 0;
             pinter_roll_skip = 0;
+            cylinder_inter_state_init();
             break ;
         case PRINTER_READY:
             if (Printer.fluid_bag_timeout == 0) {
@@ -146,6 +168,10 @@ void Printer_Control(void)
                     Printer.process = PRINTER_RESERVE;
                     break ;
                 }
+            }
+
+            if (0 == cylinder_inter_judge()) {
+                break ;
             }
             if ((Air_Control.complete == 1) && (fluid_bag_state_back == 1) && (Control.fluid_bag.state == 0)) {
                 Control.fluid_bag.state = 1;
@@ -165,6 +191,7 @@ void Printer_Control(void)
                 pinter_roll_skip = 0;
                 printer_roll_delay = PRINTER_ROLL_DELAY_TIME;
                 fluid_bag_state_back = 0;
+                cylinder_inter_state_init();
 //                                 PRINTER_RESTART_ON;
                 Air_Control.complete = 0;
                 Printer.printer_work_timeout = 100;
@@ -175,6 +202,8 @@ void Printer_Control(void)
             break ;
         case PRINTER_WORKING:
             if (Printer.end.state == 1) {
+								cylinder_outer_state_init();
+								cylinder_outer_delay = CYLINDER_OUTER_DELAY;
                 Printer.process = PRINTER_END;
                 Printer.complete = 1;
                 Control.fluid_bag.state = 0;
@@ -183,7 +212,9 @@ void Printer_Control(void)
             } else {
                 if (Printer.printer_work_timeout == 0) {
                     if (READ_PRINTER_END == SET) { //打印中，但是没有任务，所以为高电平
-                        Printer.process = PRINTER_END;
+											cylinder_outer_state_init();
+											cylinder_outer_delay = CYLINDER_OUTER_DELAY;
+											Printer.process = PRINTER_END;
                         Printer.complete = 1;
                         AIR_BLOW_OFF;
                         VACUUM_OFF;

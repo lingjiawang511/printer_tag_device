@@ -55,6 +55,8 @@ void param_init(void)
     Printer.process = PRINTER_RESERVE;
     PRINTER_START_OFF;
     PRINTER_RESTART_OFF;
+    CYLINDER_OUTER;
+    cylinder_inter_state_init();
 
     Control.upper_reach.state = 0;
     Control.upper_reach.backstate = 0;

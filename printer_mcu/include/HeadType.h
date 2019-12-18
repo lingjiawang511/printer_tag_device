@@ -51,11 +51,12 @@ typedef uint32	ulong;		/**< 32-bit value */
 //响应超时时间，即上位机确认二维码正确后扫描枪一直扫描直到得到下一次数据的最长时间
 #define ANSWER_SCANTIME	 	 4000	  //4000*5ms
 //无响应超时时间，即当下位机发送数据给上位机，而上位机没有响应的最长时间
-#define NANSWER_TIME	 1000	  //1000*5ms
-#define NANSWER_NUMOUT	 	 3	  //1000*5ms
-#define BAFFLE_ERR_TIMEOUT	400
-#define IRQ_TIMEOUT							4			//中断软件延时时间
-#define PRINTER_ROLL_DELAY_TIME  60   //打印开启延时卷纸时间
+#define NANSWER_TIME	 						1000	  //1000*5ms
+#define NANSWER_NUMOUT	 	 				3	  //1000*5ms
+#define BAFFLE_ERR_TIMEOUT				400
+#define IRQ_TIMEOUT								4			//中断软件延时时间
+#define PRINTER_ROLL_DELAY_TIME  	60   //打印开启延时卷纸时间
+#define CYLINDER_OUTER_DELAY			100
 
 /*************define type end*******************/
 
@@ -300,6 +301,9 @@ extern u32 uiRoll_Paper_ON_Delay;
 extern u16 baffle_err_timeout;
 extern u16 printer_roll_delay;
 extern u8 fluid_bag_state_back;
+extern u8 cylinder_inter_state;
+extern u16 cylinder_outer_delay;
+extern u8  cylinder_outer_state;
 /*************extern variable end*******************/
 
 /*************function start*******************/
@@ -313,6 +317,8 @@ void param_init(void);
 
 void Update_Baffle_State(u8 updatestate);
 u8 Read_Baffle_State(void);
+void cylinder_inter_state_init(void);
+void cylinder_outer_state_init(void);
 /*************function end*******************/
 #endif
 

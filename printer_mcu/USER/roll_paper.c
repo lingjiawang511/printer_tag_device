@@ -52,6 +52,7 @@ void Roll_Paper_Control(void)
         belt.state = END ;     //‘À ‰∆§¥¯Õ£÷π
         AIR_BLOW_OFF;
         VACUUM_OFF;
+        CYLINDER_OUTER;
 //        COMMUNICATION_IO1_OFF;
     } else {
         ROLL_PAPER_ON;
