@@ -58,6 +58,18 @@ typedef uint32	ulong;		/**< 32-bit value */
 #define PRINTER_ROLL_DELAY_TIME  	60   //打印开启延时卷纸时间
 #define CYLINDER_OUTER_DELAY			100
 
+
+#if APP_USE_IAP
+#define   SOFTWARE_VERSIONS_H     0X0002
+#else
+#define   SOFTWARE_VERSIONS_H     0X0001
+#endif
+#define   SOFTWARE_VERSIONS_M     0X0000
+#define   SOFTWARE_VERSIONS_L     0X0001
+
+#define   HARDWARE_VERSIONS_H     0X0001
+#define   HARDWARE_VERSIONS_M     0X0000
+#define   HARDWARE_VERSIONS_L     0X0000
 /*************define type end*******************/
 
 /*************union type start*******************/
@@ -129,6 +141,7 @@ typedef Printer_Work_Enum_Type Air_Cylinder_Enum_Type;
 /*************struct type start*******************/
 
 typedef struct{
+		USART_TypeDef* huart;
     u16 tx_index;        //发送当前数据的索引
     u16 rx_index;        //接收到当前数据的索引
     u16 tx_count;        //发送数据总数
@@ -271,6 +284,35 @@ typedef struct{
 	u8  baffle_state;
 	u8  scanner_result_old;
 }Control_Baffle_Type;
+
+typedef struct {
+    u8  frame_start1;
+    u8  frame_start2;
+    u8  datasizeH;
+    u8  datasizeL;
+    u8  funcodeH;
+    u8  funcodeL;
+    u8  comm_num;
+    u8  recbuf[240];
+    u8  checksum;
+    u8  frame_end1;
+    u8  frame_end2;
+} Communation_Rec_Type1;
+typedef struct {
+    u8  addr;
+    u8  command;
+    u8  ID_H;
+    u8  ID_L;
+    u8  function_H;
+    u8  function_L;
+    u16 crc16_mb;
+    u8  recbuf[242];
+} Modbus_COMM_Rec_Type;
+typedef union {
+    Communation_Rec_Type1 control;
+    Modbus_COMM_Rec_Type mb_ctr;
+    u8  rectemplate_buf[250];
+} COMM_RecControl_Union_Type;
 /*************struct type end*******************/
 
 /*************extern variable start*******************/

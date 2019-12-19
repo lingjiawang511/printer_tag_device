@@ -198,7 +198,7 @@ void Baffle_Time_Irq(void)
     }
 #endif
     cylinder_inter_irq();
-		cylinder_outer_irq();
+    cylinder_outer_irq();
     if ( Baffle_Control.baffle_state == 1) { //外翻不到位故障
         outer_delay_time++;
         if (outer_delay_time >= 10) {

@@ -202,8 +202,8 @@ void Printer_Control(void)
             break ;
         case PRINTER_WORKING:
             if (Printer.end.state == 1) {
-								cylinder_outer_state_init();
-								cylinder_outer_delay = CYLINDER_OUTER_DELAY;
+                cylinder_outer_state_init();
+                cylinder_outer_delay = CYLINDER_OUTER_DELAY;
                 Printer.process = PRINTER_END;
                 Printer.complete = 1;
                 Control.fluid_bag.state = 0;
@@ -212,9 +212,9 @@ void Printer_Control(void)
             } else {
                 if (Printer.printer_work_timeout == 0) {
                     if (READ_PRINTER_END == SET) { //打印中，但是没有任务，所以为高电平
-											cylinder_outer_state_init();
-											cylinder_outer_delay = CYLINDER_OUTER_DELAY;
-											Printer.process = PRINTER_END;
+                        cylinder_outer_state_init();
+                        cylinder_outer_delay = CYLINDER_OUTER_DELAY;
+                        Printer.process = PRINTER_END;
                         Printer.complete = 1;
                         AIR_BLOW_OFF;
                         VACUUM_OFF;

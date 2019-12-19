@@ -233,10 +233,22 @@ void USART1_IRQHandler(void)
     if (USART_GetFlagStatus(USART1, USART_FLAG_RXNE) || USART_GetFlagStatus(USART1, USART_FLAG_ORE) != RESET) { //解决数据没接收完一直进中断的问题
         USART1_Do_Rx(USART_ReceiveData(USART1));
         USART_ClearFlag(USART1, USART_FLAG_RXNE);
+        if ( USART_GetFlagStatus(USART1, USART_FLAG_ORE) != RESET) {
+            USART_ClearFlag(USART1, USART_FLAG_ORE);
+        }
     }
     if (USART_GetFlagStatus(USART1, USART_FLAG_TC)) {
         USART1_Do_Tx();
         USART_ClearFlag(USART1, USART_FLAG_TC);
+    }
+    if (USART_GetFlagStatus(USART1, USART_FLAG_LBD)) {
+        USART_ClearFlag(USART1, USART_FLAG_LBD);
+    }
+    if (USART_GetFlagStatus(USART1, USART_FLAG_ORE)) {
+        USART_ClearFlag(USART1, USART_FLAG_ORE);
+    }
+    if (USART_GetFlagStatus(USART1, USART_FLAG_TXE)) {
+        USART_ClearFlag(USART1, USART_FLAG_TXE);
     }
 }
 

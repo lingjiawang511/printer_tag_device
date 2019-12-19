@@ -141,7 +141,9 @@ static void Light_Scan(void)
 {
     static u8 flash_time = 100;
     static u8 flash_flag = 0;
+#if LIGHT_TEST_MODE == 1
     static u8 flash_delay = 0;
+#endif
     if (Device_State == 1) { //Device_State=0£º´ý»ú×´Ì¬£¬Device_State=1£ºÆô¶¯×´Ì¬£¬Device_State=2£ºÍ£Ö¹×´Ì¬
         START_LIGHT_ON;
         STOP_LIGHT_OFF;
@@ -214,18 +216,40 @@ static void Light_Scan(void)
     }
 }
 
+u8 enter_test_program_mode(void)
+{
+    static u16 enter_test_time = 0;
+    static u8 enter_flag = 0;
+    if ((READ_START_KEY == READLOW) && (READ_STOP_KEY == READLOW)) {
+        enter_test_time++;
+        if (enter_test_time > KEY_LONGLONG_TIME * 2) {
+            if (enter_flag == 0) {
+                enter_flag = 1;
+                Device_State = 2;
+            } else {
+                enter_flag = 0;
+            }
+            Device_State = 2;
+            Key_ScanNum = 0;
+        }
+    } else {
+        enter_test_time = 0;
+    }
+    return enter_flag;
+}
 
 void Key_Light_Init(void)
 {
     KEY_GPIO_Config();
     Light_GPIO_Config();
 }
-
+extern u8 test_program_run_flag;
 void Key_Light_Dispose(void)
 {
     if (Key_ScanNum == 0) {
         Key_ScanNum = Key_Scan();
     }
+    test_program_run_flag = enter_test_program_mode();
     if (Key_ScanNum != 0) {
         if (((Key_ScanNum & 0x01) == 0x01) || ((Key_ScanNum & 0x11) == 0x11)) {
             if (Device_State == 3) {

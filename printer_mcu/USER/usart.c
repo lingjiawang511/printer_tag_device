@@ -27,6 +27,7 @@ static void Init_USART1(void)
     Usart1_Control_Data.rx_count = 0;
     Usart1_Control_Data.rx_start = 0;
     Usart1_Control_Data.rx_aframe = 0;
+    Usart1_Control_Data.huart = USART1;
 
 }
 //=============================================================================

@@ -1,9 +1,10 @@
 #include"HeadType.h"
-
+#include "flash.h"
 MCU_State_Type MCU_State;
 Answer_Type      PC_Answer;
 COMM_Rec_Union_Type  MCU_Host_Rec;
 COMM_Send_Union_Type  MCU_Host_Send;
+COMM_RecControl_Union_Type   MCU_Slave_RecC;
 ////=============================================================================
 ////函数名称: Comm_GPIO_Config
 ////功能概要:硬件通信引脚配置
@@ -292,7 +293,110 @@ static u8 Execute_Host_Comm(void)
     }
     return res;
 }
+u8 Get_Add_Check(u8* databuf, u16 datalenth)
+{
+    u16 i;
+    u16 add_checksum = 0;
 
+    for (i = 0; i < datalenth; i++) {
+        add_checksum += databuf[i];
+    }
+
+    return (u8)add_checksum;
+}
+void wait_tx_count_reset(unsigned short tx_count)
+{
+    u16 timeout_count;
+    timeout_count = 1000;
+    do {
+        delay_us(5);
+        timeout_count--;
+    } while ((tx_count != 0) && (timeout_count != 0));
+}
+void Host_CTR_Special_CMD(Usart_Type *usart, COMM_RecControl_Union_Type *recdata)
+{
+    u8 add_checksum;
+    u8 err_code = 0;
+    u8 not_ctr_servo_flag = 0;
+    u16 datalenth = 0;
+    UL save_cmd_to_flash;
+    u8 reset_mcu_flag, i;
+
+    //AA BB 00 0B 10 FF 00 11 44 4C BB DD EE  //重启被进入Boardload下载APP程序
+    if (usart->rx_count < 12) {
+        return;
+    }
+    if ((usart->rxbuf[0] != 0xAA) || (usart->rxbuf[1] != 0xBB)) {
+        return;
+    }
+    if ((usart->rxbuf[0] == 0xAA) && (usart->rxbuf[1] == 0xBB) && (usart->rxbuf[4] == 0x10) && \
+        (usart->rxbuf[5] == 0xFF) && (usart->rxbuf[11] == 0xDD) && (usart->rxbuf[12] == 0xEE)) {
+        for (i = 0; i < 7; i++) {
+            MCU_Slave_RecC.rectemplate_buf[i] = usart->rxbuf[i];
+        }//把数据复制给主机通讯结构体,数据正确，先回应主机
+        for (i = 0; i < (Usart1_Control_Data.rxbuf[2] * 256 + usart->rxbuf[3]) - 8; i++) {
+            MCU_Slave_RecC.rectemplate_buf[i + 7] = usart->rxbuf[i + 7];
+        }
+        datalenth = 9;
+        reset_mcu_flag = 0;
+        switch (recdata->control.funcodeL) {
+            case 0xFF:
+                not_ctr_servo_flag = 1;
+                if ((recdata->control.recbuf[1] == 'D') && (recdata->control.recbuf[2] == 'L')) {
+                    save_cmd_to_flash.c[3] = 'D';
+                    save_cmd_to_flash.c[2] = 'L';
+                    save_cmd_to_flash.c[1] = 'D';
+                    save_cmd_to_flash.c[0] = 'L';
+                    if (FLASH_COMPLETE == STMFLASH_Write(FLASH_START_ADDR + FLASH_SAVE_SIZE, 2, (uint16_t *)&save_cmd_to_flash)) {
+                        reset_mcu_flag = 1;
+                    } else {
+                        if (FLASH_COMPLETE == STMFLASH_Write(FLASH_START_ADDR + FLASH_SAVE_SIZE, 2, (uint16_t *)&save_cmd_to_flash)) {
+                            reset_mcu_flag = 1;
+                        }
+                    }
+                }
+                break;
+            default:
+                not_ctr_servo_flag = 1;
+                err_code = 0x01;
+                break;
+        }
+        if (err_code == 0) {
+            not_ctr_servo_flag = not_ctr_servo_flag;
+        } else {
+            recdata->control.funcodeH = 0x80 | recdata->control.funcodeH;
+            datalenth++;
+        }
+        if ((reset_mcu_flag == 0) || (err_code == 0x01)) {
+            return;
+        } else {
+            wait_tx_count_reset(usart->tx_count);
+            usart->tx_count = 0;
+            usart->txbuf[usart->tx_count++] = 0xAA;
+            usart->txbuf[usart->tx_count++] = 0xCC;
+            usart->txbuf[usart->tx_count++] = (datalenth >> 8) & 0xFF;
+            usart->txbuf[usart->tx_count++] = datalenth & 0XFF;
+            usart->txbuf[usart->tx_count++] = recdata->control.funcodeH;
+            usart->txbuf[usart->tx_count++] = recdata->control.funcodeL;
+            usart->txbuf[usart->tx_count++] = recdata->control.comm_num;
+            usart->txbuf[usart->tx_count++] = recdata->control.recbuf[0];
+            if (err_code != 0) {
+                usart->txbuf[usart->tx_count++] = err_code;
+            }
+            add_checksum = Get_Add_Check(&usart->txbuf[2], usart->tx_count - 2);
+            usart->txbuf[usart->tx_count++] = add_checksum;
+            usart->txbuf[usart->tx_count++] = 0XDD;
+            usart->txbuf[usart->tx_count++] = 0XEE;
+            usart->tx_index = 0;
+            USART_SendData(usart->huart, usart->txbuf[usart->tx_index++]);
+            usart->rx_aframe = 0;   //清空和主机的通讯，避免通讯错误
+            usart->rx_count = 0;
+            reset_mcu_flag = 0;
+            delay_ms(100);
+            NVIC_SystemReset();
+        }
+    }
+}
 //=============================================================================
 //函数名称:Respond_Host_Comm
 //功能概要:响应上位机的发出的数据命令，数据已经从串口一接收完整
@@ -300,9 +404,11 @@ static u8 Execute_Host_Comm(void)
 //函数返回:无
 //注意    :无
 //=============================================================================
+
 void Respond_Host_Comm(void)
 {
     if (1 == Usart1_Control_Data.rx_aframe) {
+        Host_CTR_Special_CMD(&Usart1_Control_Data, &MCU_Slave_RecC);
         Execute_Host_Comm();
         Usart1_Control_Data.rx_count = 0;
         Auto_Frame_Time1 = AUTO_FRAME_TIMEOUT1;

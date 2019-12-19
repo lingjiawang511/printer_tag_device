@@ -1,0 +1,6 @@
+目标文件:G:\program\2019year\servo_control\program_2019\servo_control\binHEBING\dest.bin   大小:0x000132A8
+各部分大小如下:
+
+索引                        文件名                                            大小              偏移量            强制插入
+ 1      G:\program\2019year\servo_control\program_2019\servo_control\binHEBING\STM32F4xx_IAP.bin        0x00001C94        0x00000000             否
+ 2      G:\program\2019year\servo_control\program_2019\servo_control\servo_control.bin        0x0000B2A8        0x00008000             是
