@@ -121,17 +121,21 @@ void cylinder_inter_state_init(void)
 }
 u8 cylinder_inter_judge(void)
 {
-    if ((cylinder_inter_action == 0) && (Air_Control.complete == 1)) {
-        CYLINDER_INTER;
-        cylinder_inter_action = 1;
-    }
-    if ((READ_CYLINDER_INTER == READLOW) && (cylinder_inter_state == 1)) {
-        delay_ms(3);
-        if ((READ_CYLINDER_INTER == READLOW) && (cylinder_inter_state == 1)) {
-            return 1;
+    if (USE_CYLINDER_TO_MOVE == 0) {
+        return 1;
+    } else {
+        if ((cylinder_inter_action == 0) && (Air_Control.complete == 1)) {
+            CYLINDER_INTER;
+            cylinder_inter_action = 1;
         }
+        if ((READ_CYLINDER_INTER == READLOW) && (cylinder_inter_state == 1)) {
+            delay_ms(3);
+            if ((READ_CYLINDER_INTER == READLOW) && (cylinder_inter_state == 1)) {
+                return 1;
+            }
+        }
+        return 0;
     }
-    return 0;
 }
 void Printer_Control(void)
 {

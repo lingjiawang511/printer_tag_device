@@ -220,22 +220,27 @@ u8 enter_test_program_mode(void)
 {
     static u16 enter_test_time = 0;
     static u8 enter_flag = 0;
-    if ((READ_START_KEY == READLOW) && (READ_STOP_KEY == READLOW)) {
-        enter_test_time++;
-        if (enter_test_time > KEY_LONGLONG_TIME * 2) {
-            if (enter_flag == 0) {
-                enter_flag = 1;
-                Device_State = 2;
-            } else {
-                enter_flag = 0;
-            }
-            Device_State = 2;
-            Key_ScanNum = 0;
-        }
+    if (USE_TEST_CYLINDER_FUNC == 0) {
+        enter_flag = 0;
+        return enter_flag;
     } else {
-        enter_test_time = 0;
+        if ((READ_START_KEY == READLOW) && (READ_STOP_KEY == READLOW)) {
+            enter_test_time++;
+            if (enter_test_time > KEY_LONGLONG_TIME * 2) {
+                if (enter_flag == 0) {
+                    enter_flag = 1;
+                    Device_State = 2;
+                } else {
+                    enter_flag = 0;
+                }
+                Device_State = 2;
+                Key_ScanNum = 0;
+            }
+        } else {
+            enter_test_time = 0;
+        }
+        return enter_flag;
     }
-    return enter_flag;
 }
 
 void Key_Light_Init(void)

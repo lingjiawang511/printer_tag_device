@@ -2,3 +2,5 @@
 *.dep
 List/
 OBJ/
+RTE/
+DebugConfig/

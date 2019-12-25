@@ -67,14 +67,18 @@ void cylinder_outer_state_init(void)
 }
 u8 cylinder_outer_judge(void)
 {
-    if ((cylinder_outer_delay == 0) && (Printer.complete == 1)) {
-        CYLINDER_OUTER;
-        cylinder_outer_action = 1;
-    }
-    if (cylinder_outer_state == 1) {
+    if (USE_CYLINDER_TO_MOVE == 0) {
         return 1;
+    } else {
+        if ((cylinder_outer_delay == 0) && (Printer.complete == 1)) {
+            CYLINDER_OUTER;
+            cylinder_outer_action = 1;
+        }
+        if (cylinder_outer_state == 1) {
+            return 1;
+        }
+        return 0;
     }
-    return 0;
 }
 void Air_Cylinder_Control(void)
 {

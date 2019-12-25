@@ -57,7 +57,8 @@ typedef uint32	ulong;		/**< 32-bit value */
 #define IRQ_TIMEOUT								4			//中断软件延时时间
 #define PRINTER_ROLL_DELAY_TIME  	60   //打印开启延时卷纸时间
 #define CYLINDER_OUTER_DELAY			100
-
+#define USE_TEST_CYLINDER_FUNC		0
+#define USE_CYLINDER_TO_MOVE			1
 
 #if APP_USE_IAP
 #define   SOFTWARE_VERSIONS_H     0X0002
