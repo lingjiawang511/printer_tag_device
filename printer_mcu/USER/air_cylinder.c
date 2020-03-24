@@ -64,7 +64,6 @@ void cylinder_outer_state_init(void)
 {
     cylinder_outer_action = 0;
     cylinder_outer_state = 0;
-		delay_ms(5);
 }
 u8 cylinder_outer_judge(void)
 {

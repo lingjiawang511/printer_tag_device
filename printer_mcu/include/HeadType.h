@@ -56,7 +56,7 @@ typedef uint32	ulong;		/**< 32-bit value */
 #define BAFFLE_ERR_TIMEOUT				400
 #define IRQ_TIMEOUT								4			//中断软件延时时间
 #define PRINTER_ROLL_DELAY_TIME  	60   //打印开启延时卷纸时间
-#define CYLINDER_OUTER_DELAY			100
+#define CYLINDER_OUTER_DELAY			120
 #define USE_TEST_CYLINDER_FUNC		1
 #define USE_CYLINDER_TO_MOVE			1
 
@@ -235,7 +235,7 @@ typedef struct {
 	u8 state;
 	u8 backstate;
 	u8 irqstate;
-	u8 irqtime;
+	u16 irqtime;
 }Printer_Input_Type;
 typedef struct{
 	Printer_Work_Enum_Type  state;  

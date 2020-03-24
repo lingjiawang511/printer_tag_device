@@ -196,7 +196,7 @@ static void  EXTIX15_10_Init(void )
 //函数返回:无
 //注意    :无
 //=============================================================================
-static void     Control_Input_IRQTimer(void)
+static void Control_Input_IRQTimer(void)
 {
 //   static u16 testcount = 0;
     if (Control.scanner.irqstate == 1) { //延时方法使用定时器延时，中断进来看状态，8MS后判断状态是否是真
@@ -258,6 +258,8 @@ static void     Control_Input_IRQTimer(void)
 //=============================================================================
 static void Printer_Input_IRQTimer(void)
 {
+#define PRINTER_END_USE_NEW_FILTER  0
+    static u8 printer_end_state = 0;
     if (Printer.color_less.irqstate == 1) { //延时方法使用定时器延时，中断进来看状态，8MS后判断状态是否是真
         Printer.color_less.irqtime++;
         if (IRQ_TIMEOUT <= Printer.color_less.irqtime) {
@@ -298,9 +300,11 @@ static void Printer_Input_IRQTimer(void)
             Printer.err.irqtime = 0;
         }
     }
+#if PRINTER_END_USE_NEW_FILTER == 0
+		printer_end_state = printer_end_state;
     if (Printer.end.irqstate == 1) { //延时方法使用定时器延时，中断进来看状态，8MS后判断状态是否是真
         Printer.end.irqtime++;
-        if (IRQ_TIMEOUT * 15 <= Printer.end.irqtime) {
+        if (IRQ_TIMEOUT * 5 <= Printer.end.irqtime) {
             if (READ_PRINTER_END == RESET) {
                 Printer.end.state = 1;
             }
@@ -308,6 +312,31 @@ static void Printer_Input_IRQTimer(void)
             Printer.end.irqtime = 0;
         }
     }
+#else
+    if (Printer.end.irqstate == 1) { //有问题，打印一次会有两个脉冲，此方法不可用
+        if (printer_end_state == 0) {
+            Printer.end.irqtime++;
+            if (IRQ_TIMEOUT * 10 <= Printer.end.irqtime) {
+                if (READ_PRINTER_END == RESET) {
+                    printer_end_state = 1;
+                }
+                Printer.end.irqtime = 0;
+            }
+        } else {
+            if (READ_PRINTER_END != RESET) {
+                Printer.end.irqtime++;
+                if (IRQ_TIMEOUT * 5 <= Printer.end.irqtime) {
+                    printer_end_state = 0;
+                    Printer.end.state = 1;
+                    Printer.end.irqstate = 0;
+                    Printer.end.irqtime = 0;
+                }
+            } else {
+                Printer.end.irqtime = 0;
+            }
+        }
+    }
+#endif
     if (Printer.tag_end.irqstate == 1) { //延时方法使用定时器延时，中断进来看状态，8MS后判断状态是否是真
         Printer.tag_end.irqtime++;
         if (IRQ_TIMEOUT <= Printer.tag_end.irqtime) {
